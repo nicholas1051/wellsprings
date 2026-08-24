@@ -21,7 +21,6 @@ import { KeyFeatures } from "@/components/home/KeyFeatures";
 import { LocationSection } from "@/components/home/LocationSection";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { HowToOwn } from "@/components/home/HowToOwn";
-import { Testimonials } from "@/components/home/Testimonials";
 import { FaqSection } from "@/components/home/FaqSection";
 import { FinalCta } from "@/components/home/FinalCta";
 
@@ -96,14 +95,6 @@ export default function HomePage() {
       </div>
 
       <HowToOwn />
-
-      <div className="relative">
-        <GradientBlobs blobs={[
-          { color: "blue", size: 700, className: "top-[0px] left-[-200px]" },
-          { color: "terracotta", size: 500, className: "bottom-[-50px] right-[-150px]", delay: 0.3 },
-        ]} />
-        <Testimonials />
-      </div>
 
       <div id="faq" className="relative">
         <GradientBlobs blobs={[
