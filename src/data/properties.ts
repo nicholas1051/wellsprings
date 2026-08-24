@@ -64,7 +64,7 @@ export const housingUnits: HousingUnit[] = [
     priceFrom: 90000000,
     status: "available",
     unitsLeft: 0,
-    heroImage: "/images/pearl-hero.jpg",
+    heroImage: "/images/pearl-hero.png",
     heroImageAlt: "Pearl 5-bedroom detached villa exterior at Wellsprings Ibadan",
     gallery: [
       { src: "/images/pearl-1.jpg", alt: "Pearl grand living room with floor-to-ceiling windows" },
@@ -111,7 +111,7 @@ export const housingUnits: HousingUnit[] = [
     priceFrom: 86000000,
     status: "available",
     unitsLeft: 0,
-    heroImage: "/images/moonstone-hero.jpg",
+    heroImage: "/images/moonstone-hero.png",
     heroImageAlt: "Moonstone 4-bedroom semi-detached duplex exterior at Wellsprings Ibadan",
     gallery: [
       { src: "/images/moonstone-1.jpg", alt: "Moonstone double-height living room" },
@@ -245,7 +245,7 @@ export const housingUnits: HousingUnit[] = [
     priceFrom: 86000000,
     status: "available",
     unitsLeft: 0,
-    heroImage: "/images/aquamarine-hero.jpg",
+    heroImage: "/images/aquamarine-hero.png",
     heroImageAlt: "Aquamarine 4-bedroom townhouse exterior at Wellsprings Ibadan",
     gallery: [
       { src: "/images/aquamarine-1.jpg", alt: "Aquamarine spacious living area" },
