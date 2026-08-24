@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import Image from "next/image";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { location, categoryColors, categoryLabels, type Landmark } from "@/data/location";
@@ -41,8 +42,15 @@ const lineLengths: Record<string, string> = {
 
 export function LocationSection() {
   const [activeFilter, setActiveFilter] = useState("all");
+  const [sortByNearest, setSortByNearest] = useState(false);
   const [selected, setSelected] = useState<Landmark | null>(null);
   const [ready, setReady] = useState(false);
+
+  const sortedLandmarks = useMemo(() => {
+    const list = [...location.landmarks];
+    if (sortByNearest) list.sort((a, b) => a.distanceKm - b.distanceKm);
+    return list;
+  }, [sortByNearest]);
 
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 250);
@@ -90,17 +98,25 @@ export function LocationSection() {
               8 key destinations around Wellsprings
             </div>
             <div className="flex gap-1 rounded-full border border-[#DFE8F0] bg-white p-1 text-[10px] font-bold">
-              <button type="button" className="rounded-full bg-brand-blue-light px-3 py-[7px] text-brand-blue-dark">
+              <button
+                type="button"
+                onClick={() => setSortByNearest(false)}
+                className={cn("rounded-full px-3 py-[7px] transition-all", !sortByNearest ? "bg-brand-blue-light text-brand-blue-dark" : "text-[#8190A0]")}
+              >
                 All
               </button>
-              <button type="button" className="rounded-full px-3 py-[7px] text-[#8190A0]">
+              <button
+                type="button"
+                onClick={() => setSortByNearest(true)}
+                className={cn("rounded-full px-3 py-[7px] transition-all", sortByNearest ? "bg-brand-blue-light text-brand-blue-dark" : "text-[#8190A0]")}
+              >
                 Nearest first
               </button>
             </div>
           </div>
 
           {/* Map area */}
-          <div className={cn("relative h-[610px] transition-opacity duration-500", ready ? "opacity-100" : "opacity-0")}>
+          <div className={cn("relative h-[670px] transition-opacity duration-500", ready ? "opacity-100" : "opacity-0")}>
             {/* Concentric rings */}
             <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2">
               <div className="absolute left-1/2 top-1/2 h-[185px] w-[185px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[rgba(111,151,184,.18)]">
@@ -116,7 +132,7 @@ export function LocationSection() {
 
             {/* Connection lines */}
             <div className="pointer-events-none absolute inset-0 z-[2]">
-              {location.landmarks.map((lm) => (
+              {sortedLandmarks.map((lm) => (
                 <div
                   key={lm.id}
                   className={cn(
@@ -133,11 +149,14 @@ export function LocationSection() {
             </div>
 
             {/* Center point */}
-            <div className="absolute left-1/2 top-1/2 z-[8] grid h-[116px] w-[116px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-[8px] border-white bg-gradient-to-br from-[#6fa6df] to-[#568bc4] text-center text-white shadow-[0_0_0_2px_rgba(105,157,214,.28),0_15px_35px_rgba(50,96,139,.22)]">
-              <div>
-                <strong className="font-heading text-[14px] tracking-[0.02em]">WELLSPRINGS</strong>
-                <small className="mt-1 block text-[8px] uppercase tracking-[0.1em] opacity-85">Your home base</small>
-              </div>
+            <div className="absolute left-1/2 top-1/2 z-[8] grid h-[116px] w-[116px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-[8px] border-white bg-gradient-to-br from-[#6fa6df] to-[#568bc4] shadow-[0_0_0_2px_rgba(105,157,214,.28),0_15px_35px_rgba(50,96,139,.22)]">
+              <Image
+                src="/wellsprings-logo.png"
+                alt="Wellsprings"
+                width={80}
+                height={80}
+                className="object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,.18)]"
+              />
               {/* Pulse ring */}
               <span className="pointer-events-none absolute inset-[-12px] rounded-full border border-[rgba(105,157,214,.35)]" style={{ animation: "pulse 3s infinite" }} />
             </div>
@@ -257,7 +276,7 @@ export function LocationSection() {
             </AnimatePresence>
 
             {/* Filter buttons */}
-            <div className="absolute bottom-[18px] left-1/2 z-25 flex w-[calc(100%-40px)] -translate-x-1/2 flex-wrap justify-center gap-[6px]">
+            <div className="absolute bottom-[-52px] left-1/2 z-25 flex w-[calc(100%-40px)] -translate-x-1/2 flex-wrap justify-center gap-[6px]">
               <FilterBtn active={activeFilter === "all"} color="#699DD6" onClick={() => handleFilter("all")}>
                 All locations
               </FilterBtn>
