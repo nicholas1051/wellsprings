@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion, useInView } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { site } from "@/data/site";
@@ -90,12 +91,14 @@ export function Development() {
               </p>
             </div>
             <div className="relative overflow-hidden rounded-2xl border border-grey-line bg-off-white">
-              <div className="aspect-[4/3] bg-gradient-to-br from-tint via-brand-blue/10 to-sage/10 flex items-center justify-center">
-                <div className="text-center px-8">
-                  <div className="font-heading text-6xl text-brand-blue/20">25</div>
-                  <p className="text-sm font-medium text-text-grey mt-2">acres of residential living</p>
-                </div>
-              </div>
+              <Image
+                src="/images/stellavera-development.jpg"
+                alt="Wellsprings Ibadan estate layout by StellarVera Development"
+                width={800}
+                height={600}
+                className="h-full w-full object-cover"
+                priority
+              />
             </div>
           </div>
         </Reveal>
