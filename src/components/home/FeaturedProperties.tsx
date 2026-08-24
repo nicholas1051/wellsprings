@@ -10,12 +10,12 @@ import { EstateImage } from "@/components/ui/EstateImage";
 import { cn } from "@/lib/utils";
 
 const tagLabels: Record<string, { label: string; color: string }> = {
-  pearl: { label: "Featured", color: "bg-brand-blue-light text-brand-blue-deep" },
-  moonstone: { label: "New", color: "bg-[#E0F5E9] text-sage-dark" },
-  aquamarine: { label: "Popular", color: "bg-[#FCE8ED] text-danger" },
-  coral: { label: "New", color: "bg-[#E0F5E9] text-sage-dark" },
-  emerald: { label: "Featured", color: "bg-brand-blue-light text-brand-blue-deep" },
-  opal: { label: "Popular", color: "bg-[#FCE8ED] text-danger" },
+  pearl: { label: "Available", color: "bg-brand-blue-light text-brand-blue-deep" },
+  moonstone: { label: "Available", color: "bg-brand-blue-light text-brand-blue-deep" },
+  aquamarine: { label: "Available", color: "bg-brand-blue-light text-brand-blue-deep" },
+  coral: { label: "Available", color: "bg-brand-blue-light text-brand-blue-deep" },
+  emerald: { label: "Available", color: "bg-brand-blue-light text-brand-blue-deep" },
+  opal: { label: "Available", color: "bg-brand-blue-light text-brand-blue-deep" },
 };
 
 export function FeaturedProperties() {
