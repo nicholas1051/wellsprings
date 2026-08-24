@@ -156,7 +156,7 @@ export const housingUnits: HousingUnit[] = [
     priceFrom: 88000000,
     status: "available",
     unitsLeft: 0,
-    heroImage: "/images/emerald-hero.jpg",
+    heroImage: "/images/emerald-hero.png",
     heroImageAlt: "Emerald 4-bedroom detached duplex exterior at Wellsprings Ibadan",
     gallery: [
       { src: "/images/emerald-1.jpg", alt: "Emerald open-plan living and dining" },
