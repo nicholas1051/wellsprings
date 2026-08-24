@@ -290,7 +290,7 @@ export const housingUnits: HousingUnit[] = [
     priceFrom: 45000000,
     status: "available",
     unitsLeft: 0,
-    heroImage: "/images/opal-hero.jpg",
+    heroImage: "/images/opal-hero.png",
     heroImageAlt: "Opal 3-bedroom garden apartment exterior at Wellsprings Ibadan",
     gallery: [
       { src: "/images/opal-1.jpg", alt: "Opal bright open-plan living" },
