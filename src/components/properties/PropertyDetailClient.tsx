@@ -60,7 +60,7 @@ function SpecCard({ spec, index }: { spec: { iconName: string; label: string; va
       animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 12 }}
       transition={{ duration: 0.4, delay: index * 0.06, type: "spring", stiffness: 200 }}
     >
-      <span className="grid h-10 w-10 place-items-center rounded-lg bg-terracotta/10 text-terracotta transition-all duration-300 group-hover:bg-terracotta group-hover:text-white">
+      <span className="grid h-10 w-10 place-items-center rounded-lg bg-brand-blue/10 text-brand-blue-deep transition-all duration-300 group-hover:bg-brand-blue group-hover:text-white">
         <Icon className="h-5 w-5" aria-hidden="true" />
       </span>
       <div>
@@ -199,7 +199,7 @@ function SidebarPrice({ unit }: { unit: HousingUnit }) {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.97 }}
         transition={{ type: "spring", stiffness: 400, damping: 20 }}
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-grey-line bg-cream px-4 py-2.5 text-sm font-semibold text-navy transition-all duration-300 hover:border-terracotta hover:bg-terracotta/5 hover:text-terracotta"
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-grey-line bg-cream px-4 py-2.5 text-sm font-semibold text-navy transition-all duration-300 hover:border-terracotta hover:bg-brand-blue/5 hover:text-brand-blue-deep"
       >
         {copied ? <Check className="h-4 w-4 text-sage" /> : <Share2 className="h-4 w-4" />}
         {copied ? "Link Copied!" : "Share This Property"}
@@ -216,7 +216,7 @@ function SidebarPrice({ unit }: { unit: HousingUnit }) {
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
               transition={{ duration: 0.3, delay: 0.3 + i * 0.05 }}
             >
-              <span className="h-1 w-1 rounded-full bg-terracotta" aria-hidden="true" />
+              <span className="h-1 w-1 rounded-full bg-brand-blue" aria-hidden="true" />
               {f}
             </motion.li>
           ))}

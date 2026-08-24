@@ -16,6 +16,7 @@ export function organizationLd() {
       addressRegion: "Oyo State",
       addressCountry: "NG",
     },
+    logo: `${site.siteUrl}/wellsprings-logo.png`,
     sameAs: [site.social.facebook, site.social.instagram, site.social.x],
   };
   return JSON.stringify(jsonLd).replace(/</g, "\\u003c");

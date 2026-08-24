@@ -14,7 +14,7 @@ function AnimatedReason({ reason, index }: { reason: (typeof whyReasons)[number]
         className="group relative flex gap-5 rounded-2xl border border-transparent p-5 transition-all duration-300 hover:border-brand-blue/20 hover:bg-brand-blue/[0.07]"
       >
         <span
-          className="absolute left-0 top-1/2 h-0 w-[3px] -translate-y-1/2 rounded-full bg-terracotta opacity-0 transition-all duration-300 group-hover:h-8 group-hover:opacity-100"
+          className="absolute left-0 top-1/2 h-0 w-[3px] -translate-y-1/2 rounded-full bg-brand-blue opacity-0 transition-all duration-300 group-hover:h-8 group-hover:opacity-100"
           aria-hidden="true"
         />
         <span className="relative font-heading text-4xl leading-none">
@@ -32,7 +32,7 @@ function AnimatedReason({ reason, index }: { reason: (typeof whyReasons)[number]
           </motion.span>
         </span>
         <div>
-          <h3 className="text-xl font-bold text-white transition-colors duration-300 group-hover:text-terracotta">{reason.title}</h3>
+          <h3 className="text-xl font-bold text-white transition-colors duration-300 group-hover:text-brand-blue">{reason.title}</h3>
           <p className="mt-2 leading-relaxed text-white/70">{reason.text}</p>
         </div>
       </div>

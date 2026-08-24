@@ -74,7 +74,7 @@ export function SectionNav() {
             className={cn(
               "h-3 w-3 rounded-full border-2 transition-all duration-200",
               active === section.id
-                ? "border-terracotta bg-terracotta scale-125"
+                ? "border-brand-blue bg-brand-blue scale-125"
                 : "border-navy/30 bg-white hover:border-navy/60 hover:bg-tint",
             )}
           />

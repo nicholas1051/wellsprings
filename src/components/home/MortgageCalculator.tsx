@@ -40,7 +40,7 @@ export function MortgageCalculator({ price }: MortgageCalculatorProps) {
     <Reveal>
       <div className="mt-12 rounded-2xl border border-grey-line bg-white p-6 sm:p-8">
         <div className="flex items-center gap-3 mb-6">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-cream text-terracotta">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-cream text-brand-blue">
             <Calculator className="h-5 w-5" aria-hidden="true" />
           </span>
           <div>

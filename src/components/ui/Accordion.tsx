@@ -16,28 +16,28 @@ function BorderTrace({ open }: { open: boolean }) {
       <span
         className={cn(
           "absolute inset-x-0 top-0 h-px origin-left transition-transform duration-200 ease-out",
-          open ? "scale-x-100 bg-terracotta" : "scale-x-0 bg-terracotta",
+          open ? "scale-x-100 bg-brand-blue-deep" : "scale-x-0 bg-brand-blue-deep",
         )}
         style={{ transitionProperty: "transform" }}
       />
       <span
         className={cn(
           "absolute right-0 inset-y-0 w-px origin-top transition-transform duration-200 ease-out",
-          open ? "scale-y-100 bg-terracotta" : "scale-y-0 bg-terracotta",
+          open ? "scale-y-100 bg-brand-blue-deep" : "scale-y-0 bg-brand-blue-deep",
         )}
         style={{ transitionProperty: "transform", transitionDelay: open ? "100ms" : "0ms" }}
       />
       <span
         className={cn(
           "absolute inset-x-0 bottom-0 h-px origin-right transition-transform duration-200 ease-out",
-          open ? "scale-x-100 bg-terracotta" : "scale-x-0 bg-terracotta",
+          open ? "scale-x-100 bg-brand-blue-deep" : "scale-x-0 bg-brand-blue-deep",
         )}
         style={{ transitionProperty: "transform", transitionDelay: open ? "200ms" : "0ms" }}
       />
       <span
         className={cn(
           "absolute left-0 inset-y-0 w-px origin-bottom transition-transform duration-200 ease-out",
-          open ? "scale-y-100 bg-terracotta" : "scale-y-0 bg-terracotta",
+          open ? "scale-y-100 bg-brand-blue-deep" : "scale-y-0 bg-brand-blue-deep",
         )}
         style={{ transitionProperty: "transform", transitionDelay: open ? "300ms" : "0ms" }}
       />
@@ -70,7 +70,7 @@ function AccordionItem({
     <div
       className={cn(
         "relative border-l-3 transition-all duration-300",
-        open ? "border-l-terracotta bg-terracotta/[0.03]" : "border-l-transparent",
+        open ? "border-l-brand-blue-deep bg-brand-blue-deep/[0.03]" : "border-l-transparent",
       )}
     >
       <BorderTrace open={open} />
@@ -83,7 +83,7 @@ function AccordionItem({
           onClick={onToggle}
           className={cn(
             "flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold transition-colors duration-200 sm:px-6",
-            open ? "text-terracotta" : "text-navy hover:text-brand-blue-dark",
+            open ? "text-brand-blue-deep" : "text-navy hover:text-brand-blue-dark",
           )}
         >
           <span className="flex items-center gap-3">
@@ -91,7 +91,7 @@ function AccordionItem({
               className={cn(
                 "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[0.65rem] font-bold transition-all duration-300",
                 open
-                  ? "bg-terracotta text-white"
+                  ? "bg-brand-blue-deep text-white"
                   : "bg-brand-blue/10 text-brand-blue",
               )}
             >
@@ -103,7 +103,7 @@ function AccordionItem({
             aria-hidden="true"
             className={cn(
               "h-5 w-5 shrink-0 transition-all duration-300",
-              open ? "rotate-180 text-terracotta" : "text-brand-blue-dark",
+              open ? "rotate-180 text-brand-blue-deep" : "text-brand-blue-dark",
             )}
           />
         </button>

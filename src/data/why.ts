@@ -47,8 +47,8 @@ export const sitePlan = {
   image: "/images/masterplan.jpg",
   alt: "Aerial masterplan of Wellsprings Ibadan estate showing all zones, roads, and green spaces",
   legend: [
-    { label: "Residential Zone", color: "#5A87A8" },
-    { label: "Green / Parks", color: "#8BAF7E" },
+    { label: "Residential Zone", color: "#699DD6" },
+    { label: "Green / Parks", color: "#43A76A" },
     { label: "Roads & Drainage", color: "#C4A882" },
     { label: "Community Centre", color: "#D4856A" },
   ],

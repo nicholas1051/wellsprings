@@ -117,14 +117,14 @@ export function GalleryPreview() {
                 sizes="30vw"
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
               <span className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <span className="grid h-12 w-12 place-items-center rounded-full bg-white/90 text-navy shadow-lg backdrop-blur-sm">
                   <ZoomIn className="h-6 w-6" />
                 </span>
               </span>
               {item.isArtisticImpression && (
-                <span className="absolute top-3 right-3 rounded-full bg-terracotta/80 px-2.5 py-1 text-[0.65rem] font-medium text-white backdrop-blur-sm">
+                <span className="absolute top-3 right-3 rounded-full bg-brand-blue/80 px-2.5 py-1 text-[0.65rem] font-medium text-white backdrop-blur-sm">
                   Artistic Impression
                 </span>
               )}

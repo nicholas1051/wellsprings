@@ -106,7 +106,7 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[60] flex flex-col bg-ink/95 backdrop-blur-sm"
+            className="fixed inset-0 z-[60] flex flex-col bg-navy/95 backdrop-blur-sm"
             onClick={close}
           >
             <div className="flex items-center justify-between gap-4 p-4">

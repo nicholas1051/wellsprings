@@ -1,444 +1,305 @@
 "use client";
 
-import { useRef, useState } from "react";
-import Image from "next/image";
-import { motion, useReducedMotion, useInView } from "framer-motion";
-import {
-  TrainFront,
-  Building2,
-  ShoppingBag,
-  Plane,
-  Store,
-  Landmark,
-  Briefcase,
-  MapPin,
-} from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Reveal } from "@/components/ui/Reveal";
-import { location } from "@/data/location";
+import { useState, useEffect, useCallback } from "react";
+import { X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { location, categoryColors, categoryLabels, type Landmark } from "@/data/location";
+import { cn } from "@/lib/utils";
 
-const cx = 300;
-const cy = 200;
-
-const positions: Record<string, { x: number; y: number }> = {
-  top: { x: 300, y: 48 },
-  "upper-left": { x: 160, y: 95 },
-  "upper-right": { x: 440, y: 95 },
-  left: { x: 100, y: 165 },
-  "left-lower": { x: 100, y: 255 },
-  right: { x: 500, y: 165 },
-  "right-upper": { x: 500, y: 255 },
-  "lower-left": { x: 160, y: 335 },
-  "lower-right": { x: 440, y: 335 },
+const posClasses: Record<string, string> = {
+  train1: "left-1/2 top-[40px] -translate-x-1/2",
+  secretariat: "left-[77%] top-[112px]",
+  palms: "left-[81%] top-[248px]",
+  "dugbe-business": "left-[77%] top-[435px]",
+  bodija: "left-1/2 top-[505px] -translate-x-1/2",
+  airport: "left-[6%] top-[435px]",
+  jericho: "left-[5%] top-[248px]",
+  "dugbe-station": "left-[6%] top-[112px]",
 };
 
-const labelPositions: Record<string, { anchor: "start" | "middle" | "end"; dx: number; dy: number }> = {
-  top: { anchor: "middle", dx: 0, dy: -12 },
-  "upper-left": { anchor: "end", dx: -10, dy: -6 },
-  "upper-right": { anchor: "start", dx: 10, dy: -6 },
-  left: { anchor: "end", dx: -10, dy: -6 },
-  "left-lower": { anchor: "end", dx: -10, dy: -6 },
-  right: { anchor: "start", dx: 10, dy: -6 },
-  "right-upper": { anchor: "start", dx: 10, dy: -6 },
-  "lower-left": { anchor: "end", dx: -10, dy: 12 },
-  "lower-right": { anchor: "start", dx: 10, dy: 12 },
+const lineAngles: Record<string, string> = {
+  train1: "-90deg",
+  secretariat: "-35deg",
+  palms: "-9deg",
+  "dugbe-business": "35deg",
+  bodija: "90deg",
+  airport: "145deg",
+  jericho: "171deg",
+  "dugbe-station": "215deg",
 };
 
-const iconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
-  train: TrainFront,
-  building: Building2,
-  mall: ShoppingBag,
-  airport: Plane,
-  market: Store,
-  business: Briefcase,
+const lineLengths: Record<string, string> = {
+  train1: "180px",
+  secretariat: "290px",
+  palms: "270px",
+  "dugbe-business": "290px",
+  bodija: "275px",
+  airport: "290px",
+  jericho: "285px",
+  "dugbe-station": "290px",
 };
-
-const categoryColors: Record<string, { bg: string; text: string; label: string }> = {
-  "#5A87A8": { bg: "bg-brand-blue/10", text: "text-brand-blue", label: "Transport & Business" },
-  "#8BAF7E": { bg: "bg-sage/10", text: "text-sage", label: "Government & Shopping" },
-  "#C47171": { bg: "bg-terracotta/10", text: "text-terracotta", label: "Market & Commerce" },
-  "#D4856A": { bg: "bg-[#D4856A]/10", text: "text-[#D4856A]", label: "Rail Transport" },
-  "#9B7DB8": { bg: "bg-[#9B7DB8]/10", text: "text-[#9B7DB8]", label: "Airport & Mall" },
-};
-
-function getLineLength(x1: number, y1: number, x2: number, y2: number) {
-  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-}
-
-function SpokeDiagram() {
-  const reduceMotion = useReducedMotion();
-  const reduced = !!reduceMotion;
-  const svgRef = useRef<SVGSVGElement>(null);
-  const isInView = useInView(svgRef, { once: false, margin: "-80px" });
-  const [activeId, setActiveId] = useState<string | null>(null);
-
-  return (
-    <div>
-      <svg
-        ref={svgRef}
-        viewBox="0 0 600 400"
-        className="w-full"
-        aria-label="Wellsprings Estate Location Map showing distances to nearby landmarks"
-        suppressHydrationWarning
-      >
-        {/* Distance scale rings */}
-        {[60, 120, 180].map((r, i) => (
-          <motion.circle
-            key={r}
-            cx={cx}
-            cy={cy}
-            r={r}
-            fill="none"
-            stroke="var(--color-grey-line)"
-            strokeWidth={0.5}
-            strokeDasharray="4 4"
-            initial={reduced ? { r, opacity: 0.25 } : { r: 0, opacity: 0 }}
-            animate={isInView ? { r, opacity: 0.25 } : reduced ? { r, opacity: 0.25 } : { r: 0, opacity: 0 }}
-            transition={{ duration: 0.8, delay: i * 0.15, ease: "easeOut" }}
-          />
-        ))}
-        {[60, 120, 180].map((r, i) => (
-          <motion.text
-            key={`label-${r}`}
-            x={cx + r + 4}
-            y={cy - 4}
-            className="text-[7px]"
-            fill="var(--color-text-grey)"
-            style={{ fontFamily: "var(--font-body)" }}
-            initial={reduced ? { opacity: 0.4 } : { opacity: 0 }}
-            animate={isInView ? { opacity: 0.4 } : reduced ? { opacity: 0.4 } : { opacity: 0 }}
-            transition={{ duration: 0.4, delay: i * 0.15 + 0.5 }}
-          >
-            {(i + 1) * 5}km
-          </motion.text>
-        ))}
-
-        {/* Spoke lines */}
-        {location.landmarks.map((lm, index) => {
-          const to = positions[lm.position];
-          const angle = Math.atan2(to.y - cy, to.x - cx);
-          const startX = cx + 22 * Math.cos(angle);
-          const startY = cy + 22 * Math.sin(angle);
-          const len = getLineLength(startX, startY, to.x, to.y);
-          const isActive = activeId === lm.name;
-          const isDimmed = activeId !== null && !isActive;
-          const delay = index * 0.08;
-
-          return (
-            <motion.line
-              key={`line-${lm.name}`}
-              x1={startX}
-              y1={startY}
-              x2={to.x}
-              y2={to.y}
-              stroke={lm.color}
-              strokeWidth={isActive ? 2.5 : 1.5}
-              className={!reduced && isInView ? "spoke-line-flow" : ""}
-              initial={reduced ? { opacity: isDimmed ? 0.15 : 0.5, strokeDashoffset: 0 } : { opacity: 0, strokeDashoffset: len }}
-              animate={
-                isInView
-                  ? { opacity: isDimmed ? 0.15 : 0.5, strokeDashoffset: 0 }
-                  : reduced
-                    ? { opacity: isDimmed ? 0.15 : 0.5, strokeDashoffset: 0 }
-                    : { opacity: 0, strokeDashoffset: len }
-              }
-              transition={{ duration: 0.6, delay, ease: "easeOut" }}
-              style={{ strokeDasharray: reduced ? undefined : len }}
-            />
-          );
-        })}
-
-        {/* Landmark dots + icons + labels */}
-        {location.landmarks.map((lm, index) => {
-          const to = positions[lm.position];
-          const label = labelPositions[lm.position];
-          const delay = index * 0.08;
-          const isActive = activeId === lm.name;
-          const isDimmed = activeId !== null && !isActive;
-          const IconComp = iconMap[lm.icon] ?? MapPin;
-          const iconOffset = -9;
-          const iconY = label.dy < 0 ? label.dy - 22 : label.dy + 14;
-
-          return (
-            <g
-              key={lm.name}
-              onMouseEnter={() => setActiveId(lm.name)}
-              onMouseLeave={() => setActiveId(null)}
-              onFocus={() => setActiveId(lm.name)}
-              onBlur={() => setActiveId(null)}
-              tabIndex={0}
-              role="button"
-              aria-label={`${lm.name}: ${lm.distance} away`}
-              className="cursor-pointer outline-none"
-            >
-              {/* Icon badge */}
-              <motion.g
-                initial={reduced ? { opacity: isDimmed ? 0.2 : 1 } : { opacity: 0 }}
-                animate={
-                  isInView
-                    ? { opacity: isDimmed ? 0.2 : 1 }
-                    : reduced
-                      ? { opacity: isDimmed ? 0.2 : 1 }
-                      : { opacity: 0 }
-                }
-                transition={{ duration: 0.4, delay: delay + 0.3 }}
-              >
-                <foreignObject
-                  x={to.x + iconOffset}
-                  y={to.y + iconY}
-                  width={18}
-                  height={18}
-                >
-                  <div
-                    style={{
-                      width: 18,
-                      height: 18,
-                      borderRadius: 4,
-                      backgroundColor: `${lm.color}18`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <IconComp
-                      className=""
-                      style={{ width: 11, height: 11, color: lm.color }}
-                    />
-                  </div>
-                </foreignObject>
-              </motion.g>
-
-              {/* Dot */}
-              <motion.circle
-                cx={to.x}
-                cy={to.y}
-                fill={lm.color}
-                initial={reduced ? { r: isActive ? 7 : 5, opacity: isDimmed ? 0.3 : 1 } : { r: 0, opacity: 0 }}
-                animate={
-                  isInView
-                    ? { r: isActive ? 7 : 5, opacity: isDimmed ? 0.3 : 1 }
-                    : reduced
-                      ? { r: isActive ? 7 : 5, opacity: isDimmed ? 0.3 : 1 }
-                      : { r: 0, opacity: 0 }
-                }
-                transition={{ duration: 0.3, delay: delay + 0.2, type: "spring", stiffness: 300, damping: 15 }}
-              />
-
-              {/* Hover ring */}
-              {isActive && (
-                <motion.circle
-                  cx={to.x}
-                  cy={to.y}
-                  r={7}
-                  fill="none"
-                  stroke={lm.color}
-                  strokeWidth={2}
-                  initial={{ scale: 1, opacity: 0.6 }}
-                  animate={{ scale: 2, opacity: 0 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "easeOut" }}
-                />
-              )}
-
-              {/* Name */}
-              <motion.text
-                x={to.x + label.dx}
-                y={to.y + label.dy}
-                textAnchor={label.anchor}
-                className="text-[8px] font-bold sm:text-[9px]"
-                fill={isActive ? lm.color : "var(--color-navy)"}
-                style={{ fontFamily: "var(--font-body)" }}
-                initial={reduced ? { opacity: isDimmed ? 0.2 : 1 } : { opacity: 0 }}
-                animate={
-                  isInView
-                    ? { opacity: isDimmed ? 0.2 : 1 }
-                    : reduced
-                      ? { opacity: isDimmed ? 0.2 : 1 }
-                      : { opacity: 0 }
-                }
-                transition={{ duration: 0.4, delay: delay + 0.35 }}
-              >
-                {lm.name}
-              </motion.text>
-
-              {/* Distance */}
-              <motion.text
-                x={to.x + label.dx}
-                y={to.y + label.dy + 12}
-                textAnchor={label.anchor}
-                className="text-[8px] sm:text-[9px]"
-                fill="var(--color-text-grey)"
-                style={{ fontFamily: "var(--font-body)" }}
-                initial={reduced ? { opacity: isDimmed ? 0.15 : 0.7 } : { opacity: 0 }}
-                animate={
-                  isInView
-                    ? { opacity: isDimmed ? 0.15 : 0.7 }
-                    : reduced
-                      ? { opacity: isDimmed ? 0.15 : 0.7 }
-                      : { opacity: 0 }
-                }
-                transition={{ duration: 0.4, delay: delay + 0.45 }}
-              >
-                {lm.distance}
-              </motion.text>
-            </g>
-          );
-        })}
-
-        {/* Center hub */}
-        <motion.circle
-          cx={cx}
-          cy={cy}
-          r={22}
-          fill="var(--color-brand-blue)"
-          initial={reduced ? {} : { scale: 0 }}
-          animate={isInView ? { scale: 1 } : reduced ? { scale: 1 } : { scale: 0 }}
-          transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
-        />
-        {/* Logo */}
-        <foreignObject x={cx - 16} y={cy - 16} width={32} height={32}>
-          <div
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: "50%",
-              overflow: "hidden",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image
-              src="/images/logo.png"
-              alt="Wellsprings"
-              width={32}
-              height={32}
-              className="object-contain"
-              priority
-            />
-          </div>
-        </foreignObject>
-        {/* Center pulse rings */}
-        {[0, 1, 2].map((i) => (
-          <motion.circle
-            key={`pulse-${i}`}
-            cx={cx}
-            cy={cy}
-            r={22}
-            fill="none"
-            stroke="var(--color-brand-blue)"
-            strokeWidth={1}
-            initial={reduced ? {} : { r: 22, opacity: 0 }}
-            animate={
-              isInView
-                ? { r: [22, 55], opacity: [0.4, 0] }
-                : reduced
-                  ? {}
-                  : { r: 22, opacity: 0 }
-            }
-            transition={{ duration: 2.5, delay: i * 0.8, repeat: isInView ? Infinity : 0, ease: "easeOut" }}
-          />
-        ))}
-      </svg>
-
-      {/* Tooltip */}
-      {activeId && (() => {
-        const lm = location.landmarks.find((l) => l.name === activeId);
-        if (!lm) return null;
-        const to = positions[lm.position];
-        const leftPct = (to.x / 600) * 100;
-        const topPct = (to.y / 400) * 100;
-        const IconComp = iconMap[lm.icon] ?? MapPin;
-        const isRight = to.x > cx;
-        const isBottom = to.y > cy;
-
-        return (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="pointer-events-none absolute z-20 w-48 rounded-xl bg-navy px-3 py-2.5 text-sm text-white shadow-xl"
-            style={{
-              left: `${leftPct}%`,
-              top: `${topPct}%`,
-              transform: `translate(${isRight ? "12px" : "-110%"}, ${isBottom ? "12px" : "-110%"})`,
-            }}
-          >
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: lm.color }} />
-              <span className="font-bold text-xs leading-tight">{lm.name}</span>
-            </div>
-            <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-white/70">
-              <IconComp className="h-3 w-3 shrink-0" style={{ color: lm.color }} />
-              <span>{lm.distance} from Wellsprings</span>
-            </div>
-          </motion.div>
-        );
-      })()}
-    </div>
-  );
-}
-
-function Legend() {
-  const reduceMotion = useReducedMotion();
-  const reduced = !!reduceMotion;
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: false, margin: "-60px" });
-
-  const uniqueColors = [...new Set(location.landmarks.map((lm) => lm.color))];
-
-  return (
-    <div ref={ref} className="mt-8 flex flex-wrap justify-center gap-4">
-      {uniqueColors.map((color, i) => {
-        const cat = categoryColors[color];
-        const count = location.landmarks.filter((lm) => lm.color === color).length;
-        if (!cat) return null;
-        return (
-          <motion.div
-            key={color}
-            className={`flex items-center gap-2 rounded-full ${cat.bg} px-3 py-1.5`}
-            initial={reduced ? {} : { opacity: 0, scale: 0.8, y: 8 }}
-            animate={isInView ? { opacity: 1, scale: 1, y: 0 } : reduced ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 8 }}
-            transition={{ duration: 0.4, delay: i * 0.08, type: "spring", stiffness: 200 }}
-          >
-            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
-            <span className={`text-xs font-semibold ${cat.text}`}>{cat.label}</span>
-            <span className={`text-[10px] ${cat.text} opacity-60`}>({count})</span>
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-}
 
 export function LocationSection() {
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [selected, setSelected] = useState<Landmark | null>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setReady(true), 250);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleFilter = useCallback((cat: string) => {
+    setActiveFilter(cat);
+    setSelected(null);
+  }, []);
+
+  const isVisible = (lm: Landmark) => activeFilter === "all" || lm.category === activeFilter;
+  const isLineVisible = (lm: Landmark) => activeFilter === "all" || lm.category === activeFilter;
+
   return (
-    <section className="bg-warm-white py-24 sm:py-32">
+    <section className="py-14 sm:py-20">
       <div className="container-site">
-        <Reveal once={false}>
-          <SectionHeading
-            eyebrow="Location"
-            title={location.heading}
-            description={location.intro}
+        <div className="mb-6 text-center">
+          <span className="inline-block rounded-full bg-brand-blue-light px-3.5 py-2 text-[10px] font-extrabold uppercase tracking-[0.15em] text-brand-blue-dark">
+            Location Advantage
+          </span>
+          <h1 className="mt-3 font-heading text-[clamp(40px,5.2vw,68px)] leading-[1.02] tracking-[-0.06em] text-navy">
+            Live Where Everything Is <span className="text-brand-blue-dark">Within Reach</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-[670px] text-center text-[15px] leading-[1.75] text-muted">
+            {location.intro}
+          </p>
+        </div>
+
+        {/* Explorer shell */}
+        <div className="relative mx-auto mt-14 min-h-[700px] w-full max-w-[1160px] overflow-hidden rounded-[30px] border border-[#DFE8F0] bg-white/88 shadow-[0_24px_70px_rgba(27,63,94,.12)]">
+          {/* Grid background */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background: "radial-gradient(circle at 50% 50%,rgba(105,157,214,.11),transparent 26%),linear-gradient(90deg,rgba(105,157,214,.025) 1px,transparent 1px),linear-gradient(rgba(105,157,214,.025) 1px,transparent 1px)",
+              backgroundSize: "auto,48px 48px,48px 48px",
+            }}
           />
-        </Reveal>
 
-        <Reveal delay={0.1} once={false}>
-          <div className="relative mt-14 overflow-hidden rounded-2xl border border-grey-line bg-white p-4 shadow-sm sm:p-8">
-            <SpokeDiagram />
-            <Legend />
-
-            <div className="pointer-events-none absolute top-2 right-2 max-w-[200px] rounded-lg bg-off-white/80 p-3 text-[10px] leading-relaxed text-text-grey backdrop-blur-sm sm:top-4 sm:right-4 sm:max-w-[240px] sm:text-xs">
-              Estimated distances from nearby points to Wellsprings.
+          {/* Topbar */}
+          <div className="relative z-20 flex items-center justify-between border-b border-[rgba(223,232,240,.8)] bg-white/72 px-5 py-[18px] backdrop-blur-[15px]">
+            <div className="flex items-center gap-2.5 text-[11px] text-[#778899]">
+              <span className="h-2 w-2 rounded-full bg-[#65B47D] shadow-[0_0_0_5px_rgba(101,180,125,.11)]" />
+              8 key destinations around Wellsprings
+            </div>
+            <div className="flex gap-1 rounded-full border border-[#DFE8F0] bg-white p-1 text-[10px] font-bold">
+              <button type="button" className="rounded-full bg-brand-blue-light px-3 py-[7px] text-brand-blue-dark">
+                All
+              </button>
+              <button type="button" className="rounded-full px-3 py-[7px] text-[#8190A0]">
+                Nearest first
+              </button>
             </div>
           </div>
-        </Reveal>
 
-        <Reveal delay={0.15} once={false}>
-          <div className="mt-10 rounded-2xl border border-grey-line bg-cream p-6">
-            <h3 className="text-base font-bold text-navy sm:text-lg">{location.neighborhood.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-text-grey">{location.neighborhood.description}</p>
+          {/* Map area */}
+          <div className={cn("relative h-[610px] transition-opacity duration-500", ready ? "opacity-100" : "opacity-0")}>
+            {/* Concentric rings */}
+            <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2">
+              <div className="absolute left-1/2 top-1/2 h-[185px] w-[185px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[rgba(111,151,184,.18)]">
+                <span className="absolute right-[3px] top-[46%] rounded-[5px] bg-white/75 px-[5px] py-[3px] text-[9px] text-[#9BA9B7]">5 km</span>
+              </div>
+              <div className="absolute left-1/2 top-1/2 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[rgba(111,151,184,.18)]">
+                <span className="absolute right-[3px] top-[46%] rounded-[5px] bg-white/75 px-[5px] py-[3px] text-[9px] text-[#9BA9B7]">10 km</span>
+              </div>
+              <div className="absolute left-1/2 top-1/2 h-[570px] w-[570px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[rgba(111,151,184,.18)]">
+                <span className="absolute right-[3px] top-[46%] rounded-[5px] bg-white/75 px-[5px] py-[3px] text-[9px] text-[#9BA9B7]">15 km</span>
+              </div>
+            </div>
+
+            {/* Connection lines */}
+            <div className="pointer-events-none absolute inset-0 z-[2]">
+              {location.landmarks.map((lm) => (
+                <div
+                  key={lm.id}
+                  className={cn(
+                    "absolute left-1/2 top-1/2 h-[1.5px] origin-[0_50%] transition-all duration-700",
+                    isLineVisible(lm) ? "opacity-55" : "opacity-[0.08]",
+                  )}
+                  style={{
+                    width: lineLengths[lm.id],
+                    transform: `rotate(${lineAngles[lm.id]}) scaleX(${ready ? 1 : 0})`,
+                    background: categoryColors[lm.category],
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Center point */}
+            <div className="absolute left-1/2 top-1/2 z-[8] grid h-[116px] w-[116px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-[8px] border-white bg-gradient-to-br from-[#6fa6df] to-[#568bc4] text-center text-white shadow-[0_0_0_2px_rgba(105,157,214,.28),0_15px_35px_rgba(50,96,139,.22)]">
+              <div>
+                <strong className="font-heading text-[14px] tracking-[0.02em]">WELLSPRINGS</strong>
+                <small className="mt-1 block text-[8px] uppercase tracking-[0.1em] opacity-85">Your home base</small>
+              </div>
+              {/* Pulse ring */}
+              <span className="pointer-events-none absolute inset-[-12px] rounded-full border border-[rgba(105,157,214,.35)]" style={{ animation: "pulse 3s infinite" }} />
+            </div>
+
+            {/* Location pins */}
+            {location.landmarks.map((lm) => {
+              const color = categoryColors[lm.category];
+              const isActive = selected?.id === lm.id;
+              const visible = isVisible(lm);
+              return (
+                <button
+                  key={lm.id}
+                  type="button"
+                  onClick={() => setSelected(isActive ? null : lm)}
+                  className={cn(
+                    "absolute z-10 flex items-start gap-[9px] transition-all duration-300",
+                    isActive ? "scale-105" : "hover:scale-105",
+                    lm.id === "train1" || lm.id === "bodija" ? "left-1/2 -translate-x-1/2 flex-col items-center text-center" : "",
+                    lm.id === "secretariat" || lm.id === "palms" || lm.id === "dugbe-business" ? "right-0 flex-row text-left" : "",
+                    lm.id === "airport" || lm.id === "jericho" || lm.id === "dugbe-station" ? "left-0 flex-row-reverse text-right" : "",
+                  )}
+                  style={(() => {
+                    const isTopBottom = lm.id === "train1" || lm.id === "bodija";
+                    const raw = posClasses[lm.id] || "";
+                    const topVal = raw.match(/top-\[([^\]]+)\]/)?.[1];
+                    const leftVal = raw.match(/left-\[([^\]]+)\]/)?.[1];
+                    return {
+                      top: topVal,
+                      left: isTopBottom ? "50%" : leftVal,
+                      opacity: visible ? 1 : 0.16,
+                      pointerEvents: visible ? ("auto" as const) : ("none" as const),
+                      width: "190px",
+                      justifyContent: isTopBottom ? "center" : lm.id === "airport" || lm.id === "jericho" || lm.id === "dugbe-station" ? "flex-end" : "flex-start",
+                    } as React.CSSProperties;
+                  })()}
+                >
+                  {/* Badge */}
+                  {(lm.id === "train1" || lm.id === "bodija") && (
+                    <span
+                      className="grid h-[27px] w-[27px] place-items-center rounded-[8px] text-[12px]"
+                      style={{ background: `color-mix(in srgb, ${color} 10%, white)`, color }}
+                    >
+                      {lm.badge}
+                    </span>
+                  )}
+                  {(lm.id === "airport" || lm.id === "jericho" || lm.id === "dugbe-station") && (
+                    <span
+                      className="order-[-1] grid h-[27px] w-[27px] place-items-center rounded-[8px] text-[12px]"
+                      style={{ background: `color-mix(in srgb, ${color} 10%, white)`, color }}
+                    >
+                      {lm.badge}
+                    </span>
+                  )}
+                  {/* Pin + text */}
+                  <div className={cn("flex items-start gap-[9px]", (lm.id === "train1" || lm.id === "bodija") && "flex-col items-center")}>
+                    <span
+                      className="mt-[3px] h-[13px] w-[13px] shrink-0 rounded-full transition-all duration-300"
+                      style={{
+                        background: color,
+                        boxShadow: isActive ? `0 0 0 8px color-mix(in srgb, ${color} 14%, transparent)` : `0 0 0 5px color-mix(in srgb, ${color} 12%, transparent)`,
+                        transform: isActive ? "scale(1.35)" : undefined,
+                      }}
+                    />
+                    <span className="location-text">
+                      <strong className="block font-heading text-[11px] leading-[1.25]">{lm.name}</strong>
+                      <span className="mt-[3px] block text-[10px] text-[#9AA7B4]">{lm.distanceKm} km</span>
+                    </span>
+                  </div>
+                  {/* Badge for side items */}
+                  {(lm.id !== "train1" && lm.id !== "bodija") && (
+                    <span
+                      className="grid h-[27px] w-[27px] place-items-center rounded-[8px] text-[12px]"
+                      style={{ background: `color-mix(in srgb, ${color} 10%, white)`, color }}
+                    >
+                      {lm.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+
+            {/* Detail card */}
+            <AnimatePresence>
+              {selected && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute right-5 top-[18px] z-30 w-[285px] rounded-[18px] border border-[#DFE8F0] bg-white/96 p-[17px] shadow-[0_18px_50px_rgba(30,68,102,.13)]"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setSelected(null)}
+                    className="absolute right-[11px] top-[10px] grid h-6 w-6 place-items-center rounded-full bg-[#f1f5f8] text-[#7d8c9a]"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                  <p className="text-[9px] font-extrabold uppercase tracking-[0.13em] text-brand-blue-dark">
+                    {categoryLabels[selected.category]}
+                  </p>
+                  <h3 className="mt-[5px] pr-7 font-heading text-[17px] font-extrabold">{selected.name}</h3>
+                  <div className="mt-1 text-[11px] text-muted">{selected.distanceKm} km from Wellsprings</div>
+                  <p className="mt-3 text-[11px] leading-[1.55] text-[#69798A]">{selected.description}</p>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <div className="rounded-[11px] bg-[#F7FAFD] p-[9px]">
+                      <small className="block text-[8px] text-[#96A3AF]">DISTANCE</small>
+                      <strong className="mt-[3px] block text-[10px]">{selected.distanceKm} km</strong>
+                    </div>
+                    <div className="rounded-[11px] bg-[#F7FAFD] p-[9px]">
+                      <small className="block text-[8px] text-[#96A3AF]">TYPE</small>
+                      <strong className="mt-[3px] block text-[10px]">{categoryLabels[selected.category]}</strong>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Filter buttons */}
+            <div className="absolute bottom-[18px] left-1/2 z-25 flex w-[calc(100%-40px)] -translate-x-1/2 flex-wrap justify-center gap-[6px]">
+              <FilterBtn active={activeFilter === "all"} color="#699DD6" onClick={() => handleFilter("all")}>
+                All locations
+              </FilterBtn>
+              {(["transport", "government", "shopping", "business", "commerce", "airport"] as const).map((cat) => (
+                <FilterBtn key={cat} active={activeFilter === cat} color={categoryColors[cat]} onClick={() => handleFilter(cat)}>
+                  <span className="mr-1.5 inline-block h-[6px] w-[6px] rounded-full" style={{ background: categoryColors[cat] }} />
+                  {categoryLabels[cat]}
+                </FilterBtn>
+              ))}
+            </div>
           </div>
-        </Reveal>
+        </div>
+
+        {/* Insights strip */}
+        <div className="mx-auto mt-[18px] grid max-w-[1160px] grid-cols-2 gap-2.5 sm:grid-cols-4">
+          {location.insights.map((ins) => (
+            <div key={ins.label} className="rounded-[14px] border border-[#DFE8F0] bg-white p-3.5">
+              <small className="block text-[8px] uppercase tracking-[0.1em] text-[#9AA7B4]">{ins.label}</small>
+              <strong className="mt-[5px] block font-heading text-[12px]">{ins.name}</strong>
+              <span className="mt-[3px] block text-[9px] text-muted">{ins.detail}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
+  );
+}
+
+function FilterBtn({ active, color, onClick, children }: { active: boolean; color: string; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "rounded-full border px-[11px] py-[7px] text-[9px] font-bold shadow-[0_6px_18px_rgba(31,65,98,.06)] transition-all",
+        active
+          ? "border-transparent"
+          : "border-[rgba(223,232,240,.95)] bg-white/92 text-[#718090]",
+      )}
+      style={active ? { color, background: `color-mix(in srgb, ${color} 9%, white)`, borderColor: `color-mix(in srgb, ${color} 25%, white)` } : undefined}
+    >
+      {children}
+    </button>
   );
 }

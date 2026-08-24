@@ -1,189 +1,95 @@
 "use client";
 
-import Image from "next/image";
+import { useRef } from "react";
+import Link from "next/link";
 import { motion, useScroll, useTransform, useReducedMotion, AnimatePresence } from "framer-motion";
-import { useEffect, useRef, useState, useCallback } from "react";
-import { ButtonLink } from "@/components/ui/Button";
-import { BookViewingButton } from "@/components/modals/BookViewingButton";
-import { cn } from "@/lib/utils";
+import { MapPin, Home, Wallet, Search, ArrowRight, Star, ShieldCheck, Headphones, Sparkles, BadgeCheck, Phone } from "lucide-react";
+import { useState, useCallback } from "react";
 import { site } from "@/data/site";
-import { masterPlanStats } from "@/data/site";
-
-import { useInView } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { useOpenCallback } from "@/components/modals/CallbackProvider";
 
 const tagline = "Dream. Live. Repeat.";
 
-const liveIndices = [7, 8, 9, 10];
-
 const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 20 },
+  initial: { opacity: 0, y: 14 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.7, delay, ease: "easeOut" as const },
 });
 
-const stats = [
-  { end: masterPlanStats.acres, suffix: ".05", unit: " Acres", label: "Estate" },
-  { end: masterPlanStats.maxUnits, suffix: "", unit: " Units", label: "Max Homes" },
-  { end: 6, suffix: "", unit: "", label: "Property Types" },
-];
+function SearchBar() {
+  const [type, setType] = useState("Any Type");
+  const [price, setPrice] = useState("₦45M+");
 
-function useCountUp(target: number, duration = 2000, startDelay = 0) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLParagraphElement>(null);
-  const isInView = useInView(ref, { margin: "-50px" });
-
-  useEffect(() => {
-    if (!isInView) {
-      setCount(0);
-      return;
-    }
-    let start: number | null = null;
-    let raf: number;
-    let cancelled = false;
-    const timeout = setTimeout(() => {
-      const step = (timestamp: number) => {
-        if (cancelled) return;
-        if (!start) start = timestamp;
-        const progress = Math.min((timestamp - start) / duration, 1);
-        setCount(Math.floor(progress * target));
-        if (progress < 1) raf = requestAnimationFrame(step);
-      };
-      raf = requestAnimationFrame(step);
-    }, startDelay);
-    return () => {
-      cancelled = true;
-      clearTimeout(timeout);
-      cancelAnimationFrame(raf);
-    };
-  }, [isInView, target, duration, startDelay]);
-
-  return { count, ref };
-}
-
-const heroParagraph = "Thoughtfully designed homes set within a serene and welcoming community. Wellsprings gives you the comfort and space to live well, work productively, and build meaningful connections. Because where you live should make life better.";
-
-function useTypewriterOnce(text: string, durationMs = 10000) {
-  const [len, setLen] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: false, margin: "-50px" });
-  const finished = len >= text.length;
-
-  useEffect(() => {
-    if (!isInView) {
-      setLen(0);
-      return;
-    }
-    const speed = durationMs / text.length;
-    const id = setInterval(() => {
-      setLen((l) => {
-        if (l >= text.length) {
-          clearInterval(id);
-          return l;
-        }
-        return l + 1;
-      });
-    }, speed);
-    return () => clearInterval(id);
-  }, [isInView, text, durationMs]);
-
-  return { len, ref, finished };
-}
-
-function useTypewriter(text: string, { typingSpeed = 35, deletingSpeed = 20, pauseEnd = 2200, pauseStart = 400 } = {}) {
-  const [displayedLength, setDisplayedLength] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-
-  const tick = useCallback(() => {
-    if (isPaused) return;
-
-    if (!isDeleting) {
-      if (displayedLength < text.length) {
-        setDisplayedLength((l) => l + 1);
-      } else {
-        setIsPaused(true);
-        setTimeout(() => {
-          setIsPaused(false);
-          setIsDeleting(true);
-        }, pauseEnd);
-      }
-    } else {
-      if (displayedLength > 0) {
-        setDisplayedLength((l) => l - 1);
-      } else {
-        setIsDeleting(false);
-        setIsPaused(true);
-        setTimeout(() => {
-          setIsPaused(false);
-        }, pauseStart);
-      }
-    }
-  }, [displayedLength, isDeleting, isPaused, text, pauseEnd, pauseStart]);
-
-  useEffect(() => {
-    const speed = isDeleting ? deletingSpeed : typingSpeed;
-    const id = setTimeout(tick, speed);
-    return () => clearTimeout(id);
-  }, [tick, isDeleting, typingSpeed, deletingSpeed]);
-
-  return displayedLength;
-}
-
-function TypewriterTagline() {
-  const len = useTypewriter(tagline);
+  const handleSubmit = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    window.location.href = `/properties`;
+  }, []);
 
   return (
-    <span className="font-heading text-[2.5rem] leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem]">
-      {tagline.split("").map((char, i) => (
-        <span key={i} className={cn("inline-block", liveIndices.includes(i) && "text-terracotta")} style={{ whiteSpace: char === " " ? "pre" : undefined }}>
-          <AnimatePresence>
-            {i < len && (
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.1 }}
-                className="inline-block"
-              >
-                {char}
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </span>
-      ))}
-      <motion.span
-        className="inline-block ml-0.5 h-[0.85em] w-[3px] align-baseline bg-white"
-        animate={{ opacity: [1, 0] }}
-        transition={{ duration: 0.53, repeat: Infinity, repeatType: "reverse" }}
-      />
-    </span>
-  );
-}
+    <motion.form
+      onSubmit={handleSubmit}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 1.8, ease: "easeOut" }}
+      className="absolute bottom-4 left-1/2 z-30 grid w-[91%] max-w-[1040px] -translate-x-1/2 overflow-hidden rounded-full border-[6px] border-white/70 bg-white/95 shadow-2xl backdrop-blur-sm sm:bottom-5 sm:grid-cols-[1.2fr_1fr_1fr_auto] sm:rounded-full sm:border-7"
+    >
+      <div className="flex items-center gap-3 border-b border-grey-line px-4 py-3 sm:border-b-0 sm:border-r sm:px-5 sm:py-0">
+        <div className="grid h-10 w-10 place-items-center rounded-full bg-brand-blue-light text-brand-blue-deep">
+          <MapPin className="h-4 w-4" />
+        </div>
+        <div className="flex-1">
+          <label className="block text-[11px] font-medium text-text-grey">Location</label>
+          <span className="text-sm font-bold text-navy">Ibadan, Nigeria</span>
+        </div>
+      </div>
 
-function ParagraphTypewriter({ reduceMotion }: { reduceMotion: boolean }) {
-  const { len, ref, finished } = useTypewriterOnce(heroParagraph, 5000);
+      <div className="flex items-center gap-3 border-b border-grey-line px-4 py-3 sm:border-b-0 sm:border-r sm:px-5 sm:py-0">
+        <div className="grid h-10 w-10 place-items-center rounded-full bg-brand-blue-light text-brand-blue-deep">
+          <Home className="h-4 w-4" />
+        </div>
+        <div className="flex-1">
+          <label className="block text-[11px] font-medium text-text-grey">Property Type</label>
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="w-full border-0 bg-transparent text-sm font-bold text-navy outline-none"
+          >
+            <option>Any Type</option>
+            <option>Villa</option>
+            <option>Duplex</option>
+            <option>Townhouse</option>
+            <option>Apartment</option>
+          </select>
+        </div>
+      </div>
 
-  if (reduceMotion) {
-    return (
-      <p ref={ref} className="mt-6 max-w-2xl text-lg leading-relaxed text-white sm:text-xl text-justify" style={{ textShadow: "0 2px 16px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.5)" }}>
-        {heroParagraph}
-      </p>
-    );
-  }
+      <div className="flex items-center gap-3 px-4 py-3 sm:border-r sm:px-5 sm:py-0">
+        <div className="grid h-10 w-10 place-items-center rounded-full bg-brand-blue-light text-brand-blue-deep">
+          <Wallet className="h-4 w-4" />
+        </div>
+        <div className="flex-1">
+          <label className="block text-[11px] font-medium text-text-grey">Price Range</label>
+          <select
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="w-full border-0 bg-transparent text-sm font-bold text-navy outline-none"
+          >
+            <option>₦45M+</option>
+            <option>₦75M+</option>
+            <option>₦90M+</option>
+          </select>
+        </div>
+      </div>
 
-  return (
-    <div ref={ref} className="mt-6 max-w-2xl sm:text-xl" style={{ textShadow: "0 2px 16px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.5)" }}>
-      <p className="text-lg leading-relaxed text-white sm:text-xl text-justify whitespace-pre-wrap">
-        {heroParagraph.slice(0, len)}
-        {!finished && (
-          <motion.span
-            className="inline-block ml-0.5 h-[0.85em] w-[2px] align-baseline bg-white/70"
-            animate={{ opacity: [1, 0] }}
-            transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
-          />
-        )}
-      </p>
-    </div>
+      <button
+        type="submit"
+        className="m-1 flex items-center justify-center gap-2 rounded-full bg-brand-blue px-6 py-4 text-sm font-extrabold text-white shadow-lg shadow-brand-blue/28 transition-all hover:bg-brand-blue-dark hover:-translate-y-0.5 sm:px-8"
+      >
+        <Search className="h-4 w-4" />
+        Search
+      </button>
+    </motion.form>
   );
 }
 
@@ -192,140 +98,105 @@ export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const { openCallback } = useOpenCallback();
 
   return (
-    <section ref={ref} className="relative isolate flex min-h-screen items-end overflow-hidden bg-ink">
-      {reduceMotion ? (
-        <Image
-          src="https://i.postimg.cc/vmsQhcmQ/Wellsprings-gate-house-8K.png"
-          alt="Wellsprings Ibadan estate gate house"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      ) : (
-        <motion.div style={{ y: imageY }} className="absolute inset-0 -top-[15%] -bottom-[15%]">
-          <motion.div
-            className="absolute inset-0"
-            animate={{
-              scale: [1, 1.12, 1],
-              x: ["0%", "-1.5%", "0%"],
-            }}
-            transition={{
-              duration: 20,
-              ease: "easeInOut",
-              repeat: Infinity,
-              repeatType: "loop",
-            }}
-          >
-            <Image
-              src="https://i.postimg.cc/vmsQhcmQ/Wellsprings-gate-house-8K.png"
-              alt="Wellsprings Ibadan estate gate house"
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-center"
-            />
-          </motion.div>
-        </motion.div>
-      )}
-
-      <div
-        className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10"
-        aria-hidden="true"
-      />
-
-      <motion.div
-        className="container-site relative z-10 pb-24 pt-48 sm:pb-32"
-        style={reduceMotion ? {} : { y: contentY }}
+    <section ref={ref} className="px-4 pt-4 sm:px-6 sm:pt-6">
+      <div className="relative min-h-[625px] overflow-hidden rounded-[28px] bg-cover bg-center shadow-2xl sm:min-h-[680px]"
+        style={{
+          backgroundImage: `linear-gradient(90deg, rgba(23,38,58,.55) 0%, rgba(23,38,58,.3) 50%, rgba(23,38,58,.08) 100%), url(https://i.postimg.cc/vmsQhcmQ/Wellsprings-gate-house-8K.png)`,
+        }}
       >
-        <motion.div
-          initial={reduceMotion ? undefined : { opacity: 0, y: 10 }}
-          animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <motion.p
-            {...(reduceMotion ? {} : fadeUp(0.2))}
-            className="eyebrow mb-5 text-gold"
-            style={{ textShadow: "0 1px 10px rgba(0,0,0,0.6)" }}
-          >
-            {site.brandName}
-          </motion.p>
-
-          <h1 className="max-w-4xl" style={{ textShadow: "0 2px 16px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.5)" }}>
+        <div className="relative z-10 w-full px-6 pt-20 sm:w-[min(610px,100%)] sm:px-[68px] sm:pt-24">
+          <h1 className="font-heading text-[clamp(40px,5.5vw,74px)] leading-[0.99] tracking-[-0.045em] text-white" style={{ textShadow: "0 2px 12px rgba(0,0,0,.35)" }}>
             {reduceMotion ? (
-              <span className="font-heading text-[2.5rem] leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem]">
-                {tagline.split("").map((char, i) => (
-                  <span key={i} className={liveIndices.includes(i) ? "text-terracotta" : undefined}>
-                    {char}
-                  </span>
-                ))}
-              </span>
+              tagline.split("").map((char, i) => (
+                <span key={i} className={i >= 7 && i <= 10 ? "relative text-brand-blue" : undefined}>
+                  {char}
+                  {i === 10 && (
+                    <span className="absolute bottom-[-5px] left-0.5 right-0 h-[3px] rounded-full bg-brand-blue" />
+                  )}
+                </span>
+              ))
             ) : (
               <TypewriterTagline />
             )}
           </h1>
 
-          <ParagraphTypewriter reduceMotion={!!reduceMotion} />
+          <motion.p
+            {...(reduceMotion ? {} : fadeUp(0.8))}
+            className="mt-5 max-w-[500px] text-lg leading-relaxed text-white/85"
+            style={{ textShadow: "0 1px 8px rgba(0,0,0,.3)" }}
+          >
+            Thoughtfully designed homes set within a serene and welcoming community.
+            Wellsprings gives you the comfort and space to live well, work productively,
+            and build meaningful connections. Because where you live should make life better.
+          </motion.p>
 
           <motion.div
-            {...(reduceMotion ? {} : fadeUp(1.6))}
-            className="mt-10 flex flex-col gap-3 sm:flex-row"
+            {...(reduceMotion ? {} : fadeUp(1.4))}
+            className="mt-8 flex flex-col gap-3 sm:flex-row"
           >
-            <ButtonLink
+            <Link
               href="/properties"
-              className="bg-terracotta text-white hover:brightness-110 hover:scale-[1.03] hover:shadow-lg transition-all duration-300 h-14 px-7 text-base rounded-full inline-flex items-center justify-center gap-2 font-semibold active:translate-y-px animate-[btnGlow_2.5s_ease-in-out_infinite]"
+              className="inline-flex items-center justify-center gap-2 rounded-[11px] bg-brand-blue px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-brand-blue/27 transition-all hover:-translate-y-0.5 hover:bg-brand-blue-dark hover:shadow-xl"
             >
               Explore Properties
-            </ButtonLink>
-            <BookViewingButton variant="primary" size="lg" source="hero" label="Schedule a Visit" className="hover:scale-[1.03] hover:shadow-lg transition-all duration-300 animate-[btnGlow_2.5s_ease-in-out_infinite_0.4s]" />
-          </motion.div>
-
-          <motion.div
-            {...(reduceMotion ? {} : fadeUp(2.0))}
-            className="mt-14 inline-flex flex-col gap-4 rounded-2xl bg-white/10 px-6 py-5 backdrop-blur-md sm:flex-row sm:items-center sm:gap-12 sm:px-8"
-          >
-            {stats.map((stat, i) => {
-              const { count, ref } = useCountUp(stat.end, 2000, i * 300);
-              return (
-                <motion.p
-                  key={stat.label}
-                  ref={ref}
-                  className="flex items-baseline gap-2 leading-tight cursor-default group"
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                >
-                  <span className="text-2xl font-bold text-gold transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(212,165,116,0.6)]">
-                    {count}{stat.suffix}
-                    <span className="text-lg">{stat.unit}</span>
-                  </span>
-                  <span className="text-sm text-white/60 transition-colors duration-300 group-hover:text-white/80">{stat.label}</span>
-                </motion.p>
-              );
-            })}
-          </motion.div>
-
-          <motion.div
-            {...(reduceMotion ? {} : fadeUp(2.4))}
-            className="mt-10"
-          >
-            <p className="mb-2 text-xs font-medium uppercase tracking-widest text-white/40">Scroll to discover</p>
-            <motion.div
-              className="h-12 w-6 rounded-full border-2 border-white/30"
-              animate={{ borderColor: ["rgba(255,255,255,0.3)", "rgba(255,255,255,0.6)", "rgba(255,255,255,0.3)"] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <button
+              type="button"
+              onClick={() => openCallback("hero-cta")}
+              className="inline-flex items-center justify-center gap-2 rounded-[11px] border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/20"
             >
-              <motion.div
-                className="mx-auto mt-2 h-2 w-1 rounded-full bg-white/60"
-                animate={{ y: [0, 16, 0], opacity: [1, 0.3, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </motion.div>
+              <Phone className="h-4 w-4" />
+              Get a call from us
+            </button>
           </motion.div>
-        </motion.div>
-      </motion.div>
+        </div>
+
+        <SearchBar />
+      </div>
     </section>
+  );
+}
+
+function TypewriterTagline() {
+  const [len, setLen] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const finished = len >= tagline.length;
+
+  useState(() => {
+    const speed = 80;
+    const id = setInterval(() => {
+      setLen((l) => {
+        if (l >= tagline.length) { clearInterval(id); return l; }
+        return l + 1;
+      });
+    }, speed);
+    return () => clearInterval(id);
+  });
+
+  const liveStart = 7;
+  const liveEnd = 11;
+
+  return (
+    <span ref={ref}>
+      {tagline.split("").map((char, i) => (
+        <span key={i} className={i >= liveStart && i <= liveEnd ? "relative text-brand-blue" : undefined}>
+          {char}
+          {i === liveEnd && (
+            <span className="absolute bottom-[-5px] left-0.5 right-0 h-[3px] rounded-full bg-brand-blue" />
+          )}
+        </span>
+      ))}
+      {!finished && (
+        <motion.span
+          className="ml-0.5 inline-block h-[0.85em] w-[2px] translate-y-[2px] bg-brand-blue"
+          animate={{ opacity: [1, 0] }}
+          transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+        />
+      )}
+    </span>
   );
 }

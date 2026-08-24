@@ -64,11 +64,26 @@ export const viewingLeadSchema = z.object({
   ...viewingFields,
 });
 
-export const leadSchema = z.discriminatedUnion("leadType", [enquiryLeadSchema, viewingLeadSchema]);
+export const callbackFields = {
+  name: nameField,
+  phone: nigerianPhone,
+  phone2: nigerianPhone,
+  email: emailField,
+  bestTime: z.string().trim().optional(),
+};
+
+export const callbackLeadSchema = z.object({
+  leadType: z.literal("callback"),
+  ...callbackFields,
+});
+
+export const leadSchema = z.discriminatedUnion("leadType", [enquiryLeadSchema, viewingLeadSchema, callbackLeadSchema]);
 
 export const enquiryFormSchema = z.object(enquiryFields);
 export const viewingFormSchema = z.object(viewingFields);
+export const callbackFormSchema = z.object(callbackFields);
 
 export type EnquiryFormValues = z.infer<typeof enquiryFormSchema>;
 export type ViewingFormValues = z.infer<typeof viewingFormSchema>;
+export type CallbackFormValues = z.infer<typeof callbackFormSchema>;
 export type LeadPayload = z.infer<typeof leadSchema>;

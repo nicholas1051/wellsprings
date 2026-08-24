@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
-import type { LucideIcon } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
 import {
   ShieldCheck,
   Droplets,
@@ -15,13 +14,13 @@ import {
   BedDouble,
   Sun,
   LayoutGrid,
+  Home as HomeIcon,
+  Building,
 } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { features } from "@/data/features";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Reveal } from "@/components/ui/Reveal";
+import { cn } from "@/lib/utils";
 
-const iconMap: Record<string, LucideIcon> = {
+const iconMap: Record<string, React.ElementType> = {
   "gated-security": ShieldCheck,
   "borehole-water": Droplets,
   "underground-drainage": Waves,
@@ -36,144 +35,216 @@ const iconMap: Record<string, LucideIcon> = {
   "tiled-compound": LayoutGrid,
 };
 
-const categoryColors: Record<string, { bg: string; text: string; dot: string; glow: string; border: string }> = {
-  estate: { bg: "bg-brand-blue/10", text: "text-brand-blue", dot: "bg-brand-blue", glow: "rgba(90,135,168,0.3)", border: "border-brand-blue/40" },
-  home: { bg: "bg-terracotta/10", text: "text-terracotta", dot: "bg-terracotta", glow: "rgba(196,113,74,0.3)", border: "border-terracotta/40" },
-  community: { bg: "bg-sage/10", text: "text-sage", dot: "bg-sage", glow: "rgba(139,175,126,0.3)", border: "border-sage/40" },
-};
-
-const bentoLayout: { id: string; colSpan: string; rowSpan: string }[] = [
-  { id: "gated-security", colSpan: "col-span-2", rowSpan: "row-span-1" },
-  { id: "underground-drainage", colSpan: "col-span-1", rowSpan: "row-span-2" },
-  { id: "borehole-water", colSpan: "col-span-1", rowSpan: "row-span-1" },
-  { id: "paved-roads", colSpan: "col-span-1", rowSpan: "row-span-1" },
-  { id: "modern-kitchen", colSpan: "col-span-1", rowSpan: "row-span-1" },
-  { id: "ensuite-bedrooms", colSpan: "col-span-2", rowSpan: "row-span-1" },
-  { id: "parking", colSpan: "col-span-1", rowSpan: "row-span-1" },
-  { id: "solar-readiness", colSpan: "col-span-1", rowSpan: "row-span-1" },
-  { id: "tiled-compound", colSpan: "col-span-1", rowSpan: "row-span-1" },
-  { id: "landscaping", colSpan: "col-span-1", rowSpan: "row-span-2" },
-  { id: "community-centre", colSpan: "col-span-1", rowSpan: "row-span-1" },
-  { id: "children-playground", colSpan: "col-span-1", rowSpan: "row-span-1" },
+const categories = [
+  {
+    id: "estate" as const,
+    label: "Estate",
+    subtitle: "Security, infrastructure & lasting value",
+    color: "#699DD6",
+    bg: "#EAF3FC",
+    Icon: Building,
+  },
+  {
+    id: "home" as const,
+    label: "Home",
+    subtitle: "Thoughtful design, comfort & convenience",
+    color: "#55B878",
+    bg: "#EAF8EF",
+    Icon: HomeIcon,
+  },
+  {
+    id: "community" as const,
+    label: "Community",
+    subtitle: "Green spaces, connection & shared experiences",
+    color: "#8562D8",
+    bg: "#F1ECFC",
+    Icon: Users,
+  },
 ];
 
-function BentoCard({
-  feature,
-  layout,
-  index,
-}: {
-  feature: (typeof features)[number];
-  layout: (typeof bentoLayout)[number];
-  index: number;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springX = useSpring(mouseX, { stiffness: 150, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 150, damping: 20 });
-  const rotateX = useTransform(springY, [-0.5, 0.5], [5, -5]);
-  const rotateY = useTransform(springX, [-0.5, 0.5], [-5, 5]);
-
-  const Icon = iconMap[feature.id] ?? LayoutGrid;
-  const colors = categoryColors[feature.category];
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (!cardRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-      mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
-    },
-    [mouseX, mouseY],
-  );
-
-  const handleMouseLeave = useCallback(() => {
-    setHovered(false);
-    mouseX.set(0);
-    mouseY.set(0);
-  }, [mouseX, mouseY]);
-
-  return (
-    <Reveal key={feature.id} delay={(index % 6) * 0.05}>
-      <motion.div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={handleMouseLeave}
-        className={`group relative h-full rounded-2xl border bg-white p-6 transition-shadow duration-300 ${layout.colSpan} ${layout.rowSpan} ${
-          hovered ? `${colors.border} shadow-lg` : "border-grey-line hover:shadow-md"
-        }`}
-        style={{
-          perspective: "800px",
-          boxShadow: hovered ? `0 8px 30px ${colors.glow}` : undefined,
-          rotateX: hovered ? rotateX : 0,
-          rotateY: hovered ? rotateY : 0,
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <span className={`h-1.5 w-1.5 rounded-full ${colors.dot}`} />
-          <span className={`text-[11px] font-semibold uppercase tracking-wide ${colors.text}`}>
-            {feature.category}
-          </span>
-        </div>
-
-        <span
-          className={`grid h-12 w-12 place-items-center rounded-xl transition-all duration-300 ${
-            hovered ? "scale-110" : ""
-          }`}
-          style={{ backgroundColor: hovered ? colors.glow.replace("0.3", "1") : undefined }}
-        >
-          <Icon
-            className={`h-6 w-6 transition-colors duration-300 ${hovered ? "text-white" : colors.text}`}
-            aria-hidden="true"
-          />
-        </span>
-
-        <h3 className="mt-4 text-lg font-bold text-navy transition-colors duration-300 group-hover:text-terracotta">
-          {feature.title}
-        </h3>
-
-        <div className="mt-2 relative">
-          <motion.p
-            className="text-sm leading-relaxed text-text-grey"
-            animate={{ height: hovered ? "auto" : "2.5rem" }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            style={{ overflow: "hidden" }}
-          >
-            {feature.description}
-          </motion.p>
-          {!hovered && (
-            <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent" />
-          )}
-        </div>
-      </motion.div>
-    </Reveal>
-  );
-}
-
 export function KeyFeatures() {
-  const featureMap = new Map(features.map((f) => [f.id, f]));
+  const [active, setActive] = useState<"estate" | "home" | "community">("estate");
+  const [hovered, setHovered] = useState(false);
+
+  const nextCategory = useCallback(() => {
+    if (hovered) return;
+    setActive((prev) => {
+      const order: Array<"estate" | "home" | "community"> = ["estate", "home", "community"];
+      const idx = order.indexOf(prev);
+      return order[(idx + 1) % 3];
+    });
+  }, [hovered]);
+
+  useEffect(() => {
+    if (hovered) return;
+    const timer = setInterval(nextCategory, 7000);
+    return () => clearInterval(timer);
+  }, [nextCategory, hovered]);
+
+  const activeFeatures = features.filter((f) => f.category === active);
+  const activeCat = categories.find((c) => c.id === active)!;
 
   return (
-    <section className="bg-cream py-24 sm:py-32">
+    <section className="py-14 sm:py-20">
       <div className="container-site">
-        <Reveal>
-          <SectionHeading
-            align="center"
-            eyebrow="Estate Features"
-            title="What comes with every home"
-            description="Every unit at Wellsprings includes access to the estate\u2019s shared infrastructure and amenities."
-          />
-        </Reveal>
+        <div className="mb-6 text-center">
+          <span className="inline-block rounded-full bg-brand-blue-light px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand-blue-dark">
+            The Wellsprings Experience
+          </span>
+          <h2 className="mt-3 font-heading text-[clamp(38px,5vw,64px)] leading-[1.02] tracking-[-0.055em] text-navy">
+            More Than Just a Place to <span className="text-brand-blue-dark">Live</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-[680px] text-center text-[15px] leading-[1.75] text-muted">
+            We bring Estate, Home, and Community together to create a complete living experience — thoughtfully designed around the way you live.
+          </p>
+        </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[minmax(200px,auto)]">
-          {bentoLayout.map((item, index) => {
-            const feature = featureMap.get(item.id);
-            if (!feature) return null;
-            return <BentoCard key={feature.id} feature={feature} layout={item} index={index} />;
+        {/* Hub — Desktop */}
+        <div className="relative mx-auto mt-8 hidden h-[520px] max-w-[900px] lg:block">
+          {/* Central image */}
+          <div className="absolute left-1/2 top-1/2 z-10 h-[410px] w-[410px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full shadow-[0_25px_28px_rgba(35,72,108,.2)] transition-all duration-500">
+            <img
+              src="https://i.postimg.cc/vmsQhcmQ/Wellsprings-gate-house-8K.png"
+              alt="Wellsprings estate"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy/30 to-transparent" />
+          </div>
+
+          {/* Orbit ring — above image, rotating around it */}
+          <div
+            className="absolute left-1/2 top-1/2 z-[11] h-[480px] w-[480px] rounded-full border-2 border-dashed border-[#AFCBE4]"
+            style={{ animation: "orbitSpin 30s linear infinite", transform: "translate(-50%, -50%)" }}
+          />
+
+          {/* Category buttons — stacked on the right */}
+          {categories.map((cat) => {
+            const pos: Record<string, string> = {
+              estate: "right-[30px] top-[140px]",
+              home: "right-[30px] top-[220px]",
+              community: "right-[30px] top-[300px]",
+            };
+            const widths: Record<string, string> = {
+              estate: "w-[200px]",
+              home: "w-[240px]",
+              community: "w-[270px]",
+            };
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onMouseEnter={() => { setActive(cat.id); setHovered(true); }}
+                onMouseLeave={() => setHovered(false)}
+                className={cn(
+                  "absolute z-20 flex items-center gap-2.5 rounded-full border border-white bg-white/94 px-3.5 py-2 shadow-[0_12px_36px_rgba(31,65,98,.13)] backdrop-blur-[14px] transition-all duration-300 hover:scale-105",
+                  pos[cat.id],
+                  widths[cat.id],
+                )}
+              >
+                <span
+                  className="grid h-[42px] w-[42px] shrink-0 place-items-center rounded-full text-white"
+                  style={{ background: cat.color }}
+                >
+                  <cat.Icon className="h-5 w-5" />
+                </span>
+                <span className="text-left">
+                  <strong className="block font-heading text-[14px] text-navy">{cat.label}</strong>
+                  <small className="block text-[9px] text-muted">{cat.subtitle}</small>
+                </span>
+              </button>
+            );
           })}
+
+          {/* Feature panel — always on the left */}
+          <div
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            className="absolute left-0 top-1/2 z-20 w-[280px] -translate-y-1/2 rounded-[18px] border border-[#DDE8F2] bg-white/95 p-4 shadow-[0_22px_65px_rgba(31,65,98,.13)] backdrop-blur-[18px] transition-all duration-300"
+          >
+            <div className="mb-1 flex items-center gap-2 border-b border-[#EDF2F7] pb-2.5">
+              <span className="h-2 w-2 rounded-full" style={{ background: activeCat.color }} />
+              <h3 className="font-heading text-[14px]">{activeCat.label} Features</h3>
+              <span className="ml-auto text-[9px] font-bold text-[#98A5B3]">
+                {String(activeFeatures.length).padStart(2, "0")} FEATURES
+              </span>
+            </div>
+            <div className="grid gap-0">
+              {activeFeatures.map((f) => {
+                const IconComp = iconMap[f.id] ?? LayoutGrid;
+                return (
+                  <div key={f.id} className="grid grid-cols-[32px_1fr] gap-2 rounded-lg p-2 transition-colors hover:bg-[#F7FAFD]">
+                    <span
+                      className="grid h-[30px] w-[30px] place-items-center rounded-[9px]"
+                      style={{ background: activeCat.bg, color: activeCat.color }}
+                    >
+                      <IconComp className="h-3.5 w-3.5" />
+                    </span>
+                    <div>
+                      <h4 className="mb-0.5 font-heading text-[11px]">{f.title}</h4>
+                      <p className="text-[9px] leading-[1.4] text-muted">{f.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile layout */}
+        <div className="mx-auto mt-10 max-w-[390px] space-y-3.5 lg:hidden">
+          <div className="space-y-3">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setActive(cat.id)}
+                className={cn(
+                  "flex w-full items-center gap-3 rounded-full border border-white bg-white/94 px-[17px] py-[9px] shadow-[0_12px_36px_rgba(31,65,98,.13)] backdrop-blur-[14px] transition-all duration-300",
+                  active === cat.id ? "scale-[1.01]" : "",
+                )}
+              >
+                <span
+                  className="grid h-[52px] w-[52px] place-items-center rounded-full text-white"
+                  style={{ background: cat.color }}
+                >
+                  <cat.Icon className="h-6 w-6" />
+                </span>
+                <span className="text-left">
+                  <strong className="block font-heading text-[16px] text-navy">{cat.label}</strong>
+                  <small className="block text-[10px] text-muted">{cat.subtitle}</small>
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div className="rounded-[22px] border border-[#DDE8F2] bg-white/95 p-[19px] shadow-[0_22px_65px_rgba(31,65,98,.13)]">
+            <div className="mb-1 flex items-center gap-2.5 border-b border-[#EDF2F7] pb-3">
+              <span className="h-[9px] w-[9px] rounded-full" style={{ background: activeCat.color }} />
+              <h3 className="font-heading text-[16px]">{activeCat.label} Features</h3>
+              <span className="ml-auto text-[10px] font-bold text-[#98A5B3]">
+                {String(activeFeatures.length).padStart(2, "0")} FEATURES
+              </span>
+            </div>
+            <div className="grid gap-0.5">
+              {activeFeatures.map((f) => {
+                const IconComp = iconMap[f.id] ?? LayoutGrid;
+                return (
+                  <div key={f.id} className="grid grid-cols-[38px_1fr] gap-2.5 rounded-xl p-[11px_6px] transition-colors hover:bg-[#F7FAFD]">
+                    <span
+                      className="grid h-[36px] w-[36px] place-items-center rounded-[11px]"
+                      style={{ background: activeCat.bg, color: activeCat.color }}
+                    >
+                      <IconComp className="h-4 w-4" />
+                    </span>
+                    <div>
+                      <h4 className="mb-0.5 font-heading text-[12px]">{f.title}</h4>
+                      <p className="text-[10px] leading-[1.45] text-muted">{f.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </section>

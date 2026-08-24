@@ -11,7 +11,8 @@ export type AnalyticsEvent =
   | "call_click"
   | "brochure_download"
   | "enquiry_submit"
-  | "viewing_booked";
+  | "viewing_booked"
+  | "callback_requested";
 
 export interface AnalyticsParams {
   unit?: string;

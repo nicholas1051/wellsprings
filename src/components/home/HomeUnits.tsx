@@ -98,7 +98,7 @@ export function HomeUnits() {
     <section id="houses" className="scroll-mt-24 bg-warm-white py-24 sm:py-32">
       <div className="container-site">
         <div className="mb-12 text-center">
-          <p className="eyebrow mb-3 text-terracotta">Our Properties</p>
+          <p className="eyebrow mb-3 text-brand-blue-deep">Our Properties</p>
           <h2 className="font-heading text-3xl tracking-tight text-navy sm:text-4xl lg:text-5xl">
             Six property types, one estate
           </h2>

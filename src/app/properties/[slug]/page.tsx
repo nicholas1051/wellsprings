@@ -60,7 +60,7 @@ export default async function PropertyDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: residenceLd(unit) }}
       />
 
-      <header className="relative min-h-[60vh] flex items-end overflow-hidden bg-ink">
+      <header className="relative min-h-[60vh] flex items-end overflow-hidden bg-navy">
         <EstateImage
           src={unit.heroImage}
           alt={unit.heroImageAlt}
@@ -149,7 +149,7 @@ export default async function PropertyDetailPage({ params }: Props) {
                   <EstateImage src={other.heroImage} alt={other.heroImageAlt} fill sizes="33vw" className="object-cover transition-transform group-hover:scale-105" />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-bold text-navy group-hover:text-terracotta transition-colors">{other.name}</h3>
+                  <h3 className="text-lg font-bold text-navy group-hover:text-brand-blue transition-colors">{other.name}</h3>
                   <p className="text-sm text-text-grey">{other.bedrooms} bed &bull; {formatArea(other.floorAreaSqm)}</p>
                   <p className="mt-2 text-base font-bold text-navy">{formatPrice(other.priceFrom)}</p>
                 </div>

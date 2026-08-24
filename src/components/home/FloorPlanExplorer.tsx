@@ -73,7 +73,7 @@ export function FloorPlanExplorer({ unit }: FloorPlanExplorerProps) {
                   className={cn(
                     "absolute rounded-lg border-2 transition-colors text-xs font-bold",
                     isActive
-                      ? "border-terracotta bg-terracotta/20 text-terracotta z-10"
+                      ? "border-brand-blue bg-brand-blue/20 text-brand-blue z-10"
                       : "border-brand-blue/30 bg-brand-blue/10 text-brand-blue hover:border-brand-blue hover:bg-brand-blue/20",
                   )}
                   style={{
@@ -104,14 +104,14 @@ export function FloorPlanExplorer({ unit }: FloorPlanExplorerProps) {
                 className={cn(
                   "flex w-full items-center justify-between rounded-xl border p-3 text-left transition-all",
                   activeRoom === room.id
-                    ? "border-terracotta bg-terracotta/10"
+                    ? "border-brand-blue bg-brand-blue/10"
                     : "border-grey-line bg-white hover:bg-cream",
                 )}
                 onClick={() => setActiveRoom(activeRoom === room.id ? null : room.id)}
                 whileHover={{ x: 2 }}
               >
                 <span className="text-sm font-medium text-navy">{room.name}</span>
-                <span className="text-sm font-bold text-terracotta">{room.area}m&sup2;</span>
+                <span className="text-sm font-bold text-brand-blue">{room.area}m&sup2;</span>
               </motion.button>
             ))}
           </div>

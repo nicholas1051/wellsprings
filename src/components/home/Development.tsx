@@ -26,7 +26,7 @@ function QuoteReveal({ reduceMotion }: { reduceMotion: boolean }) {
   return (
     <div ref={ref} className="relative">
       <motion.div
-        className="absolute left-0 right-0 bottom-0 h-[3px] bg-terracotta origin-left"
+        className="absolute left-0 right-0 bottom-0 h-[3px] bg-brand-blue origin-left"
         initial={{ scaleX: 0 }}
         animate={isInView ? { scaleX: 1 } : undefined}
         transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
@@ -66,7 +66,7 @@ export function Development() {
       <div className="container-site">
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
-            <p className="eyebrow mb-4 text-terracotta">The Vision</p>
+            <p className="eyebrow mb-4 text-brand-blue-deep">The Vision</p>
             <QuoteReveal reduceMotion={!!reduceMotion} />
             <p className="mt-6 text-sm font-medium text-text-grey">&mdash; Matthew Desmond</p>
           </div>

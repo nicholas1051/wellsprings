@@ -27,7 +27,7 @@ export function TrustStrip() {
                   } ${!isLast ? "mb-4 last:mb-0 sm:mb-0" : ""}`}
                 >
                   <motion.span
-                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-cream text-terracotta transition-colors duration-300 group-hover/card:bg-terracotta group-hover/card:text-white"
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-cream text-brand-blue-dark transition-colors duration-300 group-hover/card:bg-brand-blue group-hover/card:text-white"
                     whileHover={{ scale: 1.1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 15 }}
                   >

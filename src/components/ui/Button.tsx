@@ -21,7 +21,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   outline: "border border-navy/25 bg-white text-navy hover:border-navy/60 hover:bg-tint",
   "outline-white": "border border-white/50 text-white hover:bg-white/10",
   white: "bg-white text-navy hover:bg-tint",
-  gold: "bg-gold text-ink hover:brightness-95",
+  gold: "bg-gold text-navy hover:brightness-95",
   ghost: "text-brand-blue-dark hover:bg-tint",
 };
 

@@ -43,7 +43,7 @@ export default function ContactPage() {
                   data-track-label="contact-page"
                   className="flex items-center gap-4 rounded-xl border border-grey-line bg-white p-5 transition-colors hover:border-terracotta/50"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-terracotta">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-brand-blue">
                     <Phone className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span>
@@ -55,7 +55,7 @@ export default function ContactPage() {
                   href={telLink()}
                   className="flex items-center gap-4 rounded-xl border border-grey-line bg-white p-5 transition-colors hover:border-terracotta/50"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-terracotta">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-brand-blue">
                     <Phone className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span>
@@ -67,7 +67,7 @@ export default function ContactPage() {
                   href={mailLink()}
                   className="flex items-center gap-4 rounded-xl border border-grey-line bg-white p-5 transition-colors hover:border-terracotta/50"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-terracotta">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-brand-blue">
                     <Mail className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span>
@@ -76,7 +76,7 @@ export default function ContactPage() {
                   </span>
                 </a>
                 <div className="flex items-center gap-4 rounded-xl border border-grey-line bg-white p-5">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-terracotta">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-brand-blue">
                     <MapPin className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span>
@@ -85,7 +85,7 @@ export default function ContactPage() {
                   </span>
                 </div>
                 <div className="flex items-center gap-4 rounded-xl border border-grey-line bg-white p-5">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-terracotta">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-brand-blue">
                     <Clock className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span>

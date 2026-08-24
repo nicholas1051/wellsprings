@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Serif_Display, Manrope } from "next/font/google";
+import { DM_Sans, Manrope } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -15,13 +15,14 @@ import { NoiseOverlay } from "@/components/ui/NoiseOverlay";
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
+  weight: ["600", "700", "800"],
   display: "swap",
 });
 
-const dmSerif = DM_Serif_Display({
-  variable: "--font-dm-serif",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -49,6 +50,7 @@ export const metadata: Metadata = {
     siteName: site.brandName,
     title: `${site.brandName}: Residential Estate in ${site.location}`,
     description: `Masterplanned estate by StellarVera. 6 property types on 25 acres in Jericho, Ibadan.`,
+    images: [`${site.siteUrl}/wellsprings-logo.png`],
     locale: "en_NG",
   },
   robots: {
@@ -58,14 +60,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2C3E50",
+  themeColor: "#17263A",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${manrope.variable} ${dmSerif.variable} h-full antialiased`}
+      className={`${manrope.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <ScrollProgress />

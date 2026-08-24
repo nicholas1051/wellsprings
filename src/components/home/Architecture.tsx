@@ -73,7 +73,7 @@ export function Architecture() {
 
         <Reveal delay={0.2}>
           <div className="mt-14">
-            <p className="eyebrow mb-6 text-center text-terracotta">Design Partners</p>
+            <p className="eyebrow mb-6 text-center text-brand-blue-deep">Design Partners</p>
             <div className="relative overflow-hidden py-2">
               <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-tint to-transparent z-10" />
               <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-tint to-transparent z-10" />

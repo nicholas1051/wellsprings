@@ -68,7 +68,7 @@ function PropertyCard({ unit, index, reduceMotion }: { unit: (typeof housingUnit
           </div>
         </div>
         <div className="p-5">
-          <h2 className="text-xl font-bold text-navy group-hover:text-terracotta transition-colors">
+          <h2 className="text-xl font-bold text-navy group-hover:text-brand-blue-deep transition-colors">
             {unit.name}
           </h2>
           <p className="mt-1 text-sm text-text-grey line-clamp-2">{unit.tagline}</p>
@@ -77,7 +77,7 @@ function PropertyCard({ unit, index, reduceMotion }: { unit: (typeof housingUnit
               <p className="text-xs text-text-grey uppercase tracking-wide font-medium">From</p>
               <p className="text-xl font-bold text-navy">{formatPrice(unit.priceFrom)}</p>
             </div>
-            <span className="flex items-center gap-1 text-sm font-semibold text-terracotta opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="flex items-center gap-1 text-sm font-semibold text-brand-blue-deep opacity-0 transition-opacity group-hover:opacity-100">
               View Details
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </span>
@@ -127,7 +127,7 @@ export function PropertiesContent() {
     <>
       <header className="bg-off-white pb-10 pt-28 sm:pt-36">
         <div className="container-site">
-          <p className="eyebrow mb-3 text-terracotta">Properties</p>
+          <p className="eyebrow mb-3 text-brand-blue-deep">Properties</p>
           <h1 className="font-heading text-3xl tracking-tight text-navy sm:text-4xl lg:text-5xl">
             <WordStagger text="Six property types at Wellsprings" reduceMotion={reduced} />
           </h1>

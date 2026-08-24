@@ -1,22 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-blue: #5A87A8;
-  --color-brand-blue-dark: #3E6A8A;
-  --color-brand-blue-light: #7BA4C0;
-  --color-navy: #2C3E50;
-  --color-ink: #1A252F;
-  --color-tint: #EAF3FB;
-  --color-warm-white: #FCFBF8;
-  --color-off-white: #F5F3EF;
-  --color-cream: #FAF8F4;
-  --color-grey-line: #E6E2DC;
-  --color-text-grey: #6B7A8D;
+  --color-brand-blue: #699DD6;
+  --color-brand-blue-dark: #4F83BD;
+  --color-brand-blue-deep: #376A9F;
+  --color-brand-blue-light: #EAF3FC;
+  --color-brand-blue-pale: #F5F9FD;
+  --color-navy: #17263A;
+  --color-navy-soft: #34465C;
+  --color-ink: #17263A;
+  --color-ink-soft: #34465C;
+  --color-tint: #EAF3FC;
+  --color-warm-white: #FBFCFE;
+  --color-off-white: #F5F9FD;
+  --color-cream: #FAFCFE;
+  --color-grey-line: #E2EAF2;
+  --color-text-grey: #667085;
+  --color-muted: #667085;
   --color-terracotta: #C4714A;
   --color-terracotta-light: #D4856A;
-  --color-sage: #8BAF7E;
-  --color-sage-dark: #6E9460;
-  --color-gold: #C8A96B;
+  --color-sage: #43A76A;
+  --color-sage-dark: #31825B;
+  --color-gold: #E6A43A;
+  --color-danger: #D9657A;
   --color-whatsapp: #25D366;
   --color-whatsapp-dark: #1EBE5B;
   --color-error: #B91C1C;
@@ -24,9 +30,9 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-dm-serif), var(--font-manrope), Georgia, serif;
-  --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -42,7 +48,7 @@
   }
 
   ::selection {
-    background-color: var(--color-tint);
+    background-color: var(--color-brand-blue-light);
     color: var(--color-navy);
   }
 
@@ -88,17 +94,10 @@
 
   .eyebrow {
     font-family: var(--font-body);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-  }
-
-  .heading-serif {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    line-height: 1.1;
   }
 
   .text-balance {
@@ -127,8 +126,13 @@
 }
 
 @keyframes btnGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
-  50% { box-shadow: 0 0 20px 4px rgba(255,255,255,0.35); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(105,157,214,0); }
+  50% { box-shadow: 0 0 20px 4px rgba(105,157,214,0.35); }
+}
+
+@keyframes orbitSpin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 @keyframes flowLine {

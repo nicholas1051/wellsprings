@@ -52,7 +52,7 @@ export default function AboutPage() {
                 },
               ].map((item) => (
                 <div key={item.title} className="rounded-2xl border border-grey-line bg-white p-6">
-                  <item.icon className="h-6 w-6 text-terracotta" aria-hidden="true" />
+                  <item.icon className="h-6 w-6 text-brand-blue-deep" aria-hidden="true" />
                   <h2 className="mt-4 text-lg font-bold text-navy">{item.title}</h2>
                   <p className="mt-2 text-sm text-text-grey">{item.text}</p>
                 </div>
@@ -75,7 +75,7 @@ export default function AboutPage() {
                 </p>
               </div>
               <div className="relative overflow-hidden rounded-2xl border border-grey-line bg-cream p-8">
-                <p className="eyebrow mb-4 text-terracotta">Design & Build Partners</p>
+                <p className="eyebrow mb-4 text-brand-blue-deep">Design & Build Partners</p>
                 <ul className="space-y-3">
                   {partners.map((partner) => (
                     <li key={partner} className="flex items-center gap-3 border-b border-grey-line py-3 last:border-b-0">

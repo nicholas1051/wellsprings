@@ -10,59 +10,52 @@ import {
   type ReactNode,
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
-import { ViewingForm } from "@/components/forms/ViewingForm";
+import { X, PhoneCall } from "lucide-react";
+import { CallbackForm } from "@/components/forms/CallbackForm";
 
-interface ViewingState {
-  unit: string;
-  source?: string;
+interface CallbackContextValue {
+  openCallback: (source?: string) => void;
+  closeCallback: () => void;
 }
 
-interface ViewingContextValue {
-  openViewing: (state?: Partial<ViewingState>) => void;
-  closeViewing: () => void;
-}
+const CallbackContext = createContext<CallbackContextValue | null>(null);
 
-const ViewingContext = createContext<ViewingContextValue | null>(null);
-
-export function useViewing() {
-  const context = useContext(ViewingContext);
+export function useOpenCallback() {
+  const context = useContext(CallbackContext);
   if (!context) {
-    throw new Error("useViewing must be used within ViewingProvider");
+    throw new Error("useOpenCallback must be used within CallbackProvider");
   }
   return context;
 }
 
-export function ViewingProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<ViewingState | null>(null);
+export function CallbackProvider({ children }: { children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const [source, setSource] = useState<string>("hero-cta");
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
-  const openViewing = useCallback((next?: Partial<ViewingState>) => {
+  const openCallback = useCallback((src?: string) => {
     lastFocusedRef.current = document.activeElement as HTMLElement | null;
-    setState({ unit: next?.unit ?? "not-sure", source: next?.source });
+    setSource(src ?? "hero-cta");
+    setOpen(true);
   }, []);
 
-  const closeViewing = useCallback(() => {
-    setState(null);
+  const closeCallback = useCallback(() => {
+    setOpen(false);
   }, []);
 
   useEffect(() => {
-    if (!state) {
-      return;
-    }
+    if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeViewing();
-      }
+      if (event.key === "Escape") closeCallback();
     };
     document.addEventListener("keydown", onKeyDown);
     dialogRef.current?.focus();
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [state, closeViewing]);
+  }, [open, closeCallback]);
 
   useEffect(() => {
-    if (state) {
+    if (open) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -71,26 +64,26 @@ export function ViewingProvider({ children }: { children: ReactNode }) {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [state]);
+  }, [open]);
 
   return (
-    <ViewingContext.Provider value={{ openViewing, closeViewing }}>
+    <CallbackContext.Provider value={{ openCallback, closeCallback }}>
       {children}
       <AnimatePresence>
-        {state ? (
+        {open ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[70] flex items-end justify-center bg-navy/60 p-0 backdrop-blur-sm sm:items-center sm:p-6"
-            onClick={closeViewing}
+            onClick={closeCallback}
           >
             <motion.div
               ref={dialogRef}
               role="dialog"
               aria-modal="true"
-              aria-labelledby="viewing-modal-title"
+              aria-labelledby="callback-modal-title"
               tabIndex={-1}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -101,28 +94,28 @@ export function ViewingProvider({ children }: { children: ReactNode }) {
             >
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div>
-                  <p className="eyebrow mb-1 text-brand-blue-dark">Private viewing</p>
-                  <h2 id="viewing-modal-title" className="text-2xl font-bold text-navy">
-                    Book a Viewing
+                  <p className="eyebrow mb-1 text-brand-blue-dark">Get in touch</p>
+                  <h2 id="callback-modal-title" className="text-2xl font-bold text-navy">
+                    Request a Call
                   </h2>
                   <p className="mt-1 text-sm text-text-grey">
-                    Pick a date and time. We will confirm by phone or WhatsApp.
+                    Leave your details and we&apos;ll call you back shortly.
                   </p>
                 </div>
                 <button
                   type="button"
-                  onClick={closeViewing}
-                  aria-label="Close viewing form"
+                  onClick={closeCallback}
+                  aria-label="Close callback form"
                   className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-off-white text-navy transition-colors hover:bg-grey-line"
                 >
                   <X className="h-5 w-5" aria-hidden="true" />
                 </button>
               </div>
-              <ViewingForm defaultUnit={state.unit} source={state.source} />
+              <CallbackForm source={source} />
             </motion.div>
           </motion.div>
         ) : null}
       </AnimatePresence>
-    </ViewingContext.Provider>
+    </CallbackContext.Provider>
   );
 }
