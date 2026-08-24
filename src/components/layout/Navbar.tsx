@@ -17,7 +17,7 @@ export function Navbar() {
   const pathname = usePathname();
 
   const isHome = pathname === "/";
-  const solid = !isHome || scrolled;
+  const solid = menuOpen || !isHome || scrolled;
 
   const [prevPathname, setPrevPathname] = useState(pathname);
   if (prevPathname !== pathname) {
