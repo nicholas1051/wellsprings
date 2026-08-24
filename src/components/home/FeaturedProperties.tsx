@@ -1,9 +1,9 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
-import { Heart, MapPin, ArrowRight } from "lucide-react";
+import { MapPin, ArrowRight, Bed, Bath, Maximize } from "lucide-react";
 import { housingUnits } from "@/data/properties";
 import { formatPrice } from "@/data/properties";
 import { EstateImage } from "@/components/ui/EstateImage";
@@ -56,7 +56,6 @@ function PropertyCard({ unit, index, isInView }: {
   index: number;
   isInView: boolean;
 }) {
-  const [saved, setSaved] = useState(false);
   const tag = tagLabels[unit.slug];
 
   return (
@@ -79,17 +78,6 @@ function PropertyCard({ unit, index, isInView }: {
             {tag.label}
           </span>
         )}
-        <button
-          type="button"
-          onClick={() => setSaved((s) => !s)}
-          className={cn(
-            "absolute right-3 top-3 grid h-[34px] w-[34px] place-items-center rounded-full transition-all",
-            saved ? "bg-brand-blue-light text-brand-blue-deep" : "bg-white/94 text-[#475569]"
-          )}
-          aria-label={saved ? "Remove from favorites" : "Save property"}
-        >
-          <Heart className={cn("h-[17px] w-[17px]", saved && "fill-current")} />
-        </button>
       </div>
 
       <div className="p-5">
@@ -100,9 +88,9 @@ function PropertyCard({ unit, index, isInView }: {
         </div>
 
         <div className="mb-3.5 flex flex-wrap gap-4 border-b border-[#EDF1F5] pb-3.5 text-xs text-[#697687]">
-          <span>{unit.bedrooms} Beds</span>
-          <span>{unit.bathrooms} Baths</span>
-          <span>{unit.floorAreaSqm} sqm</span>
+          <span className="flex items-center gap-1.5"><Bed className="h-3.5 w-3.5" />{unit.bedrooms} Beds</span>
+          <span className="flex items-center gap-1.5"><Bath className="h-3.5 w-3.5" />{unit.bathrooms} Baths</span>
+          <span className="flex items-center gap-1.5"><Maximize className="h-3.5 w-3.5" />{unit.floorAreaSqm} sqm</span>
         </div>
 
         <div className="flex items-center justify-between gap-2.5">
