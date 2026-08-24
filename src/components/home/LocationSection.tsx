@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
-import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { location, categoryColors, categoryLabels, type Landmark } from "@/data/location";
 import { cn } from "@/lib/utils";
@@ -43,7 +42,7 @@ const lineLengths: Record<string, string> = {
 export function LocationSection() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [sortByNearest, setSortByNearest] = useState(false);
-  const [selected, setSelected] = useState<Landmark | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
   const sortedLandmarks = useMemo(() => {
@@ -59,11 +58,10 @@ export function LocationSection() {
 
   const handleFilter = useCallback((cat: string) => {
     setActiveFilter(cat);
-    setSelected(null);
+    setHoveredId(null);
   }, []);
 
   const isVisible = (lm: Landmark) => activeFilter === "all" || lm.category === activeFilter;
-  const isLineVisible = (lm: Landmark) => activeFilter === "all" || lm.category === activeFilter;
 
   return (
     <section className="py-14 sm:py-20">
@@ -137,7 +135,7 @@ export function LocationSection() {
                   key={lm.id}
                   className={cn(
                     "absolute left-1/2 top-1/2 h-[1.5px] origin-[0_50%] transition-all duration-700",
-                    isLineVisible(lm) ? "opacity-55" : "opacity-[0.08]",
+                    isVisible(lm) ? "opacity-55" : "opacity-[0.08]",
                   )}
                   style={{
                     width: lineLengths[lm.id],
@@ -162,118 +160,115 @@ export function LocationSection() {
             </div>
 
             {/* Location pins */}
-            {location.landmarks.map((lm) => {
+            {sortedLandmarks.map((lm) => {
               const color = categoryColors[lm.category];
-              const isActive = selected?.id === lm.id;
+              const isHovered = hoveredId === lm.id;
               const visible = isVisible(lm);
+              const isTopBottom = lm.id === "train1" || lm.id === "bodija";
+              const isRight = lm.id === "secretariat" || lm.id === "palms" || lm.id === "dugbe-business";
+              const isLeft = lm.id === "airport" || lm.id === "jericho" || lm.id === "dugbe-station";
+              const raw = posClasses[lm.id] || "";
+              const topVal = raw.match(/top-\[([^\]]+)\]/)?.[1];
+              const leftVal = raw.match(/left-\[([^\]]+)\]/)?.[1];
+
               return (
-                <button
+                <div
                   key={lm.id}
-                  type="button"
-                  onClick={() => setSelected(isActive ? null : lm)}
-                  className={cn(
-                    "absolute z-10 flex items-start gap-[9px] transition-all duration-300",
-                    isActive ? "scale-105" : "hover:scale-105",
-                    lm.id === "train1" || lm.id === "bodija" ? "left-1/2 -translate-x-1/2 flex-col items-center text-center" : "",
-                    lm.id === "secretariat" || lm.id === "palms" || lm.id === "dugbe-business" ? "right-0 flex-row text-left" : "",
-                    lm.id === "airport" || lm.id === "jericho" || lm.id === "dugbe-station" ? "left-0 flex-row-reverse text-right" : "",
-                  )}
-                  style={(() => {
-                    const isTopBottom = lm.id === "train1" || lm.id === "bodija";
-                    const raw = posClasses[lm.id] || "";
-                    const topVal = raw.match(/top-\[([^\]]+)\]/)?.[1];
-                    const leftVal = raw.match(/left-\[([^\]]+)\]/)?.[1];
-                    return {
-                      top: topVal,
-                      left: isTopBottom ? "50%" : leftVal,
-                      opacity: visible ? 1 : 0.16,
-                      pointerEvents: visible ? ("auto" as const) : ("none" as const),
-                      width: "190px",
-                      justifyContent: isTopBottom ? "center" : lm.id === "airport" || lm.id === "jericho" || lm.id === "dugbe-station" ? "flex-end" : "flex-start",
-                    } as React.CSSProperties;
-                  })()}
+                  className="absolute z-10"
+                  onMouseEnter={() => visible && setHoveredId(lm.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  style={{
+                    top: topVal,
+                    left: isTopBottom ? "50%" : leftVal,
+                    transform: isTopBottom ? "translateX(-50%)" : undefined,
+                    opacity: visible ? 1 : 0.16,
+                    pointerEvents: visible ? ("auto" as const) : ("none" as const),
+                  }}
                 >
-                  {/* Badge */}
-                  {(lm.id === "train1" || lm.id === "bodija") && (
+                  {/* Hover popup card — positioned in front of the pin */}
+                  <AnimatePresence>
+                    {isHovered && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.92, y: 6 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.92, y: 6 }}
+                        transition={{ duration: 0.2 }}
+                        className={cn(
+                          "absolute z-40 w-[255px] rounded-[16px] border border-[#DFE8F0] bg-white/97 p-[15px] shadow-[0_14px_44px_rgba(30,68,102,.14)] backdrop-blur-sm",
+                          isTopBottom ? "left-1/2 -translate-x-1/2" : isRight ? "right-full mr-3" : "left-full ml-3",
+                          isTopBottom ? "bottom-full mb-3" : "top-1/2 -translate-y-1/2",
+                        )}
+                      >
+                        <p className="text-[9px] font-extrabold uppercase tracking-[0.13em] text-brand-blue-dark">
+                          {categoryLabels[lm.category]}
+                        </p>
+                        <h3 className="mt-[4px] font-heading text-[15px] font-extrabold leading-tight">{lm.name}</h3>
+                        <div className="mt-1 text-[10px] text-muted">{lm.distanceKm} km from Wellsprings</div>
+                        <p className="mt-2 text-[11px] leading-[1.5] text-[#69798A]">{lm.description}</p>
+                        <div className="mt-2.5 grid grid-cols-2 gap-1.5">
+                          <div className="rounded-[9px] bg-[#F7FAFD] p-[7px]">
+                            <small className="block text-[8px] text-[#96A3AF]">DISTANCE</small>
+                            <strong className="mt-[2px] block text-[10px]">{lm.distanceKm} km</strong>
+                          </div>
+                          <div className="rounded-[9px] bg-[#F7FAFD] p-[7px]">
+                            <small className="block text-[8px] text-[#96A3AF]">TYPE</small>
+                            <strong className="mt-[2px] block text-[10px]">{categoryLabels[lm.category]}</strong>
+                          </div>
+                        </div>
+                        {/* Arrow */}
+                        {isTopBottom && (
+                          <div className="absolute left-1/2 top-full -translate-x-1/2 h-0 w-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-t-[7px] border-t-white" />
+                        )}
+                        {isRight && (
+                          <div className="absolute right-full top-1/2 -translate-y-1/2 h-0 w-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[7px] border-r-white" />
+                        )}
+                        {isLeft && (
+                          <div className="absolute left-full top-1/2 -translate-y-1/2 h-0 w-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-l-[7px] border-l-white" />
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Pin content */}
+                  <div
+                    className={cn(
+                      "flex items-start gap-[8px] transition-all duration-200",
+                      isHovered && "scale-105",
+                      isTopBottom ? "flex-col items-center text-center" : "",
+                      isRight ? "flex-row text-left" : "",
+                      isLeft ? "flex-row-reverse text-right" : "",
+                    )}
+                    style={{ width: "190px", justifyContent: isTopBottom ? "center" : isLeft ? "flex-end" : "flex-start" }}
+                  >
+                    {/* Badge icon */}
                     <span
-                      className="grid h-[27px] w-[27px] place-items-center rounded-[8px] text-[12px]"
+                      className={cn(
+                        "grid h-[27px] w-[27px] shrink-0 place-items-center rounded-[8px] text-[12px]",
+                        isLeft && "order-[-1]",
+                      )}
                       style={{ background: `color-mix(in srgb, ${color} 10%, white)`, color }}
                     >
                       {lm.badge}
                     </span>
-                  )}
-                  {(lm.id === "airport" || lm.id === "jericho" || lm.id === "dugbe-station") && (
-                    <span
-                      className="order-[-1] grid h-[27px] w-[27px] place-items-center rounded-[8px] text-[12px]"
-                      style={{ background: `color-mix(in srgb, ${color} 10%, white)`, color }}
-                    >
-                      {lm.badge}
-                    </span>
-                  )}
-                  {/* Pin + text */}
-                  <div className={cn("flex items-start gap-[9px]", (lm.id === "train1" || lm.id === "bodija") && "flex-col items-center")}>
-                    <span
-                      className="mt-[3px] h-[13px] w-[13px] shrink-0 rounded-full transition-all duration-300"
-                      style={{
-                        background: color,
-                        boxShadow: isActive ? `0 0 0 8px color-mix(in srgb, ${color} 14%, transparent)` : `0 0 0 5px color-mix(in srgb, ${color} 12%, transparent)`,
-                        transform: isActive ? "scale(1.35)" : undefined,
-                      }}
-                    />
-                    <span className="location-text">
-                      <strong className="block font-heading text-[11px] leading-[1.25]">{lm.name}</strong>
-                      <span className="mt-[3px] block text-[10px] text-[#9AA7B4]">{lm.distanceKm} km</span>
-                    </span>
+                    {/* Dot + text */}
+                    <div className={cn("flex items-start gap-[8px]", isTopBottom && "flex-col items-center")}>
+                      <span
+                        className="mt-[3px] h-[13px] w-[13px] shrink-0 rounded-full transition-all duration-300"
+                        style={{
+                          background: color,
+                          boxShadow: isHovered ? `0 0 0 8px color-mix(in srgb, ${color} 14%, transparent)` : `0 0 0 5px color-mix(in srgb, ${color} 12%, transparent)`,
+                          transform: isHovered ? "scale(1.35)" : undefined,
+                        }}
+                      />
+                      <span className="location-text">
+                        <strong className="block font-heading text-[11px] leading-[1.25]">{lm.name}</strong>
+                        <span className="mt-[3px] block text-[10px] text-[#9AA7B4]">{lm.distanceKm} km</span>
+                      </span>
+                    </div>
                   </div>
-                  {/* Badge for side items */}
-                  {(lm.id !== "train1" && lm.id !== "bodija") && (
-                    <span
-                      className="grid h-[27px] w-[27px] place-items-center rounded-[8px] text-[12px]"
-                      style={{ background: `color-mix(in srgb, ${color} 10%, white)`, color }}
-                    >
-                      {lm.badge}
-                    </span>
-                  )}
-                </button>
+                </div>
               );
             })}
-
-            {/* Detail card */}
-            <AnimatePresence>
-              {selected && (
-                <motion.div
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute right-5 top-[18px] z-30 w-[285px] rounded-[18px] border border-[#DFE8F0] bg-white/96 p-[17px] shadow-[0_18px_50px_rgba(30,68,102,.13)]"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setSelected(null)}
-                    className="absolute right-[11px] top-[10px] grid h-6 w-6 place-items-center rounded-full bg-[#f1f5f8] text-[#7d8c9a]"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                  <p className="text-[9px] font-extrabold uppercase tracking-[0.13em] text-brand-blue-dark">
-                    {categoryLabels[selected.category]}
-                  </p>
-                  <h3 className="mt-[5px] pr-7 font-heading text-[17px] font-extrabold">{selected.name}</h3>
-                  <div className="mt-1 text-[11px] text-muted">{selected.distanceKm} km from Wellsprings</div>
-                  <p className="mt-3 text-[11px] leading-[1.55] text-[#69798A]">{selected.description}</p>
-                  <div className="mt-3 grid grid-cols-2 gap-2">
-                    <div className="rounded-[11px] bg-[#F7FAFD] p-[9px]">
-                      <small className="block text-[8px] text-[#96A3AF]">DISTANCE</small>
-                      <strong className="mt-[3px] block text-[10px]">{selected.distanceKm} km</strong>
-                    </div>
-                    <div className="rounded-[11px] bg-[#F7FAFD] p-[9px]">
-                      <small className="block text-[8px] text-[#96A3AF]">TYPE</small>
-                      <strong className="mt-[3px] block text-[10px]">{categoryLabels[selected.category]}</strong>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
 
             {/* Filter buttons */}
             <div className="absolute bottom-[-52px] left-1/2 z-25 flex w-[calc(100%-40px)] -translate-x-1/2 flex-wrap justify-center gap-[6px]">
