@@ -45,9 +45,11 @@ export function Navbar() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        solid
-          ? "border-b border-grey-line bg-white/90 shadow-sm backdrop-blur-md"
-          : "border-b border-white/10 bg-gradient-to-b from-black/30 via-black/10 to-transparent backdrop-blur-[2px]",
+        menuOpen
+          ? "bg-navy shadow-md"
+          : solid
+            ? "border-b border-grey-line bg-white/90 shadow-sm backdrop-blur-md"
+            : "border-b border-white/10 bg-gradient-to-b from-black/30 via-black/10 to-transparent backdrop-blur-[2px]",
       )}
     >
       <nav aria-label="Main" className="container-site flex h-16 items-center justify-between gap-4 sm:h-20">
@@ -60,7 +62,7 @@ export function Navbar() {
               href={link.href}
               className={cn(
                 "rounded-full px-3.5 py-2 text-sm font-semibold transition-colors",
-                solid ? "text-navy hover:bg-tint" : "text-white hover:bg-white/10",
+                menuOpen ? "text-white hover:bg-white/10" : solid ? "text-navy hover:bg-tint" : "text-white hover:bg-white/10",
               )}
             >
               {link.label}
@@ -80,7 +82,7 @@ export function Navbar() {
           className={cn(
             "grid h-11 w-11 place-items-center rounded-full transition-colors lg:hidden",
             menuOpen
-              ? "bg-navy text-white hover:bg-navy/80"
+              ? "bg-white/10 text-white hover:bg-white/20"
               : solid
                 ? "text-navy hover:bg-tint"
                 : "text-white bg-white/10 hover:bg-white/20",
