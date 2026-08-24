@@ -153,7 +153,7 @@ export function LocationSection() {
                 alt="Wellsprings"
                 width={80}
                 height={80}
-                className="object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,.18)]"
+                className="object-contain brightness-0 invert drop-shadow-[0_2px_6px_rgba(0,0,0,.18)]"
               />
               {/* Pulse ring */}
               <span className="pointer-events-none absolute inset-[-12px] rounded-full border border-[rgba(105,157,214,.35)]" style={{ animation: "pulse 3s infinite" }} />
