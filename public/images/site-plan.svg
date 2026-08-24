@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EAF3FB"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#g)"/>
+  <circle cx="144" cy="135" r="198" fill="#699DD5" opacity="0.18"/>
+  <circle cx="1080" cy="765" r="252.00000000000003" fill="#699DD5" opacity="0.14"/>
+  <rect x="48" y="36" width="1104" height="828" fill="none" stroke="#699DD5" stroke-opacity="0.35" stroke-width="3"/>
+  <text x="600" y="442" text-anchor="middle" dominant-baseline="middle" font-family="Manrope, Arial, sans-serif" font-size="64" font-weight="700" fill="#17324D">Master site plan</text>
+  <text x="600" y="525" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="35" font-weight="500" fill="#3E6FA3">[Replace with estate layout showing plot numbers]</text>
+</svg>

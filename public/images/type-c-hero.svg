@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#17324D"/>
+      <stop offset="1" stop-color="#0D1B2A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <circle cx="144" cy="120" r="176" fill="#699DD5" opacity="0.18"/>
+  <circle cx="1080" cy="680" r="224.00000000000003" fill="#699DD5" opacity="0.14"/>
+  <rect x="48" y="32" width="1104" height="736" fill="none" stroke="#699DD5" stroke-opacity="0.35" stroke-width="3"/>
+  <text x="600" y="392" text-anchor="middle" dominant-baseline="middle" font-family="Manrope, Arial, sans-serif" font-size="57" font-weight="700" fill="#FFFFFF">Type C — exterior</text>
+  <text x="600" y="467" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="31" font-weight="500" fill="#C8A96B">[Replace with real photo]</text>
+</svg>

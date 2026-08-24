@@ -1,0 +1,60 @@
+import { defineField, defineType } from "sanity";
+
+export default defineType({
+  name: "property",
+  title: "Property Type",
+  type: "document",
+  fields: [
+    defineField({ name: "name", title: "Short Name", type: "string", validation: (r) => r.required() }),
+    defineField({ name: "fullName", title: "Full Name", type: "string", validation: (r) => r.required() }),
+    defineField({ name: "slug", title: "Slug", type: "slug", options: { source: "name" }, validation: (r) => r.required() }),
+    defineField({ name: "tagline", title: "Tagline", type: "string" }),
+    defineField({ name: "propertyType", title: "Property Type", type: "string", options: { list: ["villa", "duplex", "terrace", "apartment"] } }),
+    defineField({ name: "priceFrom", title: "Starting Price (NGN)", type: "number", validation: (r) => r.min(0) }),
+    defineField({ name: "status", title: "Availability", type: "string", options: { list: ["available", "limited", "sold-out"] } }),
+    defineField({ name: "unitsLeft", title: "Units Remaining", type: "number" }),
+    defineField({ name: "bedrooms", title: "Bedrooms", type: "number" }),
+    defineField({ name: "bathrooms", title: "Bathrooms", type: "number" }),
+    defineField({ name: "toilets", title: "Toilets", type: "number" }),
+    defineField({ name: "floorAreaSqm", title: "Floor Area (m\u00B2)", type: "number" }),
+    defineField({ name: "parkingSpaces", title: "Parking Spaces", type: "number" }),
+    defineField({ name: "homeOffice", title: "Has Home Office", type: "boolean" }),
+    defineField({ name: "maidsRoom", title: "Has Maid's Room", type: "boolean" }),
+    defineField({ name: "description", title: "Description", type: "array", of: [{ type: "text" }] }),
+    defineField({ name: "heroImage", title: "Hero Image", type: "image", options: { hotspot: true } }),
+    defineField({ name: "heroImageAlt", title: "Hero Image Alt Text", type: "string" }),
+    defineField({
+      name: "gallery",
+      title: "Gallery",
+      type: "array",
+      of: [{ type: "object", fields: [
+        defineField({ name: "src", type: "image", options: { hotspot: true } }),
+        defineField({ name: "alt", type: "string" }),
+      ] }],
+    }),
+    defineField({ name: "floorPlanGround", title: "Ground Floor Plan", type: "image" }),
+    defineField({ name: "floorPlanFirst", title: "First Floor Plan", type: "image" }),
+    defineField({
+      name: "rooms",
+      title: "Room Schedule",
+      type: "array",
+      of: [{ type: "object", fields: [
+        defineField({ name: "level", type: "string", options: { list: ["ground", "first"] } }),
+        defineField({ name: "label", type: "string" }),
+        defineField({ name: "areaSqm", type: "number" }),
+      ] }],
+    }),
+    defineField({
+      name: "features",
+      title: "Included Features",
+      type: "array",
+      of: [{ type: "string" }],
+    }),
+    defineField({ name: "artImpression", title: "Artistic Impression Note", type: "string" }),
+    defineField({ name: "order", title: "Display Order", type: "number" }),
+  ],
+  orderings: [{ by: "order", direction: "asc" }],
+  preview: {
+    select: { title: "name", subtitle: "fullName", media: "heroImage" },
+  },
+});
