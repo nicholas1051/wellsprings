@@ -79,7 +79,11 @@ export function Navbar() {
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           className={cn(
             "grid h-11 w-11 place-items-center rounded-full transition-colors lg:hidden",
-            solid ? "text-navy hover:bg-tint" : "text-white bg-white/10 hover:bg-white/20",
+            menuOpen
+              ? "bg-navy text-white hover:bg-navy/80"
+              : solid
+                ? "text-navy hover:bg-tint"
+                : "text-white bg-white/10 hover:bg-white/20",
           )}
         >
           {menuOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
