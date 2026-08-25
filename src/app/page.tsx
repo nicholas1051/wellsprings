@@ -36,8 +36,6 @@ export default function HomePage() {
         <Hero />
       </div>
 
-      <WhyWellsprings />
-
       <div className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
           { color: "blue", size: 700, className: "top-[-50px] right-[-150px]" },
@@ -45,6 +43,8 @@ export default function HomePage() {
         ]} />
         <FeaturedProperties />
       </div>
+
+      <WhyWellsprings />
 
       <div className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
