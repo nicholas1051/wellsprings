@@ -228,17 +228,18 @@ export function HowToOwn() {
               <li
                 key={i}
                 ref={(el) => { stepRefs.current[i] = el; }}
-                className="grid items-center transition-opacity duration-700"
+                className="relative grid items-center transition-opacity duration-700"
                 style={{
                   gridTemplateColumns: "1fr 40px 1fr",
-                  columnGap: 26,
+                  columnGap: 0,
                   opacity: isVisible ? 1 : 0,
                 }}
               >
-                {/* Card */}
+                {/* Card — odd steps: left (col 1), even steps: right (col 3) */}
                 <div
-                  className="relative w-full max-w-[270px] rounded bg-white p-5 shadow-[0_14px_30px_rgba(0,0,0,.1)] transition-all duration-500"
+                  className="relative w-full max-w-[270px] rounded bg-white p-5 transition-all duration-500"
                   style={{
+                    gridColumn: isOdd ? 1 : 3,
                     justifySelf: isOdd ? "end" : "start",
                     textAlign: isOdd ? "right" : "left",
                     borderRadius: isOdd ? "4px 30px 4px 4px" : "4px 4px 4px 30px",
@@ -249,15 +250,6 @@ export function HowToOwn() {
                       : "0 14px 30px rgba(0,0,0,.1)",
                   }}
                 >
-                  {/* Connector tick */}
-                  <div
-                    className="absolute top-1/2 h-px w-[26px] bg-[rgba(34,29,21,.18)] transition-colors duration-500"
-                    style={{
-                      [isOdd ? "right" : "left"]: -26,
-                      background: isActive ? "#699DD6" : undefined,
-                    }}
-                  />
-
                   <div
                     className="mb-3 flex items-baseline gap-2.5"
                     style={{ flexDirection: isOdd ? "row-reverse" : "row" }}
@@ -294,7 +286,20 @@ export function HowToOwn() {
                   </div>
                 </div>
 
-                {/* Node */}
+                {/* Connector line from card to spine */}
+                <div
+                  className="absolute top-1/2 z-[1] h-px transition-colors duration-500"
+                  style={{
+                    width: "calc(50% - 20px - 26px)",
+                    [isOdd ? "right" : "left"]: "calc(50% + 20px)",
+                    top: "50%",
+                    background: isActive
+                      ? "rgba(105,157,214,.6)"
+                      : "rgba(255,255,255,.12)",
+                  }}
+                />
+
+                {/* Node — always center (col 2) */}
                 <div
                   className="z-10 grid h-10 w-10 place-items-center rounded-full border transition-all duration-500"
                   style={{
@@ -309,7 +314,7 @@ export function HowToOwn() {
                   <Icon className="h-4 w-4" />
                 </div>
 
-                {/* Empty cell for grid alignment */}
+                {/* Empty opposite side */}
                 <div style={{ gridColumn: isOdd ? 3 : 1 }} />
               </li>
             );
