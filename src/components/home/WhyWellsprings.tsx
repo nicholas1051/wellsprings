@@ -289,10 +289,10 @@ const CSS = `
       overflow-y:auto;
       gap:5px;
     }
-    .whyw-panel{ min-width:0; min-height:52px; flex:1 1 0; }
-    .whyw-rail:hover .whyw-panel{ flex-grow:1; }
-    .whyw-panel:hover{ flex-grow:1 !important; }
-    .whyw-panel.is-expanded{ flex-grow:6 !important; }
+    .whyw-panel{ min-width:0; min-height:0; flex:0 0 52px; }
+    .whyw-rail:hover .whyw-panel{ flex:0 0 52px; }
+    .whyw-panel:hover{ flex:0 0 52px !important; }
+    .whyw-panel.is-expanded{ flex:1 1 auto !important; min-height:280px; }
     .whyw-ptitle{
       writing-mode:horizontal-tb;
       transform:none;
@@ -304,7 +304,8 @@ const CSS = `
       position:static; transform:none; top:auto; font-size:20px;
     }
     .whyw-panel:not(.is-expanded) .whyw-pdesc{ display:none; }
-    @media (hover:hover){ .whyw-panel:hover{ display:block; padding:0; } }
+    .whyw-panel.is-expanded .whyw-pdesc{ display:block; opacity:1; max-height:120px; position:static; }
+    @media (hover:hover){ .whyw-panel:hover{ flex:0 0 52px !important; display:block; padding:0; } }
     .whyw-panel.is-expanded{ display:flex; flex-direction:column; justify-content:flex-end; padding:18px; }
   }
 

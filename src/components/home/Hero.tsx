@@ -159,7 +159,9 @@ export function Hero() {
           </motion.div>
         </div>
 
-        <SearchBar />
+        <div className="hidden sm:block">
+          <SearchBar />
+        </div>
       </div>
     </section>
   );

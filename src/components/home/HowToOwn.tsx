@@ -386,18 +386,43 @@ const CSS = `
   }
 
   @media (max-width:760px){
-    .htop-timeline{ padding-left:24px; }
-    .htop-step{ grid-template-columns:34px 22px 1fr; column-gap:0; }
-    .htop-node{ width:34px; height:34px; grid-column:1; justify-self:start; }
-    .htop-node svg{ width:14px; height:14px; }
-    .htop-rail{ left:17px; transform:none; }
-    .htop-step .htop-card{ grid-column:3; justify-self:start; text-align:left; max-width:none; }
-    .htop-step .htop-card__top, .htop-step .htop-card__footer{ flex-direction:row; }
-    .htop-step .htop-card::before{ left:-22px; right:auto; width:22px; }
-    .htop-step .htop-card__body{ margin-left:0; margin-right:auto; }
-    .htop-step .htop-card{ transform:none !important; }
-    .htop-step.is-active .htop-card{ transform:scale(.96) !important; }
-    .htop-steps{ gap:8vh; }
+    .htop-timeline{ padding-left:0; padding-right:0; }
+    .htop-rail{ left:21px; transform:none; }
+    .htop-steps{ gap:5vh; }
+
+    .htop-step{
+      display:grid;
+      grid-template-columns:42px 1fr;
+      column-gap:14px;
+      align-items:start;
+    }
+
+    .htop-node{ grid-column:1; justify-self:center; width:42px; height:42px; }
+    .htop-node svg{ width:16px; height:16px; }
+
+    .htop-step .htop-card{
+      grid-column:2;
+      justify-self:stretch;
+      text-align:left;
+      max-width:none;
+      border-radius:16px;
+      padding:18px 16px 14px;
+    }
+    .htop-step .htop-card__top{ flex-direction:row; }
+    .htop-step .htop-card__body{ margin-left:0; margin-right:auto; max-width:none; }
+    .htop-step .htop-card::before{ display:none; }
+
+    .htop-step .htop-card,
+    .htop-step:nth-child(odd) .htop-card,
+    .htop-step:nth-child(even) .htop-card{ transform:none !important; }
+    .htop-step.is-active .htop-card{ transform:scale(.97) !important; }
+
+    .htop-step:nth-child(odd) .htop-card__top,
+    .htop-step:nth-child(even) .htop-card__top{ flex-direction:row; }
+    .htop-step:nth-child(odd) .htop-card__footer,
+    .htop-step:nth-child(even) .htop-card__footer{ flex-direction:row; }
+    .htop-step:nth-child(odd) .htop-card__body,
+    .htop-step:nth-child(even) .htop-card__body{ margin-left:0; margin-right:auto; }
   }
 
   @media (prefers-reduced-motion:reduce){
