@@ -387,7 +387,7 @@ const CSS = `
 
   @media (max-width:760px){
     .htop-timeline{ padding-left:0; padding-right:0; }
-    .htop-rail{ left:21px; transform:none; }
+    .htop-rail{ left:21px; transform:none; width:2px; }
     .htop-steps{ gap:5vh; }
 
     .htop-step{
@@ -395,34 +395,48 @@ const CSS = `
       grid-template-columns:42px 1fr;
       column-gap:14px;
       align-items:start;
+      padding-left:0;
     }
 
-    .htop-node{ grid-column:1; justify-self:center; width:42px; height:42px; }
+    .htop-node{
+      grid-column:1; grid-row:1;
+      justify-self:center; width:42px; height:42px;
+      order:-1;
+    }
     .htop-node svg{ width:16px; height:16px; }
 
     .htop-step .htop-card{
-      grid-column:2;
+      grid-column:2; grid-row:1;
       justify-self:stretch;
       text-align:left;
       max-width:none;
       border-radius:16px;
       padding:18px 16px 14px;
+      transform:none !important;
     }
-    .htop-step .htop-card__top{ flex-direction:row; }
-    .htop-step .htop-card__body{ margin-left:0; margin-right:auto; max-width:none; }
-    .htop-step .htop-card::before{ display:none; }
-
-    .htop-step .htop-card,
-    .htop-step:nth-child(odd) .htop-card,
-    .htop-step:nth-child(even) .htop-card{ transform:none !important; }
     .htop-step.is-active .htop-card{ transform:scale(.97) !important; }
 
+    .htop-step .htop-card::before{ display:none !important; }
+
+    .htop-step .htop-card__top,
     .htop-step:nth-child(odd) .htop-card__top,
-    .htop-step:nth-child(even) .htop-card__top{ flex-direction:row; }
-    .htop-step:nth-child(odd) .htop-card__footer,
-    .htop-step:nth-child(even) .htop-card__footer{ flex-direction:row; }
+    .htop-step:nth-child(even) .htop-card__top{ flex-direction:row !important; }
+
+    .htop-step .htop-card__body,
     .htop-step:nth-child(odd) .htop-card__body,
-    .htop-step:nth-child(even) .htop-card__body{ margin-left:0; margin-right:auto; }
+    .htop-step:nth-child(even) .htop-card__body{ margin-left:0 !important; margin-right:auto !important; max-width:none; }
+
+    .htop-step .htop-card__footer,
+    .htop-step:nth-child(odd) .htop-card__footer,
+    .htop-step:nth-child(even) .htop-card__footer{ flex-direction:row !important; }
+
+    .htop-step:nth-child(odd) .htop-card,
+    .htop-step:nth-child(even) .htop-card{
+      grid-column:2 !important;
+      justify-self:stretch !important;
+      text-align:left !important;
+      transform:none !important;
+    }
   }
 
   @media (prefers-reduced-motion:reduce){
