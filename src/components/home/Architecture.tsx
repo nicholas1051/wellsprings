@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { partners } from "@/data/site";
@@ -91,13 +92,19 @@ export function Architecture() {
                 >
                   {[...partners, ...partners].map((partner, i) => (
                     <div
-                      key={`${partner}-${i}`}
+                      key={`${partner.name}-${i}`}
                       className="flex shrink-0 items-center gap-4 border-r border-grey-line px-6 py-4 last:border-r-0"
                     >
-                      <div className="flex h-[7.5rem] w-[7.5rem] shrink-0 items-center justify-center rounded-lg border border-grey-line bg-cream/60">
-                        <span className="text-[10px] font-medium text-text-grey/50">Logo</span>
+                      <div className="flex h-[7.5rem] w-[7.5rem] shrink-0 items-center justify-center rounded-lg border border-grey-line bg-cream/60 overflow-hidden p-2">
+                        <Image
+                          src={partner.image}
+                          alt={partner.name}
+                          width={100}
+                          height={100}
+                          className="h-full w-full object-contain"
+                        />
                       </div>
-                      <span className="whitespace-nowrap text-sm font-semibold text-navy">{partner}</span>
+                      <span className="whitespace-nowrap text-sm font-semibold text-navy">{partner.name}</span>
                     </div>
                   ))}
                 </motion.div>
@@ -115,13 +122,19 @@ export function Architecture() {
                 >
                   {[...partners, ...partners].map((partner, i) => (
                     <div
-                      key={`dup-${partner}-${i}`}
+                      key={`dup-${partner.name}-${i}`}
                       className="flex shrink-0 items-center gap-4 border-r border-grey-line px-6 py-4 last:border-r-0"
                     >
-                      <div className="flex h-[7.5rem] w-[7.5rem] shrink-0 items-center justify-center rounded-lg border border-grey-line bg-cream/60">
-                        <span className="text-[10px] font-medium text-text-grey/50">Logo</span>
+                      <div className="flex h-[7.5rem] w-[7.5rem] shrink-0 items-center justify-center rounded-lg border border-grey-line bg-cream/60 overflow-hidden p-2">
+                        <Image
+                          src={partner.image}
+                          alt={partner.name}
+                          width={100}
+                          height={100}
+                          className="h-full w-full object-contain"
+                        />
                       </div>
-                      <span className="whitespace-nowrap text-sm font-semibold text-navy">{partner}</span>
+                      <span className="whitespace-nowrap text-sm font-semibold text-navy">{partner.name}</span>
                     </div>
                   ))}
                 </motion.div>
@@ -129,7 +142,7 @@ export function Architecture() {
             </div>
             <p className="mt-6 text-center text-sm text-text-grey">
               Architectural design by Studio Stoone Designs. Structural engineering by KOA Consultants.
-              Project management by African United Consultants.
+              Project management by African United Consultants. Urban planning by Place-Make.
             </p>
           </div>
         </Reveal>

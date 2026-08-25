@@ -108,16 +108,19 @@ export function Hero() {
         }}
       >
         <div className="relative z-10 w-full px-6 pt-20 sm:w-[min(610px,100%)] sm:px-[68px] sm:pt-24">
-          <h1 className="font-heading text-[clamp(40px,5.5vw,74px)] leading-[0.99] tracking-[-0.045em] text-white" style={{ textShadow: "0 2px 12px rgba(0,0,0,.35)" }}>
+          <h1 className="font-heading text-[clamp(42px,5.5vw,78px)] leading-[0.99] tracking-[-0.045em] text-white font-extrabold" style={{ textShadow: "0 3px 18px rgba(0,0,0,.45), 0 1px 4px rgba(0,0,0,.3)" }}>
             {reduceMotion ? (
-              tagline.split("").map((char, i) => (
-                <span key={i} className={i >= 7 && i <= 10 ? "relative text-brand-blue" : undefined}>
-                  {char}
-                  {i === 10 && (
-                    <span className="absolute bottom-[-5px] left-0.5 right-0 h-[3px] rounded-full bg-brand-blue" />
-                  )}
-                </span>
-              ))
+              tagline.split("").map((char, i) => {
+                const isLive = i >= 7 && i <= 11;
+                return (
+                  <span key={i} className={isLive ? "relative text-brand-blue" : undefined}>
+                    {char}
+                    {i === 11 && (
+                      <span className="absolute bottom-[-5px] left-0.5 right-0 h-[3px] rounded-full bg-brand-blue" />
+                    )}
+                  </span>
+                );
+              })
             ) : (
               <TypewriterTagline />
             )}
@@ -125,8 +128,8 @@ export function Hero() {
 
           <motion.p
             {...(reduceMotion ? {} : fadeUp(0.8))}
-            className="mt-5 max-w-[500px] text-lg leading-relaxed text-white/85"
-            style={{ textShadow: "0 1px 8px rgba(0,0,0,.3)" }}
+            className="mt-5 max-w-[520px] text-[17px] leading-[1.7] font-medium text-white"
+            style={{ textShadow: "0 2px 16px rgba(0,0,0,.5), 0 1px 4px rgba(0,0,0,.3)" }}
           >
             Thoughtfully designed homes set within a serene and welcoming community.
             Wellsprings gives you the comfort and space to live well, work productively,
@@ -182,14 +185,27 @@ function TypewriterTagline() {
 
   return (
     <span ref={ref}>
-      {tagline.split("").map((char, i) => (
-        <span key={i} className={i >= liveStart && i <= liveEnd ? "relative text-brand-blue" : undefined}>
-          {char}
-          {i === liveEnd && (
-            <span className="absolute bottom-[-5px] left-0.5 right-0 h-[3px] rounded-full bg-brand-blue" />
-          )}
-        </span>
-      ))}
+      {tagline.split("").map((char, i) => {
+        const isLive = i >= liveStart && i <= liveEnd;
+        return (
+          <span key={i} className={isLive ? "relative inline-block text-brand-blue" : undefined}>
+            {isLive ? (
+              <motion.span
+                className="inline-block"
+                animate={{ scale: [1, 1.12, 1] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                {char}
+              </motion.span>
+            ) : (
+              char
+            )}
+            {i === liveEnd && (
+              <span className="absolute bottom-[-5px] left-0.5 right-0 h-[3px] rounded-full bg-brand-blue" />
+            )}
+          </span>
+        );
+      })}
       {!finished && (
         <motion.span
           className="ml-0.5 inline-block h-[0.85em] w-[2px] translate-y-[2px] bg-brand-blue"

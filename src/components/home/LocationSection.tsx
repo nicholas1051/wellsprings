@@ -67,15 +67,33 @@ export function LocationSection() {
     <section className="py-14 sm:py-20">
       <div className="container-site">
         <div className="mb-6 text-center">
-          <span className="inline-block rounded-full bg-brand-blue-light px-3.5 py-2 text-[10px] font-extrabold uppercase tracking-[0.15em] text-brand-blue-dark">
+          <motion.span
+            className="inline-block rounded-full bg-brand-blue-light px-3.5 py-2 text-[10px] font-extrabold uppercase tracking-[0.15em] text-brand-blue-dark"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-60px" }}
+            transition={{ duration: 0.5 }}
+          >
             Location Advantage
-          </span>
-          <h1 className="mt-3 font-heading text-[clamp(40px,5.2vw,68px)] leading-[1.02] tracking-[-0.06em] text-navy">
+          </motion.span>
+          <motion.h1
+            className="mt-3 font-heading text-[clamp(40px,5.2vw,68px)] leading-[1.02] tracking-[-0.06em] text-navy"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-60px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             Live Where Everything Is <span className="text-brand-blue-dark">Within Reach</span>
-          </h1>
-          <p className="mx-auto mt-4 max-w-[670px] text-center text-[15px] leading-[1.75] text-muted">
+          </motion.h1>
+          <motion.p
+            className="mx-auto mt-4 max-w-[670px] text-center text-[15px] leading-[1.75] text-muted"
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-60px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             {location.intro}
-          </p>
+          </motion.p>
         </div>
 
         {/* Explorer shell */}

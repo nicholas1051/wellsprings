@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
 const PANELS = [
   {
@@ -151,6 +152,7 @@ const CSS = `
     color:#94A3B8;
     margin:0;
     max-width:44ch;
+    text-align:justify;
   }
 
   .whyw-rail{
@@ -313,6 +315,7 @@ const CSS = `
 
 export function WhyWellsprings() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
+  const reduceMotion = useReducedMotion();
 
   const handleToggle = (index: number) => {
     setActiveIndex((current) => (current === index ? null : index));
@@ -332,13 +335,33 @@ export function WhyWellsprings() {
       <section className="whyw" id="whywellsprings">
         <div className="whyw__inner">
           <div className="whyw__head">
-            <p className="whyw-kicker">Why Wellsprings</p>
-            <h2 className="whyw__title">
+            <motion.p
+              className="whyw-kicker"
+              initial={reduceMotion ? {} : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              Why Wellsprings
+            </motion.p>
+            <motion.h2
+              className="whyw__title"
+              initial={reduceMotion ? {} : { opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-60px" }}
+              transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+            >
               Live well, <em>right where you live.</em>
-            </h2>
-            <p className="whyw__sub">
-              Eight reasons Wellsprings stands apart — hover or tap a panel to explore.
-            </p>
+            </motion.h2>
+            <motion.p
+              className="whyw__sub"
+              initial={reduceMotion ? {} : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-60px" }}
+              transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            >
+              Wellsprings offers a five-a-side pitch, courts, pool, green spaces, a children&apos;s park, and a warm creche all within gated access, promising comfort, privacy, and peace of mind daily.
+            </motion.p>
           </div>
 
           <div className="whyw-rail">
@@ -361,7 +384,15 @@ export function WhyWellsprings() {
             ))}
           </div>
 
-          <p className="whyw-hint">Hover to explore · tap on mobile</p>
+          <motion.p
+            className="whyw-hint"
+            initial={reduceMotion ? {} : { opacity: 0 }}
+            whileInView={{ opacity: 0.7 }}
+            viewport={{ once: false, margin: "-40px" }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            Hover to explore · tap on mobile
+          </motion.p>
         </div>
       </section>
     </div>

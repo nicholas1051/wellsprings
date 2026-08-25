@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ShieldCheck,
   Droplets,
@@ -65,6 +66,7 @@ const categories = [
 export function KeyFeatures() {
   const [active, setActive] = useState<"estate" | "home" | "community">("estate");
   const [hovered, setHovered] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   const nextCategory = useCallback(() => {
     if (hovered) return;
@@ -88,15 +90,33 @@ export function KeyFeatures() {
     <section className="py-14 sm:py-20">
       <div className="container-site">
         <div className="mb-6 text-center">
-          <span className="inline-block rounded-full bg-brand-blue-light px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand-blue-dark">
+          <motion.span
+            className="inline-block rounded-full bg-brand-blue-light px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand-blue-dark"
+            initial={reduceMotion ? {} : { opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-60px" }}
+            transition={{ duration: 0.5 }}
+          >
             The Wellsprings Experience
-          </span>
-          <h2 className="mt-3 font-heading text-[clamp(38px,5vw,64px)] leading-[1.02] tracking-[-0.055em] text-navy">
+          </motion.span>
+          <motion.h2
+            className="mt-3 font-heading text-[clamp(38px,5vw,64px)] leading-[1.02] tracking-[-0.055em] text-navy"
+            initial={reduceMotion ? {} : { opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-60px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             More Than Just a Place to <span className="text-brand-blue-dark">Live</span>
-          </h2>
-          <p className="mx-auto mt-3 max-w-[680px] text-center text-[15px] leading-[1.75] text-muted">
+          </motion.h2>
+          <motion.p
+            className="mx-auto mt-3 max-w-[680px] text-center text-[15px] leading-[1.75] text-muted"
+            initial={reduceMotion ? {} : { opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-60px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             We bring Estate, Home, and Community together to create a complete living experience — thoughtfully designed around the way you live.
-          </p>
+          </motion.p>
         </div>
 
         {/* Hub — Desktop */}
@@ -104,7 +124,7 @@ export function KeyFeatures() {
           {/* Central image */}
           <div className="absolute left-1/2 top-1/2 z-10 h-[410px] w-[410px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full shadow-[0_25px_28px_rgba(35,72,108,.2)] transition-all duration-500">
             <img
-              src="https://i.postimg.cc/vmsQhcmQ/Wellsprings-gate-house-8K.png"
+              src="/images/wellsprings-circle.png"
               alt="Wellsprings estate"
               className="h-full w-full object-cover"
             />

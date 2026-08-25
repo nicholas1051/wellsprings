@@ -142,10 +142,12 @@ const CSS = `
     transform:translateY(14px);
     transition:
       opacity .6s var(--ease), transform .6s var(--ease),
-      background .45s var(--ease), border-radius .45s var(--ease), box-shadow .45s var(--ease);
+      background .45s var(--ease), border-radius .45s var(--ease), box-shadow .45s var(--ease),
+      border-color .3s var(--ease);
+    border:2px solid transparent;
   }
   .faq-item.in-view{ opacity:1; transform:translateY(0); }
-  .faq-item:hover{ background:var(--bg-card-hover); }
+  .faq-item:hover{ background:var(--bg-card-hover); border-color:rgba(105,157,214,.25); }
 
   .faq-item__q{
     width:100%;
@@ -172,7 +174,7 @@ const CSS = `
     border:1px solid var(--brand);
     display:flex; align-items:center; justify-content:center;
     position:relative;
-    transition:background .4s var(--ease), border-color .4s var(--ease);
+    transition:background .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease);
   }
   .faq-item__icon::before,
   .faq-item__icon::after{
@@ -202,43 +204,78 @@ const CSS = `
     background:var(--active-fill);
     border-radius:24px;
     box-shadow:0 18px 40px rgba(0,0,0,.4);
+    border-color:rgba(105,157,214,.3);
   }
   .faq-item.is-active .faq-item__q{ color:var(--active-ink); }
   .faq-item.is-active .faq-item__a{ opacity:1; }
   .faq-item.is-active .faq-item__a p{ color:var(--active-muted); }
-  .faq-item.is-active .faq-item__icon{ background:var(--brand); }
+  .faq-item.is-active .faq-item__icon{ background:var(--brand); transform:rotate(0deg); }
   .faq-item.is-active .faq-item__icon::before,
   .faq-item.is-active .faq-item__icon::after{ background:var(--active-fill); }
   .faq-item.is-active .faq-item__icon::before{ transform:rotate(45deg); }
   .faq-item.is-active .faq-item__icon::after{ transform:rotate(45deg); }
   .faq-item:not(.is-active) .faq-item__icon::after{ transform:rotate(90deg); }
 
+  .faq__count{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:20px;
+    padding:0 4px;
+  }
+  .faq__count-num{
+    font-family:var(--font-heading);
+    font-weight:700;
+    font-size:13px;
+    color:var(--brand-bright);
+    background:rgba(105,157,214,.12);
+    padding:4px 12px;
+    border-radius:999px;
+  }
+  .faq__count-label{
+    font-size:12px;
+    color:var(--ink-dim);
+    letter-spacing:.04em;
+  }
+
   @media (max-width:900px){
     .faq__inner{ grid-template-columns:1fr; gap:52px; }
     .faq__intro{ position:static; }
     .faq-item__q{ font-size:14px; padding:13px 13px 13px 18px; }
     .faq-item__a{ padding:0 18px; }
+    .faq{ padding:10vh 20px 12vh; }
   }
 
   @media (prefers-reduced-motion:reduce){
-    .faq-item, .faq-item__a, .call-btn .ring{ transition:opacity .3s linear !important; }
+    .faq-item, .faq-item__a, .call-btn .ring, .faq-item__icon{ transition:opacity .3s linear !important; }
   }
 `;
 
 export function FaqSection() {
   const [activeIndex, setActiveIndex] = useState(faqs.length - 1);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [inView, setInView] = useState<boolean[]>(() => faqs.map(() => false));
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const answerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  useEffect(() => {
+    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
+  }, []);
+
+  const getActiveIndex = useCallback(() => {
+    if (!isTouchDevice && hoveredIndex !== null) return hoveredIndex;
+    return activeIndex;
+  }, [isTouchDevice, hoveredIndex, activeIndex]);
+
   const getMaxHeight = useCallback(
     (index: number) => {
-      if (index !== activeIndex) return "0px";
+      if (index !== getActiveIndex()) return "0px";
       const el = answerRefs.current[index];
       return el ? el.scrollHeight + "px" : "0px";
     },
-    [activeIndex],
+    [getActiveIndex],
   );
 
   const [heights, setHeights] = useState<string[]>(() => faqs.map(() => "0px"));
@@ -249,7 +286,7 @@ export function FaqSection() {
 
   useEffect(() => {
     recalcHeights();
-  }, [activeIndex, recalcHeights]);
+  }, [activeIndex, hoveredIndex, recalcHeights]);
 
   useEffect(() => {
     const onResize = () => recalcHeights();
@@ -301,9 +338,9 @@ export function FaqSection() {
             </p>
 
             <div className="faq__cta">
-              <p>Still have a question we haven&apos;t covered?</p>
-              <a className="call-btn" href="tel:">
-                Call an advisor
+              <p>Have more questions? We&apos;d love to hear from you.</p>
+              <a className="call-btn" href="/contact">
+                Reach out to us
                 <span className="ring">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 12h14M13 6l6 6-6 6" />
@@ -313,34 +350,43 @@ export function FaqSection() {
             </div>
           </div>
 
-          <ol className="faq__list">
-            {faqs.map((faq, index) => {
-              const isActive = index === activeIndex;
-              return (
-                <li
-                  key={index}
-                  ref={(el) => { itemRefs.current[index] = el; }}
-                  className={`faq-item${isActive ? " is-active" : ""}${inView[index] ? " in-view" : ""}`}
-                >
-                  <button
-                    className="faq-item__q"
-                    aria-expanded={isActive}
-                    onClick={() => handleToggle(index)}
+          <div>
+            <div className="faq__count">
+              <span className="faq__count-num">{faqs.length}</span>
+              <span className="faq__count-label">questions answered</span>
+            </div>
+
+            <ol className="faq__list">
+              {faqs.map((faq, index) => {
+                const isActive = index === getActiveIndex();
+                return (
+                  <li
+                    key={index}
+                    ref={(el) => { itemRefs.current[index] = el; }}
+                    className={`faq-item${isActive ? " is-active" : ""}${inView[index] ? " in-view" : ""}`}
+                    onMouseEnter={() => !isTouchDevice && setHoveredIndex(index)}
+                    onMouseLeave={() => !isTouchDevice && setHoveredIndex(null)}
                   >
-                    {faq.question}
-                    <span className="faq-item__icon" />
-                  </button>
-                  <div
-                    className="faq-item__a"
-                    ref={(el) => { answerRefs.current[index] = el; }}
-                    style={{ maxHeight: heights[index] }}
-                  >
-                    <p>{faq.answer}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+                    <button
+                      className="faq-item__q"
+                      aria-expanded={isActive}
+                      onClick={() => handleToggle(index)}
+                    >
+                      {faq.question}
+                      <span className="faq-item__icon" />
+                    </button>
+                    <div
+                      className="faq-item__a"
+                      ref={(el) => { answerRefs.current[index] = el; }}
+                      style={{ maxHeight: heights[index] }}
+                    >
+                      <p>{faq.answer}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
         </div>
       </section>
     </div>

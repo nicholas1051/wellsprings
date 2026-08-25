@@ -27,10 +27,22 @@ export function FeaturedProperties() {
       <div ref={ref} className="container-site">
         <div className="mb-7.5 flex items-end justify-between gap-5">
           <div>
-            <p className="eyebrow mb-2.5 text-brand-blue-deep">Explore our selection</p>
-            <h2 className="font-heading text-[clamp(34px,4.2vw,50px)] leading-[1.04] tracking-[-0.045em] text-navy">
+            <motion.p
+              className="eyebrow mb-2.5 text-brand-blue-deep"
+              initial={{ opacity: 0, y: 10 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+              transition={{ duration: 0.5 }}
+            >
+              Explore our selection
+            </motion.p>
+            <motion.h2
+              className="font-heading text-[clamp(34px,4.2vw,50px)] leading-[1.04] tracking-[-0.045em] text-navy"
+              initial={{ opacity: 0, y: 16 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
               Featured Properties
-            </h2>
+            </motion.h2>
           </div>
           <Link
             href="/properties"

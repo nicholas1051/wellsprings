@@ -50,10 +50,10 @@ export const footerLinks = {
 } as const;
 
 export const partners = [
-  "Studio Stoone Designs",
-  "African United Consultants",
-  "KOA Consultants",
-  "Place-Make",
+  { name: "African United Consultants", image: "/images/partners/auc.jpg" },
+  { name: "Studio Stoone Designs", image: "/images/partners/studio-stoone.jpg" },
+  { name: "KOA Consultants", image: "/images/partners/koa.jpg" },
+  { name: "Place-Make", image: "/images/partners/place-make.jpg" },
 ] as const;
 
 export const masterPlanStats = {

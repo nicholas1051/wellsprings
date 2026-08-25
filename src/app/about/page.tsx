@@ -97,9 +97,9 @@ export default function AboutPage() {
                 <p className="eyebrow mb-4 text-brand-blue-deep">Design & Build Partners</p>
                 <ul className="space-y-3">
                   {partners.map((partner) => (
-                    <li key={partner} className="flex items-center gap-3 border-b border-grey-line py-3 last:border-b-0">
+                    <li key={partner.name} className="flex items-center gap-3 border-b border-grey-line py-3 last:border-b-0">
                       <span className="h-2 w-2 rounded-full bg-brand-blue" aria-hidden="true" />
-                      <span className="text-base font-semibold text-navy">{partner}</span>
+                      <span className="text-base font-semibold text-navy">{partner.name}</span>
                     </li>
                   ))}
                 </ul>

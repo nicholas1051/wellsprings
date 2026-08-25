@@ -22,7 +22,7 @@ export default function GalleryPage() {
       <header className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/gallery-evening-1.jpg"
+            src="/images/hero-2.jpg"
             alt=""
             fill
             className="object-cover"
