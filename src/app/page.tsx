@@ -92,11 +92,7 @@ export default function HomePage() {
         <HowToOwn />
       </div>
 
-      <div id="faq" className="relative mb-8 sm:mb-12">
-        <GradientBlobs blobs={[
-          { color: "blue", size: 700, className: "top-[0px] left-[-200px]" },
-          { color: "terracotta", size: 500, className: "bottom-[-50px] right-[-150px]", delay: 0.3 },
-        ]} />
+      <div className="mb-8 sm:mb-12">
         <FaqSection />
       </div>
 
