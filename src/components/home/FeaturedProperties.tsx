@@ -23,7 +23,7 @@ export function FeaturedProperties() {
   const isInView = useInView(ref, { once: false, margin: "-60px" });
 
   return (
-    <section className="pb-20 sm:pb-28">
+    <section className="pb-20 pt-10 sm:pb-28 sm:pt-14">
       <div ref={ref} className="container-site">
         <div className="mb-7.5 flex items-end justify-between gap-5">
           <div>
