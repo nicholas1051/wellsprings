@@ -5,94 +5,95 @@ import { useState } from "react";
 const PANELS = [
   {
     num: "01",
-    title: "Prime Location",
-    desc: "Situated in Jericho, one of Ibadan's most established and connected residential neighbourhoods.",
+    title: "Football Pitch",
+    desc: "A 5-a-side pitch designed for fitness, fun, and friendly competition — stay active while connecting with your community.",
     gradient: "linear-gradient(140deg,#1c2a1a,#0d0b08 70%)",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Z" />
-        <circle cx="12" cy="9" r="2.5" />
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="M12 6.5 15 9l-1 3.7-4 0L9 9zM12 6.5V3.5M9 12.7l-3 2.3M15 12.7l3 2.3M9.6 15.7 8.8 19M14.4 15.7l.8 3.3" />
       </svg>
     ),
   },
   {
     num: "02",
-    title: "Gated Community",
-    desc: "A secured, gated estate with controlled access at two entry points — privacy and safety built into the design.",
-    gradient: "linear-gradient(140deg,#191919,#0d0b08 70%)",
+    title: "Tennis Court",
+    desc: "Take a break from your routine and enjoy a game on our tennis court, made for relaxation, fitness, and quality time.",
+    gradient: "linear-gradient(140deg,#12242c,#0d0b08 70%)",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-        <path d="M4 21V9l8-6 8 6v12M4 21h16M9 21v-6h6v6" />
+        <path d="M12 3a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z" />
+        <path d="M12 15v6M9 21h6M4.5 9h15" />
       </svg>
     ),
   },
   {
     num: "03",
-    title: "Quality Build",
-    desc: "Premium materials, professional finishes, and construction standards that stand the test of time.",
+    title: "Basketball Court",
+    desc: "Step onto the court whenever you like for a quick game — sharpen your skills, connect, and stay active.",
     gradient: "linear-gradient(140deg,#2a1a12,#0d0b08 70%)",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-        <path d="M12 2 2 7l10 5 10-5-10-5ZM2 17l10 5 10-5M2 12l10 5 10-5" />
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="M4 8.5h16M4 15.5h16M12 3.5v17M8 6c1.5 2.4 1.5 9.6 0 12M16 6c-1.5 2.4-1.5 9.6 0 12" />
       </svg>
     ),
   },
   {
     num: "04",
-    title: "Clear Title",
-    desc: "Transparent documentation with Governor's Consent title — every purchase comes with full legal backing.",
-    gradient: "linear-gradient(140deg,#12242c,#0d0b08 70%)",
+    title: "Swimming Pool",
+    desc: "Experience resort-style living with a pool that offers the perfect setting for relaxation and family time.",
+    gradient: "linear-gradient(140deg,#0d232a,#0d0b08 70%)",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-        <path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
-        <path d="M9 12h6M9 16h6M9 8h2" />
+        <path d="M3 17c1.3 1 2.6 1 4 0s2.7-1 4 0 2.6 1 4 0 2.7-1 4 0M3 12.5c1.3 1 2.6 1 4 0s2.7-1 4 0 2.6 1 4 0 2.7-1 4 0M6 8V5.5M18 8V5.5M9 8V6M15 8V6" />
       </svg>
     ),
   },
   {
     num: "05",
-    title: "Flexible Payment",
-    desc: "Outright purchase with discount, structured instalments over 6 to 12 months, or mortgage facilitation.",
-    gradient: "linear-gradient(140deg,#0d232a,#0d0b08 70%)",
+    title: "Green Area",
+    desc: "Peaceful green spaces designed for fresh air and quiet moments — enjoy the beauty of nature every day.",
+    gradient: "linear-gradient(140deg,#182c17,#0d0b08 70%)",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-        <circle cx="12" cy="12" r="8" />
-        <path d="M12 7.5v9M14.5 9.8c0-1-1-1.8-2.5-1.8s-2.5.7-2.5 1.7c0 2.6 5 1.3 5 3.9 0 1-1 1.7-2.5 1.7s-2.5-.8-2.5-1.8" />
+        <path d="M12 21c0-6 4-8 4-13a4 4 0 0 0-8 0c0 5 4 7 4 13Z" />
+        <path d="M12 13c-2-1-3-3-2-6M12 13c2-1 3-3 2-6" />
       </svg>
     ),
   },
   {
     num: "06",
-    title: "Modern Design",
-    desc: "Contemporary architecture with thoughtful layouts — from spacious duplexes to elegant apartments.",
-    gradient: "linear-gradient(140deg,#2a1a24,#0d0b08 70%)",
+    title: "Children Park",
+    desc: "A secure playground built for endless fun, giving children the freedom to play while parents enjoy peace of mind.",
+    gradient: "linear-gradient(140deg,#2a2312,#0d0b08 70%)",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-        <path d="M3 21h18M5 21V7l8-4 8 4v14" />
-        <path d="M9 21v-6h6v6M9 9h.01M15 9h.01M9 13h.01M15 13h.01" />
+        <path d="M6 20V6a2 2 0 0 1 2-2h1l7 7-7 7H8a2 2 0 0 1-2-2Z" />
+        <circle cx="9" cy="8" r="1" fill="currentColor" stroke="none" />
       </svg>
     ),
   },
   {
     num: "07",
-    title: "Estate Management",
-    desc: "Professional facility management keeps the estate maintained, secure, and running smoothly year-round.",
-    gradient: "linear-gradient(140deg,#182c17,#0d0b08 70%)",
+    title: "Creche",
+    desc: "A warm, welcoming childcare centre where young children are cared for and prepared for every stage of growth.",
+    gradient: "linear-gradient(140deg,#2a1a24,#0d0b08 70%)",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-        <circle cx="12" cy="12" r="3" />
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+        <circle cx="12" cy="8" r="3.2" />
+        <path d="M6 20c0-3.5 2.7-6 6-6s6 2.5 6 6" />
       </svg>
     ),
   },
   {
     num: "08",
-    title: "Strong Investment",
-    desc: "Jericho's property values continue to grow — a solid long-term asset for owner-occupiers and investors alike.",
-    gradient: "linear-gradient(140deg,#2a2312,#0d0b08 70%)",
+    title: "Gated Access",
+    desc: "Controlled gated access that enhances security while ensuring your family's comfort, privacy, and confidence.",
+    gradient: "linear-gradient(140deg,#191919,#0d0b08 70%)",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        <path d="M4 21V9l8-6 8 6v12M4 21h16M9 21v-6h6v6" />
       </svg>
     ),
   },
