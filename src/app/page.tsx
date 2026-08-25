@@ -14,7 +14,6 @@ const SitePlan = dynamic(() => import("@/components/home/SitePlan").then((m) => 
 
 import { GradientBlobs } from "@/components/ui/GradientBlobs";
 import { TopoLines } from "@/components/ui/TopoLines";
-import { About } from "@/components/home/About";
 import { FeaturedProperties } from "@/components/home/FeaturedProperties";
 import { Architecture } from "@/components/home/Architecture";
 import { WhyWellsprings } from "@/components/home/WhyWellsprings";
@@ -37,13 +36,7 @@ export default function HomePage() {
         <Hero />
       </div>
 
-      <div className="relative mb-8 sm:mb-12">
-        <GradientBlobs blobs={[
-          { color: "terracotta", size: 600, className: "top-[0px] right-[-150px]" },
-          { color: "blue", size: 500, className: "bottom-[-50px] left-[-100px]", delay: 0.2 },
-        ]} />
-        <About />
-      </div>
+      <WhyWellsprings />
 
       <div className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
@@ -60,8 +53,6 @@ export default function HomePage() {
         ]} />
         <Architecture />
       </div>
-
-      <WhyWellsprings />
 
       <div id="features" className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
