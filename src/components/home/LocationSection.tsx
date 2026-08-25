@@ -3,8 +3,15 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { location, categoryColors, categoryLabels, type Landmark } from "@/data/location";
+import { Landmark, ShoppingBag, Store } from "lucide-react";
+import { location, categoryColors, categoryLabels, type Landmark as LandmarkType } from "@/data/location";
 import { cn } from "@/lib/utils";
+
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  landmark: Landmark,
+  "shopping-bag": ShoppingBag,
+  store: Store,
+};
 
 const posClasses: Record<string, string> = {
   train1: "left-1/2 top-[40px] -translate-x-1/2",
@@ -61,7 +68,7 @@ export function LocationSection() {
     setHoveredId(null);
   }, []);
 
-  const isVisible = (lm: Landmark) => activeFilter === "all" || lm.category === activeFilter;
+  const isVisible = (lm: LandmarkType) => activeFilter === "all" || lm.category === activeFilter;
 
   return (
     <section className="py-14 sm:py-20">
@@ -145,7 +152,7 @@ export function LocationSection() {
                     >
                       <div className="flex items-start gap-3">
                         <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-base" style={{ background: `color-mix(in srgb, ${color} 10%, white)`, color }}>
-                          {lm.badge}
+                          {lm.icon && iconMap[lm.icon] ? (() => { const Icon = iconMap[lm.icon]; return <Icon className="h-5 w-5" />; })() : lm.badge}
                         </span>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-start justify-between gap-2">
@@ -333,7 +340,7 @@ export function LocationSection() {
                         )}
                         style={{ background: `color-mix(in srgb, ${color} 10%, white)`, color }}
                       >
-                        {lm.badge}
+                        {lm.icon && iconMap[lm.icon] ? (() => { const Icon = iconMap[lm.icon]; return <Icon className="h-3.5 w-3.5" />; })() : lm.badge}
                       </span>
                       <div className={cn("flex items-start gap-[8px]", isTopBottom && "flex-col items-center")}>
                         <span
