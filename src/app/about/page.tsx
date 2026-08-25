@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { BadgeCheck, FileCheck2, ShieldCheck } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
@@ -20,13 +21,31 @@ export default function AboutPage() {
       { color: "blue", size: 800, className: "top-[-200px] left-[-200px]" },
       { color: "sage", size: 600, className: "bottom-[-100px] right-[-150px]", delay: 0.3 },
     ]}>
-      <header className="bg-off-white pb-10 pt-28 sm:pt-36">
-        <div className="container-site">
-          <SectionHeading
-            eyebrow="About Us"
-            title={`Building in ${site.location}`}
-            description={`${site.legalName} (SDCL) builds residential estates focused on quality construction, good planning, and transparent processes.`}
+      <header className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/stellavera-development.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            priority
           />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(23,38,58,.88) 0%, rgba(23,38,58,.75) 40%, rgba(23,38,58,.82) 100%)",
+            }}
+          />
+        </div>
+        <div className="relative z-10 container-site py-28 sm:pt-36 sm:pb-12">
+          <p className="eyebrow mb-3 text-brand-blue">About Us</p>
+          <h1 className="font-heading text-3xl tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Building in {site.location}
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
+            {site.legalName} (SDCL) builds residential estates focused on quality construction, good planning, and transparent processes.
+          </p>
         </div>
       </header>
 

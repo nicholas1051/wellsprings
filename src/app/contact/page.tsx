@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Image from "next/image";
 import { Clock, Mail, MapPin, Phone, MessageCircle } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
@@ -21,13 +22,31 @@ export default function ContactPage() {
       { color: "terracotta", size: 800, className: "top-[-200px] right-[-200px]" },
       { color: "blue", size: 600, className: "bottom-[-100px] left-[-150px]", delay: 0.3 },
     ]}>
-      <header className="bg-off-white pb-10 pt-28 sm:pt-36">
-        <div className="container-site">
-          <SectionHeading
-            eyebrow="Contact"
-            title="Talk to us about a home"
-            description="Call, WhatsApp, or send a message. We respond within one business day."
+      <header className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/gallery-gate-1.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            priority
           />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(23,38,58,.88) 0%, rgba(23,38,58,.75) 40%, rgba(23,38,58,.82) 100%)",
+            }}
+          />
+        </div>
+        <div className="relative z-10 container-site py-28 sm:pt-36 sm:pb-12">
+          <p className="eyebrow mb-3 text-brand-blue">Contact</p>
+          <h1 className="font-heading text-3xl tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Talk to us about a home
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
+            Call, WhatsApp, or send a message. We respond within one business day.
+          </p>
         </div>
       </header>
 
