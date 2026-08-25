@@ -1,117 +1,138 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { motion } from "framer-motion";
-import { MessageSquare, Eye, FileText, CreditCard, KeyRound } from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
-const steps = [
+const STEPS = [
   {
-    num: "01",
     kicker: "Enquire",
     title: "Make an enquiry.",
     body: "Fill out an enquiry form — online, on-site, or at our office. It's how we learn who you are and the kind of home you're looking for.",
     footer: "Start your journey",
-    icon: MessageSquare,
+    icon: (
+      <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.2 11.1c.5.35.8.9.8 1.5V16h5v-.4c0-.6.3-1.15.8-1.5A6 6 0 0 0 12 3Z" />
+    ),
   },
   {
-    num: "02",
     kicker: "Experience",
     title: "Walk the grounds.",
     body: "We arrange a private site inspection, so you can experience the property and its surroundings for yourself, at your own pace.",
     footer: "See it firsthand",
-    icon: Eye,
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="8" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="12" cy="12" r=".6" fill="currentColor" />
+      </>
+    ),
   },
   {
-    num: "03",
     kicker: "Disclosure",
     title: "Know the estate.",
     body: "You'll receive full copies of the estate's by-laws and governing documents — nothing left unread before you commit.",
     footer: "Read every clause",
-    icon: FileText,
+    icon: (
+      <>
+        <path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
+        <path d="M9 12h6M9 16h6M9 8h2" />
+      </>
+    ),
   },
   {
-    num: "04",
     kicker: "Commit",
     title: "Choose your terms.",
     body: "Select the payment method that suits you and commence payment, guided at every step by our team.",
     footer: "Seal the agreement",
-    icon: CreditCard,
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="8" />
+        <path d="M12 7.5v9M14.5 9.8c0-1-1-1.8-2.5-1.8s-2.5.7-2.5 1.7c0 2.6 5 1.3 5 3.9 0 1-1 1.7-2.5 1.7s-2.5-.8-2.5-1.8" />
+      </>
+    ),
   },
   {
-    num: "05",
     kicker: "Possess",
     title: "Take ownership.",
     body: "Receive your land documents and the keys to a home that is, at last, entirely yours.",
     footer: "It's yours",
-    icon: KeyRound,
+    icon: (
+      <>
+        <circle cx="8" cy="15" r="3.2" />
+        <path d="M10.3 12.8 18 5.1M15.5 7.6l2 2M18 5.1l2.4 2.4" />
+      </>
+    ),
   },
 ];
 
-const navLabels = ["Enquire", "Experience", "Disclosure", "Commit", "Possess"];
-
 export function HowToOwn() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [visibleSteps, setVisibleSteps] = useState<Set<number>>(new Set());
-  const [timelineProgress, setTimelineProgress] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [inView, setInView] = useState(() => new Set<number>());
   const [navVisible, setNavVisible] = useState(false);
 
-  /* Reveal observer — adds in-view class */
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
+
+  const setStepRef = useCallback((el: HTMLLIElement | null, i: number) => {
+    stepRefs.current[i] = el;
+  }, []);
+
   useEffect(() => {
-    const obs = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const idx = stepRefs.current.indexOf(e.target as HTMLLIElement);
-            if (idx !== -1) setVisibleSteps((prev) => new Set(prev).add(idx));
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = stepRefs.current.indexOf(entry.target as HTMLLIElement);
+            if (idx !== -1) {
+              setInView((prev) => {
+                if (prev.has(idx)) return prev;
+                const next = new Set(prev);
+                next.add(idx);
+                return next;
+              });
+            }
           }
         });
       },
       { threshold: 0.12 },
     );
-    stepRefs.current.forEach((el) => el && obs.observe(el));
-    return () => obs.disconnect();
+    stepRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
-  /* Active observer — tracks which step is centered */
   useEffect(() => {
-    const obs = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const idx = stepRefs.current.indexOf(e.target as HTMLLIElement);
-            if (idx !== -1) setActiveIdx(idx);
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = stepRefs.current.indexOf(entry.target as HTMLLIElement);
+            if (idx !== -1) setActiveIndex(idx);
           }
         });
       },
       { root: null, rootMargin: "-46% 0px -46% 0px", threshold: 0 },
     );
-    stepRefs.current.forEach((el) => el && obs.observe(el));
-    return () => obs.disconnect();
+    stepRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
-  /* Nav visibility observer */
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const obs = new IntersectionObserver(
-      (entries) => setNavVisible(entries[0]?.isIntersecting ?? false),
+    if (!sectionRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => setNavVisible(e.isIntersecting)),
       { threshold: 0.05 },
     );
-    obs.observe(section);
-    return () => obs.disconnect();
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
-  /* Timeline fill on scroll */
+  const [fillProgress, setFillProgress] = useState(0);
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
     let ticking = false;
     const update = () => {
-      const rect = section.getBoundingClientRect();
-      const raw = (window.innerHeight * 0.5 - rect.top) / rect.height;
-      setTimelineProgress(Math.min(1, Math.max(0, raw)));
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const viewportCenter = window.innerHeight * 0.5;
+      const raw = (viewportCenter - rect.top) / rect.height;
+      setFillProgress(Math.min(1, Math.max(0, raw)));
     };
     const onScroll = () => {
       if (!ticking) {
@@ -122,212 +143,265 @@ export function HowToOwn() {
         ticking = true;
       }
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
     update();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollTo = useCallback((idx: number) => {
-    stepRefs.current[idx]?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, []);
+  const navFrac = STEPS.length > 1 ? activeIndex / (STEPS.length - 1) : 0;
 
-  const navFillFrac = activeIdx / (steps.length - 1);
+  const jumpTo = (i: number) => {
+    stepRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#17263A] py-0 pb-20">
-      {/* Subtle radial glow */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 50% at 82% 8%, rgba(105,157,214,.07), transparent 60%), radial-gradient(ellipse 60% 60% at 0% 100%, rgba(105,157,214,.05), transparent 60%)",
-        }}
-      />
+    <>
+      <style>{CSS}</style>
 
-      {/* Intro header */}
-      <header className="relative mx-auto max-w-[640px] px-6 pt-[12vh] pb-[9vh] text-center">
-        <p className="mb-5 text-[11px] font-semibold uppercase tracking-[0.32em] text-brand-blue">The Acquisition Process</p>
-        <h2 className="mb-5 font-heading text-[clamp(34px,5.4vw,58px)] leading-[1.08] tracking-[-0.01em] text-white">
-          How to own <span className="italic text-brand-blue">a property</span>
-        </h2>
-        <p className="mb-8 text-[16px] leading-[1.6] text-[#94A3B8]">
-          Five considered steps carry you from a first enquiry to the keys in your hand — each one guided, nothing left to chance.
-        </p>
-        <div className="flex justify-center">
-          <span className="block h-[64px] w-px bg-gradient-to-b from-brand-blue to-transparent" />
-        </div>
-      </header>
+      <section className="htop" ref={sectionRef}>
+        <header className="htop__intro">
+          <p className="htop-kicker">The Acquisition Process</p>
+          <h2 className="htop-title">
+            How to own <em>a property</em>
+          </h2>
+          <p className="htop-sub">
+            Five considered steps carry you from a first enquiry to the keys in
+            your hand — each one guided, nothing left to chance.
+          </p>
+          <div className="htop-rule">
+            <span />
+          </div>
+        </header>
 
-      {/* Fixed progress nav — desktop only */}
-      <div
-        className="fixed left-10 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-4 transition-opacity duration-500 lg:flex"
-        style={{ opacity: navVisible ? 1 : 0, pointerEvents: navVisible ? "auto" : "none" }}
-      >
-        {/* Line */}
-        <div className="relative h-[210px] w-[2px] overflow-hidden rounded-full bg-white/10">
-          <div
-            className="absolute left-0 top-0 h-full w-full origin-top bg-gradient-to-b from-brand-blue to-brand-blue-dark"
-            style={{ transform: `scaleY(${navFillFrac})`, transition: "transform .25s linear" }}
-          />
-        </div>
-        {/* Dots */}
-        <ol className="flex flex-col justify-between" style={{ height: 210 }}>
-          {navLabels.map((label, i) => (
-            <li key={i} className="flex">
-              <button
-                type="button"
-                onClick={() => scrollTo(i)}
-                className="flex items-center gap-2.5 bg-transparent p-1.5 text-left"
-              >
-                <span
-                  className="tabular-nums transition-all duration-300"
-                  style={{
-                    fontSize: activeIdx === i ? 13 : 11,
-                    color: activeIdx === i ? "#699DD6" : "#94A3B8",
-                  }}
-                >
-                  {steps[i].num}
-                </span>
-                <span
-                  className="whitespace-nowrap text-[11px] uppercase tracking-[0.14em] transition-all duration-300"
-                  style={{
-                    opacity: activeIdx === i ? 1 : 0,
-                    maxWidth: activeIdx === i ? 120 : 0,
-                    overflow: "hidden",
-                    color: activeIdx === i ? "#fff" : "#94A3B8",
-                  }}
-                >
-                  {label}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      {/* Timeline */}
-      <div className="relative mx-auto max-w-[900px] px-6">
-        {/* Central rail */}
-        <div className="absolute left-1/2 top-1.5 bottom-1.5 -translate-x-1/2">
-          <div className="absolute inset-0 bg-white/10" />
-          <div
-            className="absolute left-0 top-0 h-full w-full origin-top bg-gradient-to-b from-brand-blue to-brand-blue-dark"
-            style={{ transform: `scaleY(${timelineProgress})`, transition: "transform .2s linear" }}
-          />
-        </div>
-
-        {/* Steps */}
-        <ol className="relative flex flex-col gap-[6vh]">
-          {steps.map((step, i) => {
-            const isOdd = i % 2 === 0;
-            const isActive = activeIdx === i;
-            const isVisible = visibleSteps.has(i);
-            const Icon = step.icon;
-
-            return (
-              <li
-                key={i}
-                ref={(el) => { stepRefs.current[i] = el; }}
-                className="relative grid items-center transition-opacity duration-700"
-                style={{
-                  gridTemplateColumns: "1fr 40px 1fr",
-                  columnGap: 0,
-                  opacity: isVisible ? 1 : 0,
-                }}
-              >
-                {/* Card — odd steps: left (col 1), even steps: right (col 3) */}
-                <div
-                  className="relative w-full max-w-[270px] rounded bg-white p-5 transition-all duration-500"
-                  style={{
-                    gridColumn: isOdd ? 1 : 3,
-                    justifySelf: isOdd ? "end" : "start",
-                    textAlign: isOdd ? "right" : "left",
-                    borderRadius: isOdd ? "4px 30px 4px 4px" : "4px 4px 4px 30px",
-                    opacity: isActive ? 1 : 0.55,
-                    transform: `scale(${isActive ? 0.96 : 1})`,
-                    boxShadow: isActive
-                      ? "0 20px 44px rgba(27,38,58,.25)"
-                      : "0 14px 30px rgba(0,0,0,.1)",
-                  }}
-                >
-                  <div
-                    className="mb-3 flex items-baseline gap-2.5"
-                    style={{ flexDirection: isOdd ? "row-reverse" : "row" }}
-                  >
-                    <span className="text-[11px] tabular-nums text-[#837a68]">{step.num}</span>
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-brand-blue">
-                      {step.kicker}
-                    </span>
-                  </div>
-
-                  <h3 className="mb-2.5 font-heading text-[19px] font-medium leading-[1.16] text-[#221d15]">
-                    {step.title}
-                  </h3>
-
-                  <p
-                    className="mb-3.5 text-[12.5px] leading-[1.55] text-[#837a68]"
-                    style={{
-                      maxWidth: "28ch",
-                      marginLeft: isOdd ? "auto" : 0,
-                      marginRight: isOdd ? 0 : "auto",
-                    }}
-                  >
-                    {step.body}
-                  </p>
-
-                  <div
-                    className="flex items-center justify-between border-t border-[rgba(34,29,21,.12)] pt-3"
-                    style={{ flexDirection: isOdd ? "row-reverse" : "row" }}
-                  >
-                    <span className="text-[9.5px] uppercase tracking-[0.16em] text-[#837a68]">{step.footer}</span>
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full border border-brand-blue text-[9.5px] tabular-nums text-brand-blue">
-                      {step.num}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Connector line from card to spine */}
-                <div
-                  className="absolute top-1/2 z-[1] h-px transition-colors duration-500"
-                  style={{
-                    width: "calc(50% - 20px - 26px)",
-                    [isOdd ? "right" : "left"]: "calc(50% + 20px)",
-                    top: "50%",
-                    background: isActive
-                      ? "rgba(105,157,214,.6)"
-                      : "rgba(255,255,255,.12)",
-                  }}
-                />
-
-                {/* Node — always center (col 2) */}
-                <div
-                  className="z-10 grid h-10 w-10 place-items-center rounded-full border transition-all duration-500"
-                  style={{
-                    gridColumn: 2,
-                    justifySelf: "center",
-                    background: isActive ? "#1a2a3f" : "#17263A",
-                    borderColor: isActive ? "#699DD6" : "rgba(255,255,255,.16)",
-                    color: isActive ? "#699DD6" : "#94A3B8",
-                    boxShadow: isActive ? "0 0 0 5px rgba(105,157,214,.15)" : "none",
-                  }}
-                >
-                  <Icon className="h-4 w-4" />
-                </div>
-
-                {/* Empty opposite side */}
-                <div style={{ gridColumn: isOdd ? 3 : 1 }} />
+        <nav className={`htop-nav${navVisible ? " is-visible" : ""}`} aria-label="Process steps">
+          <div className="htop-nav__line">
+            <div className="htop-nav__fill" style={{ transform: `scaleY(${navFrac})` }} />
+          </div>
+          <ol>
+            {STEPS.map((s, i) => (
+              <li key={s.kicker} className={i === activeIndex ? "is-active" : ""}>
+                <button type="button" onClick={() => jumpTo(i)}>
+                  <span className="htop-nav-num">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="htop-nav-label">{s.kicker}</span>
+                </button>
               </li>
-            );
-          })}
-        </ol>
-      </div>
+            ))}
+          </ol>
+        </nav>
 
-      {/* Mobile responsive override */}
-      <style>{`
-        @media (max-width: 760px) {
-          .timeline-mobile-fix { grid-template-columns: 34px 22px 1fr !important; }
-        }
-      `}</style>
-    </section>
+        <div className="htop-timeline">
+          <div className="htop-rail">
+            <div className="htop-track" />
+            <div className="htop-rail-fill" style={{ transform: `scaleY(${fillProgress})` }} />
+          </div>
+
+          <ol className="htop-steps">
+            {STEPS.map((s, i) => {
+              const classes = [
+                "htop-step",
+                inView.has(i) ? "in-view" : "",
+                i === activeIndex ? "is-active" : "",
+              ]
+                .filter(Boolean)
+                .join(" ");
+              return (
+                <li key={s.kicker} className={classes} ref={(el) => setStepRef(el, i)}>
+                  <div className="htop-card">
+                    <div className="htop-card__top">
+                      <span className="htop-card__num">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="htop-card__kicker">{s.kicker}</span>
+                    </div>
+                    <h3 className="htop-card__title">{s.title}</h3>
+                    <p className="htop-card__body">{s.body}</p>
+                    <div className="htop-card__footer">
+                      <span>{s.footer}</span>
+                      <span className="htop-card__footer-num">{String(i + 1).padStart(2, "0")}</span>
+                    </div>
+                  </div>
+                  <div className="htop-node">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                      {s.icon}
+                    </svg>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </section>
+    </>
   );
 }
+
+const CSS = `
+  .htop{
+    position:relative;
+    background:#17263A;
+    color:#f4efe4;
+    padding:0 0 10vh;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .htop::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 70% 50% at 82% 8%, rgba(105,157,214,.07), transparent 60%),
+      radial-gradient(ellipse 60% 60% at 0% 100%, rgba(105,157,214,.05), transparent 60%);
+    pointer-events:none;
+  }
+
+  .htop__intro{
+    position:relative;
+    max-width:640px;
+    margin:0 auto;
+    padding:12vh 24px 9vh;
+    text-align:center;
+  }
+  .htop-kicker{
+    font-size:11px; letter-spacing:.32em; text-transform:uppercase;
+    color:#699DD6; margin:0 0 22px;
+    font-family:var(--font-body);
+  }
+  .htop-title{
+    font-family:var(--font-heading); font-weight:600;
+    font-size:clamp(34px,5.4vw,58px); line-height:1.08; letter-spacing:-.01em;
+    margin:0 0 20px; color:#f4efe4;
+  }
+  .htop-title em{ font-style:italic; font-weight:400; color:#8BB8E8; }
+  .htop-sub{ font-size:16px; line-height:1.6; color:#94A3B8; margin:0 0 30px; font-family:var(--font-body); }
+  .htop-rule span{ display:inline-block; width:1px; height:64px; background:linear-gradient(#699DD6, transparent); }
+
+  .htop-nav{
+    position:fixed; left:40px; top:50%; transform:translateY(-50%); z-index:40;
+    display:flex; align-items:center; gap:18px;
+    opacity:0; pointer-events:none; transition:opacity .5s cubic-bezier(.16,1,.3,1);
+  }
+  .htop-nav.is-visible{ opacity:1; pointer-events:auto; }
+  .htop-nav__line{
+    position:relative; width:2px; height:210px;
+    background:rgba(255,255,255,.12); border-radius:2px; overflow:hidden;
+  }
+  .htop-nav__fill{
+    position:absolute; left:0; top:0; width:100%; height:100%;
+    transform-origin:top;
+    background:linear-gradient(#699DD6, #4F83BD);
+    transition:transform .25s linear;
+  }
+  .htop-nav ol{
+    list-style:none; margin:0; padding:0;
+    display:flex; flex-direction:column; justify-content:space-between; height:210px;
+  }
+  .htop-nav li{ display:flex; }
+  .htop-nav button{
+    background:none; border:none; display:flex; align-items:center; gap:10px;
+    padding:6px 4px; cursor:pointer; color:#94A3B8; font-family:var(--font-body);
+  }
+  .htop-nav button:focus-visible{ outline:1px solid #699DD6; outline-offset:4px; border-radius:3px; }
+  .htop-nav-num{
+    font-size:11px; letter-spacing:.06em; font-variant-numeric:tabular-nums;
+    transition:color .3s cubic-bezier(.16,1,.3,1), font-size .3s cubic-bezier(.16,1,.3,1);
+  }
+  .htop-nav-label{
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    opacity:0; max-width:0; overflow:hidden; white-space:nowrap;
+    transition:opacity .35s cubic-bezier(.16,1,.3,1), max-width .35s cubic-bezier(.16,1,.3,1);
+  }
+  .htop-nav li.is-active .htop-nav-num{ color:#8BB8E8; font-size:13px; }
+  .htop-nav li.is-active .htop-nav-label{ opacity:1; max-width:120px; color:#f4efe4; }
+  @media (max-width:1180px){ .htop-nav{ display:none; } }
+
+  .htop-timeline{ position:relative; max-width:900px; margin:0 auto; padding:0 24px; }
+  .htop-rail{ position:absolute; top:6px; bottom:6px; left:50%; transform:translateX(-50%); width:1px; }
+  .htop-track{ position:absolute; inset:0; background:rgba(255,255,255,.12); }
+  .htop-rail-fill{
+    position:absolute; left:0; top:0; width:100%; height:100%;
+    background:linear-gradient(#8BB8E8, #699DD6);
+    transform-origin:top; transition:transform .2s linear;
+  }
+
+  .htop-steps{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6vh; }
+
+  .htop-step{
+    display:grid; grid-template-columns:1fr 40px 1fr; column-gap:26px; align-items:center;
+    opacity:0; transition:opacity .7s cubic-bezier(.16,1,.3,1);
+  }
+  .htop-step.in-view{ opacity:1; }
+
+  .htop-step:nth-child(odd) .htop-card{ grid-column:1; justify-self:end; text-align:right; }
+  .htop-step:nth-child(even) .htop-card{ grid-column:3; justify-self:start; text-align:left; }
+  .htop-step:nth-child(odd) .htop-card__top,
+  .htop-step:nth-child(odd) .htop-card__footer{ flex-direction:row-reverse; }
+
+  .htop-step:nth-child(4n+1) .htop-card{ transform:translateY(-14px) scale(1.05); }
+  .htop-step:nth-child(4n+2) .htop-card{ transform:translateY(10px) scale(1.05); }
+  .htop-step:nth-child(4n+3) .htop-card{ transform:translateY(-6px) scale(1.05); }
+  .htop-step:nth-child(4n+4) .htop-card{ transform:translateY(16px) scale(1.05); }
+  .htop-step.is-active:nth-child(4n+1) .htop-card{ transform:translateY(-14px) scale(.94); }
+  .htop-step.is-active:nth-child(4n+2) .htop-card{ transform:translateY(10px) scale(.94); }
+  .htop-step.is-active:nth-child(4n+3) .htop-card{ transform:translateY(-6px) scale(.94); }
+  .htop-step.is-active:nth-child(4n+4) .htop-card{ transform:translateY(16px) scale(.94); }
+
+  .htop-node{
+    grid-column:2; justify-self:center; width:40px; height:40px; border-radius:50%;
+    background:#17263A; border:1px solid rgba(255,255,255,.16);
+    display:flex; align-items:center; justify-content:center; color:#94A3B8; z-index:2;
+    transition:border-color .5s cubic-bezier(.16,1,.3,1), color .5s cubic-bezier(.16,1,.3,1), box-shadow .5s cubic-bezier(.16,1,.3,1), background .5s cubic-bezier(.16,1,.3,1);
+  }
+  .htop-node svg{ width:16px; height:16px; }
+  .htop-step.is-active .htop-node{
+    border-color:#699DD6; color:#8BB8E8; background:#1a2a3f;
+    box-shadow:0 0 0 5px rgba(105,157,214,.15);
+  }
+
+  .htop-card{
+    position:relative; background:#fff; color:#221d15;
+    border:1px solid rgba(34,29,21,.10); padding:20px 22px 13px; width:100%; max-width:270px;
+    box-shadow:0 14px 30px rgba(0,0,0,.26); opacity:.55;
+    transition:opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1), box-shadow .6s cubic-bezier(.16,1,.3,1);
+    border-radius:4px 30px 4px 4px;
+  }
+  .htop-step:nth-child(even) .htop-card{ border-radius:4px 4px 4px 30px; }
+  .htop-step.is-active .htop-card{ opacity:1; box-shadow:0 20px 44px rgba(0,0,0,.38); }
+
+  .htop-card::before{
+    content:""; position:absolute; top:50%; width:26px; height:1px;
+    background:rgba(34,29,21,.18); transition:background .5s cubic-bezier(.16,1,.3,1);
+  }
+  .htop-step:nth-child(odd) .htop-card::before{ right:-26px; }
+  .htop-step:nth-child(even) .htop-card::before{ left:-26px; }
+  .htop-step.is-active .htop-card::before{ background:#699DD6; }
+
+  .htop-card__top{ display:flex; align-items:baseline; gap:10px; margin-bottom:12px; }
+  .htop-card__num{ font-size:11px; font-variant-numeric:tabular-nums; color:#837a68; letter-spacing:.04em; font-family:var(--font-body); }
+  .htop-card__kicker{ font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:#699DD6; font-weight:600; font-family:var(--font-body); }
+  .htop-card__title{ font-family:var(--font-heading); font-weight:600; font-size:19px; line-height:1.16; margin:0 0 9px; letter-spacing:-.01em; }
+  .htop-card__body{ font-size:12.5px; line-height:1.55; color:#837a68; margin:0 0 14px; max-width:28ch; margin-left:auto; margin-right:auto; font-family:var(--font-body); }
+  .htop-step:nth-child(odd) .htop-card__body{ margin-left:auto; margin-right:0; }
+  .htop-step:nth-child(even) .htop-card__body{ margin-left:0; margin-right:auto; }
+
+  .htop-card__footer{ border-top:1px solid rgba(34,29,21,.12); padding-top:11px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .htop-card__footer span:first-child{ font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:#837a68; font-family:var(--font-body); }
+  .htop-card__footer-num{
+    flex:none; width:20px; height:20px; border-radius:50%; border:1px solid #699DD6; color:#699DD6;
+    font-size:9.5px; display:flex; align-items:center; justify-content:center; font-variant-numeric:tabular-nums;
+  }
+
+  @media (max-width:760px){
+    .htop-step{ grid-template-columns:34px 22px 1fr; column-gap:0; }
+    .htop-node{ width:34px; height:34px; grid-column:1; justify-self:start; }
+    .htop-node svg{ width:14px; height:14px; }
+    .htop-rail{ left:17px; transform:none; }
+    .htop-step .htop-card{ grid-column:3; justify-self:start; text-align:left; max-width:none; }
+    .htop-step .htop-card__top, .htop-step .htop-card__footer{ flex-direction:row; }
+    .htop-step .htop-card::before{ left:-22px; right:auto; width:22px; }
+    .htop-step .htop-card__body{ margin-left:0; margin-right:auto; }
+    .htop-step .htop-card{ transform:none !important; }
+    .htop-step.is-active .htop-card{ transform:scale(.96) !important; }
+    .htop-steps{ gap:8vh; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .htop-step, .htop-card, .htop-nav *{ transition:opacity .3s linear !important; }
+  }
+`;
