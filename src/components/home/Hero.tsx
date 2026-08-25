@@ -32,14 +32,15 @@ function SearchBar() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 1.8, ease: "easeOut" }}
-      className="absolute bottom-4 left-1/2 z-30 grid w-[91%] max-w-[1040px] -translate-x-1/2 overflow-hidden rounded-full border-[6px] border-white/70 bg-white/95 shadow-2xl backdrop-blur-sm sm:bottom-5 sm:grid-cols-[1.2fr_1fr_1fr_auto] sm:rounded-full sm:border-7"
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+      className="absolute bottom-4 left-1/2 z-30 grid w-[calc(100%-32px)] max-w-[1040px] -translate-x-1/2 overflow-hidden rounded-full border-[6px] border-white/70 bg-white/95 shadow-2xl backdrop-blur-sm sm:bottom-5 sm:grid-cols-[1.2fr_1fr_1fr_auto] sm:rounded-full sm:border-7"
     >
       <div className="flex items-center gap-3 border-b border-grey-line px-4 py-3 sm:border-b-0 sm:border-r sm:px-5 sm:py-0">
         <div className="grid h-10 w-10 place-items-center rounded-full bg-brand-blue-light text-brand-blue-deep">
           <MapPin className="h-4 w-4" />
         </div>
         <div className="flex-1">
-          <label className="block text-[11px] font-medium text-text-grey">Location</label>
+          <label className="block text-xs font-medium text-text-grey">Location</label>
           <span className="text-sm font-bold text-navy">Ibadan, Nigeria</span>
         </div>
       </div>
@@ -49,7 +50,7 @@ function SearchBar() {
           <Home className="h-4 w-4" />
         </div>
         <div className="flex-1">
-          <label className="block text-[11px] font-medium text-text-grey">Property Type</label>
+          <label className="block text-xs font-medium text-text-grey">Property Type</label>
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
@@ -69,7 +70,7 @@ function SearchBar() {
           <Wallet className="h-4 w-4" />
         </div>
         <div className="flex-1">
-          <label className="block text-[11px] font-medium text-text-grey">Price Range</label>
+          <label className="block text-xs font-medium text-text-grey">Price Range</label>
           <select
             value={price}
             onChange={(e) => setPrice(e.target.value)}

@@ -26,7 +26,7 @@ const year = 2026;
 
 export function Footer() {
   return (
-    <footer className="bg-navy text-white">
+    <footer className="bg-navy text-white" style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       <div className="container-site grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Logo dark />

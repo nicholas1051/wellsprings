@@ -33,6 +33,7 @@ export function ScrollProgress() {
         onClick={scrollToTop}
         aria-label="Scroll to top"
         className="fixed bottom-20 right-5 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-navy text-white shadow-lg transition-colors hover:bg-brand-blue-dark sm:bottom-6"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
         initial={{ opacity: 0, scale: 0.8, y: 20 }}
         animate={showTop ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 20 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}

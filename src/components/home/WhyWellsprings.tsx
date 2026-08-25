@@ -131,7 +131,7 @@ const CSS = `
     margin:0 0 52px;
   }
   .whyw-kicker{
-    font-size:11px;
+    font-size:12px;
     letter-spacing:.32em;
     text-transform:uppercase;
     color:#699DD6;
@@ -190,7 +190,7 @@ const CSS = `
   .whyw-num{
     position:absolute;
     top:18px; left:18px;
-    font-size:11px;
+    font-size:12px;
     letter-spacing:.08em;
     color:#8BB8E8;
     font-variant-numeric:tabular-nums;
@@ -274,7 +274,7 @@ const CSS = `
 
   .whyw-hint{
     margin:18px 2px 0;
-    font-size:11px;
+    font-size:12px;
     letter-spacing:.14em;
     text-transform:uppercase;
     color:#94A3B8;
@@ -285,8 +285,8 @@ const CSS = `
     .whyw-rail{
       flex-direction:column;
       height:auto;
-      max-height:640px;
-      overflow:hidden;
+      max-height:none;
+      overflow-y:auto;
       gap:5px;
     }
     .whyw-panel{ min-width:0; min-height:52px; flex:1 1 0; }

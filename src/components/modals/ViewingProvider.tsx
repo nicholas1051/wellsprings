@@ -97,6 +97,7 @@ export function ViewingProvider({ children }: { children: ReactNode }) {
               exit={{ opacity: 0, y: 24 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
               className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-warm-white p-6 shadow-2xl sm:rounded-2xl sm:p-8"
+              style={{ paddingBottom: "max(24px, env(safe-area-inset-bottom, 0px))" }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mb-5 flex items-start justify-between gap-4">

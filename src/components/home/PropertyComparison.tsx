@@ -58,7 +58,7 @@ export function PropertyComparison({ currentSlug }: PropertyComparisonProps) {
                 onClick={() => toggleUnit(unit.slug)}
                 aria-pressed={selected.includes(unit.slug)}
                 className={cn(
-                  "rounded-full border px-4 py-2 text-sm font-semibold transition-all",
+                  "rounded-full border px-4 py-2.5 text-sm font-semibold transition-all",
                   selected.includes(unit.slug)
                     ? "border-navy bg-navy text-white"
                     : "border-grey-line bg-white text-navy hover:border-navy/50",

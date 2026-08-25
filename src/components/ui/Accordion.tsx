@@ -89,7 +89,7 @@ function AccordionItem({
           <span className="flex items-center gap-3">
             <span
               className={cn(
-                "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[0.65rem] font-bold transition-all duration-300",
+                "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all duration-300",
                 open
                   ? "bg-brand-blue-deep text-white"
                   : "bg-brand-blue/10 text-brand-blue",

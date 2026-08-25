@@ -72,7 +72,7 @@ export function SectionNav() {
             onClick={() => scrollTo(section.id)}
             aria-label={`Scroll to ${section.label}`}
             className={cn(
-              "h-3 w-3 rounded-full border-2 transition-all duration-200",
+              "h-4 w-4 rounded-full border-2 transition-all duration-200",
               active === section.id
                 ? "border-brand-blue bg-brand-blue scale-125"
                 : "border-navy/30 bg-white hover:border-navy/60 hover:bg-tint",

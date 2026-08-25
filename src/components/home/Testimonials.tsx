@@ -54,7 +54,7 @@ export function Testimonials() {
                 </div>
                 <div>
                   <strong className="block text-xs font-bold text-navy">{t.name}</strong>
-                  <span className="text-[11px] text-muted">{t.role}</span>
+                  <span className="text-xs text-muted">{t.role}</span>
                 </div>
               </div>
               <div className="mb-3 flex gap-0.5">

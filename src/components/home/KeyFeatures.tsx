@@ -91,7 +91,7 @@ export function KeyFeatures() {
       <div className="container-site">
         <div className="mb-6 text-center">
           <motion.span
-            className="inline-block rounded-full bg-brand-blue-light px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-brand-blue-dark"
+            className="inline-block rounded-full bg-brand-blue-light px-3.5 py-2 text-[12px] font-extrabold uppercase tracking-[0.14em] text-brand-blue-dark"
             initial={reduceMotion ? {} : { opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-60px" }}
@@ -200,8 +200,8 @@ export function KeyFeatures() {
                       <IconComp className="h-3.5 w-3.5" />
                     </span>
                     <div>
-                      <h4 className="mb-0.5 font-heading text-[11px]">{f.title}</h4>
-                      <p className="text-[9px] leading-[1.4] text-muted">{f.description}</p>
+                      <h4 className="mb-0.5 font-heading text-[12px]">{f.title}</h4>
+                      <p className="text-[12px] leading-[1.4] text-muted">{f.description}</p>
                     </div>
                   </div>
                 );
@@ -231,7 +231,7 @@ export function KeyFeatures() {
                 </span>
                 <span className="text-left">
                   <strong className="block font-heading text-[16px] text-navy">{cat.label}</strong>
-                  <small className="block text-[10px] text-muted">{cat.subtitle}</small>
+                  <small className="block text-[12px] text-muted">{cat.subtitle}</small>
                 </span>
               </button>
             ))}
@@ -241,7 +241,7 @@ export function KeyFeatures() {
             <div className="mb-1 flex items-center gap-2.5 border-b border-[#EDF2F7] pb-3">
               <span className="h-[9px] w-[9px] rounded-full" style={{ background: activeCat.color }} />
               <h3 className="font-heading text-[16px]">{activeCat.label} Features</h3>
-              <span className="ml-auto text-[10px] font-bold text-[#98A5B3]">
+              <span className="ml-auto text-[12px] font-bold text-[#98A5B3]">
                 {String(activeFeatures.length).padStart(2, "0")} FEATURES
               </span>
             </div>
@@ -257,8 +257,8 @@ export function KeyFeatures() {
                       <IconComp className="h-4 w-4" />
                     </span>
                     <div>
-                      <h4 className="mb-0.5 font-heading text-[12px]">{f.title}</h4>
-                      <p className="text-[10px] leading-[1.45] text-muted">{f.description}</p>
+                      <h4 className="mb-0.5 font-heading text-[13px]">{f.title}</h4>
+                      <p className="text-[12px] leading-[1.45] text-muted">{f.description}</p>
                     </div>
                   </div>
                 );

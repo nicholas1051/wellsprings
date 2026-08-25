@@ -57,7 +57,7 @@ const CSS = `
     align-self:start;
   }
   .faq__kicker{
-    font-size:11px;
+    font-size:12px;
     letter-spacing:.32em;
     text-transform:uppercase;
     color:var(--brand);
@@ -194,7 +194,7 @@ const CSS = `
   }
   .faq-item__a p{
     margin:0 0 16px;
-    font-size:12.5px;
+    font-size:13px;
     line-height:1.6;
     color:var(--card-muted);
     max-width:62ch;

@@ -71,7 +71,7 @@ export function GalleryGrid({ items, showFilter = false, className }: GalleryGri
               </span>
             </span>
             {item.isArtisticImpression && (
-              <span className="absolute top-2 right-2 rounded-full bg-brand-blue/80 px-2 py-0.5 text-[0.6rem] font-medium text-white backdrop-blur-sm">
+              <span className="absolute top-2 right-2 rounded-full bg-brand-blue/80 px-2 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
                 Artistic Impression
               </span>
             )}

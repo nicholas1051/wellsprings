@@ -72,7 +72,7 @@ export function CalendarPicker({ value, onChange, disabled }: CalendarPickerProp
         disabled={isDisabled || disabled}
         onClick={() => onChange(dateStr)}
         className={cn(
-          "relative h-9 w-9 rounded-lg text-sm font-medium transition-colors",
+          "relative h-10 w-10 rounded-lg text-sm font-medium transition-colors",
           isSelected && "bg-brand-blue text-white",
           !isSelected && !isDisabled && "text-navy hover:bg-brand-blue/10",
           isDisabled && "text-text-grey/30 cursor-not-allowed",
@@ -86,15 +86,15 @@ export function CalendarPicker({ value, onChange, disabled }: CalendarPickerProp
   return (
     <div className="select-none">
       <div className="mb-2 flex items-center justify-between">
-        <button type="button" onClick={prevMonth} className="grid h-7 w-7 place-items-center rounded-md text-navy hover:bg-grey-line" aria-label="Previous month">
-          <ChevronLeft className="h-4 w-4" />
+        <button type="button" onClick={prevMonth} className="grid h-11 w-11 place-items-center rounded-md text-navy hover:bg-grey-line" aria-label="Previous month">
+          <ChevronLeft className="h-5 w-5" />
         </button>
         <span className="text-sm font-semibold text-navy">{monthName} {viewYear}</span>
-        <button type="button" onClick={nextMonth} className="grid h-7 w-7 place-items-center rounded-md text-navy hover:bg-grey-line" aria-label="Next month">
-          <ChevronRight className="h-4 w-4" />
+        <button type="button" onClick={nextMonth} className="grid h-11 w-11 place-items-center rounded-md text-navy hover:bg-grey-line" aria-label="Next month">
+          <ChevronRight className="h-5 w-5" />
         </button>
       </div>
-      <div className="grid grid-cols-6 gap-1 text-center text-[0.65rem] font-medium text-text-grey">
+      <div className="grid grid-cols-6 gap-1 text-center text-xs font-medium text-text-grey">
         {WEEKDAYS.map((d) => (
           <div key={d} className="pb-1">{d}</div>
         ))}

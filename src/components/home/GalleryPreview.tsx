@@ -124,7 +124,7 @@ export function GalleryPreview() {
                 </span>
               </span>
               {item.isArtisticImpression && (
-                <span className="absolute top-3 right-3 rounded-full bg-brand-blue/80 px-2.5 py-1 text-[0.65rem] font-medium text-white backdrop-blur-sm">
+                <span className="absolute top-3 right-3 rounded-full bg-brand-blue/80 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
                   Artistic Impression
                 </span>
               )}

@@ -33,7 +33,7 @@ export function StatusBadge({ status, unitsLeft, className }: { status: UnitStat
       <span className={cn("h-2 w-2 rounded-full", style.dot)} aria-hidden="true" />
       {statusLabels[status]}
       {unitsLeft !== undefined && unitsLeft > 0 && (
-        <span className="text-[0.65rem] opacity-80">\u2022 {unitsLeft} left</span>
+        <span className="text-xs opacity-80">\u2022 {unitsLeft} left</span>
       )}
     </span>
   );
