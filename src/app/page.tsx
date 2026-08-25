@@ -17,6 +17,7 @@ import { TopoLines } from "@/components/ui/TopoLines";
 import { About } from "@/components/home/About";
 import { FeaturedProperties } from "@/components/home/FeaturedProperties";
 import { Architecture } from "@/components/home/Architecture";
+import { WhyWellsprings } from "@/components/home/WhyWellsprings";
 import { KeyFeatures } from "@/components/home/KeyFeatures";
 import { LocationSection } from "@/components/home/LocationSection";
 import { TrustStrip } from "@/components/home/TrustStrip";
@@ -59,6 +60,8 @@ export default function HomePage() {
         ]} />
         <Architecture />
       </div>
+
+      <WhyWellsprings />
 
       <div id="features" className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
