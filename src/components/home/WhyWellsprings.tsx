@@ -7,7 +7,7 @@ const PANELS = [
     num: "01",
     title: "Football Pitch",
     desc: "A 5-a-side pitch designed for fitness, fun, and friendly competition — stay active while connecting with your community.",
-    gradient: "linear-gradient(140deg,#1c2a1a,#0d0b08 70%)",
+    image: "/images/amenity-football.jpg",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
         <circle cx="12" cy="12" r="8.5" />
@@ -19,7 +19,7 @@ const PANELS = [
     num: "02",
     title: "Tennis Court",
     desc: "Take a break from your routine and enjoy a game on our tennis court, made for relaxation, fitness, and quality time.",
-    gradient: "linear-gradient(140deg,#12242c,#0d0b08 70%)",
+    image: "/images/amenity-tennis.jpg",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
         <path d="M12 3a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z" />
@@ -31,7 +31,7 @@ const PANELS = [
     num: "03",
     title: "Basketball Court",
     desc: "Step onto the court whenever you like for a quick game — sharpen your skills, connect, and stay active.",
-    gradient: "linear-gradient(140deg,#2a1a12,#0d0b08 70%)",
+    image: "/images/amenity-basketball.jpg",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
         <circle cx="12" cy="12" r="8.5" />
@@ -43,7 +43,7 @@ const PANELS = [
     num: "04",
     title: "Swimming Pool",
     desc: "Experience resort-style living with a pool that offers the perfect setting for relaxation and family time.",
-    gradient: "linear-gradient(140deg,#0d232a,#0d0b08 70%)",
+    image: "/images/amenity-pool.jpg",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
         <path d="M3 17c1.3 1 2.6 1 4 0s2.7-1 4 0 2.6 1 4 0 2.7-1 4 0M3 12.5c1.3 1 2.6 1 4 0s2.7-1 4 0 2.6 1 4 0 2.7-1 4 0M6 8V5.5M18 8V5.5M9 8V6M15 8V6" />
@@ -54,7 +54,7 @@ const PANELS = [
     num: "05",
     title: "Green Area",
     desc: "Peaceful green spaces designed for fresh air and quiet moments — enjoy the beauty of nature every day.",
-    gradient: "linear-gradient(140deg,#182c17,#0d0b08 70%)",
+    image: "/images/amenity-green.jpg",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
         <path d="M12 21c0-6 4-8 4-13a4 4 0 0 0-8 0c0 5 4 7 4 13Z" />
@@ -66,7 +66,7 @@ const PANELS = [
     num: "06",
     title: "Children Park",
     desc: "A secure playground built for endless fun, giving children the freedom to play while parents enjoy peace of mind.",
-    gradient: "linear-gradient(140deg,#2a2312,#0d0b08 70%)",
+    image: "/images/amenity-playground.jpg",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
         <path d="M6 20V6a2 2 0 0 1 2-2h1l7 7-7 7H8a2 2 0 0 1-2-2Z" />
@@ -78,7 +78,7 @@ const PANELS = [
     num: "07",
     title: "Creche",
     desc: "A warm, welcoming childcare centre where young children are cared for and prepared for every stage of growth.",
-    gradient: "linear-gradient(140deg,#2a1a24,#0d0b08 70%)",
+    image: "/images/amenity-creche.jpg",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
         <circle cx="12" cy="8" r="3.2" />
@@ -90,7 +90,7 @@ const PANELS = [
     num: "08",
     title: "Gated Access",
     desc: "Controlled gated access that enhances security while ensuring your family's comfort, privacy, and confidence.",
-    gradient: "linear-gradient(140deg,#191919,#0d0b08 70%)",
+    image: "/images/amenity-gate.jpg",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
         <path d="M4 21V9l8-6 8 6v12M4 21h16M9 21v-6h6v6" />
@@ -347,7 +347,7 @@ export function WhyWellsprings() {
                 key={panel.num}
                 className={`whyw-panel${activeIndex === index ? " is-expanded" : ""}`}
                 tabIndex={0}
-                style={{ backgroundImage: panel.gradient }}
+                style={{ backgroundImage: `url(${panel.image})` }}
                 onClick={() => handleToggle(index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
               >
