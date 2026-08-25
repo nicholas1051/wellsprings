@@ -173,23 +173,22 @@ export function HowToOwn() {
           </div>
         </header>
 
-        <nav className={`htop-nav${navVisible ? " is-visible" : ""}`} aria-label="Process steps">
-          <div className="htop-nav__line">
-            <div className="htop-nav__fill" style={{ transform: `scaleY(${navFrac})` }} />
-          </div>
-          <ol>
-            {STEPS.map((s, i) => (
-              <li key={s.kicker} className={i === activeIndex ? "is-active" : ""}>
-                <button type="button" onClick={() => jumpTo(i)}>
-                  <span className="htop-nav-num">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="htop-nav-label">{s.kicker}</span>
-                </button>
-              </li>
-            ))}
-          </ol>
-        </nav>
-
         <div className="htop-timeline">
+          <nav className={`htop-nav${navVisible ? " is-visible" : ""}`} aria-label="Process steps">
+            <div className="htop-nav__line">
+              <div className="htop-nav__fill" style={{ transform: `scaleY(${navFrac})` }} />
+            </div>
+            <ol>
+              {STEPS.map((s, i) => (
+                <li key={s.kicker} className={i === activeIndex ? "is-active" : ""}>
+                  <button type="button" onClick={() => jumpTo(i)}>
+                    <span className="htop-nav-num">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="htop-nav-label">{s.kicker}</span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </nav>
           <div className="htop-rail">
             <div className="htop-track" />
             <div className="htop-rail-fill" style={{ transform: `scaleY(${fillProgress})` }} />
@@ -239,7 +238,6 @@ const CSS = `
     background:#17263A;
     color:#f4efe4;
     padding:0 0 10vh;
-    overflow:hidden;
     -webkit-font-smoothing:antialiased;
   }
   .htop::before{
@@ -273,7 +271,7 @@ const CSS = `
   .htop-rule span{ display:inline-block; width:1px; height:64px; background:linear-gradient(#699DD6, transparent); }
 
   .htop-nav{
-    position:fixed; left:40px; top:50%; transform:translateY(-50%); z-index:40;
+    position:absolute; left:-70px; top:50%; transform:translateY(-50%); z-index:40;
     display:flex; align-items:center; gap:18px;
     opacity:0; pointer-events:none; transition:opacity .5s cubic-bezier(.16,1,.3,1);
   }
@@ -311,7 +309,7 @@ const CSS = `
   .htop-nav li.is-active .htop-nav-label{ opacity:1; max-width:120px; color:#f4efe4; }
   @media (max-width:1180px){ .htop-nav{ display:none; } }
 
-  .htop-timeline{ position:relative; max-width:900px; margin:0 auto; padding:0 24px; }
+  .htop-timeline{ position:relative; max-width:900px; margin:0 auto; padding:0 24px; padding-left:94px; }
   .htop-rail{ position:absolute; top:6px; bottom:6px; left:50%; transform:translateX(-50%); width:1px; }
   .htop-track{ position:absolute; inset:0; background:rgba(255,255,255,.12); }
   .htop-rail-fill{
