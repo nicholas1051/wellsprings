@@ -27,7 +27,7 @@ import { FinalCta } from "@/components/home/FinalCta";
 export default function HomePage() {
   return (
     <>
-      <div id="hero" className="relative mb-20 sm:mb-28">
+      <div id="hero" className="relative mb-8 sm:mb-12">
         <TopoLines variant="hero" />
         <GradientBlobs blobs={[
           { color: "blue", size: 800, className: "top-[-200px] right-[-200px]" },
@@ -36,7 +36,7 @@ export default function HomePage() {
         <Hero />
       </div>
 
-      <div className="relative mb-20 sm:mb-28">
+      <div className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
           { color: "terracotta", size: 600, className: "top-[0px] right-[-150px]" },
           { color: "blue", size: 500, className: "bottom-[-50px] left-[-100px]", delay: 0.2 },
@@ -44,7 +44,7 @@ export default function HomePage() {
         <About />
       </div>
 
-      <div className="relative mb-20 sm:mb-28">
+      <div className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
           { color: "blue", size: 700, className: "top-[-50px] right-[-150px]" },
           { color: "sage", size: 500, className: "bottom-[-100px] left-[-200px]", delay: 0.3 },
@@ -52,7 +52,7 @@ export default function HomePage() {
         <FeaturedProperties />
       </div>
 
-      <div className="relative mb-20 sm:mb-28">
+      <div className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
           { color: "blue", size: 700, className: "top-[-50px] right-[-150px]" },
           { color: "sage", size: 500, className: "bottom-[-100px] left-[-200px]", delay: 0.3 },
@@ -60,7 +60,7 @@ export default function HomePage() {
         <Architecture />
       </div>
 
-      <div id="features" className="relative mb-20 sm:mb-28">
+      <div id="features" className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
           { color: "terracotta", size: 600, className: "top-[50px] left-[-150px]" },
           { color: "blue", size: 500, className: "bottom-[-50px] right-[-100px]", delay: 0.2 },
@@ -68,7 +68,7 @@ export default function HomePage() {
         <KeyFeatures />
       </div>
 
-      <div className="relative mb-20 sm:mb-28">
+      <div className="relative mb-8 sm:mb-12">
         <TopoLines variant="location" />
         <GradientBlobs blobs={[
           { color: "blue", size: 800, className: "top-[-150px] left-[-200px]" },
@@ -77,7 +77,7 @@ export default function HomePage() {
         <LocationSection />
       </div>
 
-      <div className="relative mb-20 sm:mb-28">
+      <div className="relative mb-8 sm:mb-12">
         <TopoLines variant="siteplan" />
         <GradientBlobs blobs={[
           { color: "blue", size: 700, className: "top-[-100px] right-[-200px]" },
@@ -86,7 +86,7 @@ export default function HomePage() {
         <SitePlan />
       </div>
 
-      <div className="relative mb-20 sm:mb-28">
+      <div className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
           { color: "sage", size: 600, className: "top-[50px] left-[-150px]" },
           { color: "blue", size: 500, className: "bottom-[-50px] right-[-100px]", delay: 0.2 },
@@ -94,11 +94,11 @@ export default function HomePage() {
         <TrustStrip />
       </div>
 
-      <div className="mb-20 sm:mb-28">
+      <div className="mb-8 sm:mb-12">
         <HowToOwn />
       </div>
 
-      <div id="faq" className="relative mb-20 sm:mb-28">
+      <div id="faq" className="relative mb-8 sm:mb-12">
         <GradientBlobs blobs={[
           { color: "blue", size: 700, className: "top-[0px] left-[-200px]" },
           { color: "terracotta", size: 500, className: "bottom-[-50px] right-[-150px]", delay: 0.3 },
