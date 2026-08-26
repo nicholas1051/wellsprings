@@ -18,7 +18,13 @@ export function LenisProvider() {
 
     requestAnimationFrame(raf);
 
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event("scroll"));
+      window.dispatchEvent(new Event("resize"));
+    }, 300);
+
     return () => {
+      clearTimeout(timer);
       lenis.destroy();
     };
   }, []);
