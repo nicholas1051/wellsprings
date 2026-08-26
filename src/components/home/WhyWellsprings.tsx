@@ -113,7 +113,7 @@ const CSS = `
     position:relative;
     background:#17263A;
     padding:12vh 24px 14vh;
-    overflow:hidden;
+    overflow-x:hidden;
   }
   .whyw::before{
     content:"";

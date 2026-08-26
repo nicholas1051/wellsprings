@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 
 const Hero = dynamic(() => import("@/components/home/Hero").then((m) => m.Hero), {
@@ -25,6 +26,13 @@ import { FaqSection } from "@/components/home/FaqSection";
 import { FinalCta } from "@/components/home/FinalCta";
 
 export default function HomePage() {
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      window.dispatchEvent(new Event("scroll"));
+      window.dispatchEvent(new Event("resize"));
+    });
+  }, []);
+
   return (
     <>
       <div id="hero" className="relative mb-8 sm:mb-12">

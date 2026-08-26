@@ -45,7 +45,7 @@
     background-color: var(--color-warm-white);
     color: var(--color-navy);
     font-family: var(--font-body);
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   ::selection {
