@@ -18,13 +18,21 @@ export function LenisProvider() {
 
     requestAnimationFrame(raf);
 
-    const timer = setTimeout(() => {
-      window.dispatchEvent(new Event("scroll"));
-      window.dispatchEvent(new Event("resize"));
-    }, 300);
+    const kickObservers = () => {
+      const y = window.scrollY || 0;
+      window.scrollTo(0, y + 1);
+      requestAnimationFrame(() => {
+        window.scrollTo(0, y);
+      });
+    };
+
+    const timers = [
+      setTimeout(kickObservers, 200),
+      setTimeout(kickObservers, 600),
+    ];
 
     return () => {
-      clearTimeout(timer);
+      timers.forEach(clearTimeout);
       lenis.destroy();
     };
   }, []);

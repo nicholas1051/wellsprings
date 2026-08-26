@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
@@ -25,15 +25,21 @@ const specIcons = [
 
 function WordStagger({ text, reduceMotion }: { text: string; reduceMotion: boolean }) {
   const words = text.split(" ");
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  if (reduceMotion || !mounted) {
+    return <span>{text}</span>;
+  }
+
   return (
     <span>
       {words.map((word, i) => (
         <motion.span
           key={i}
           className="inline-block mr-[0.3em]"
-          initial={reduceMotion ? {} : { opacity: 0, y: 14, filter: "blur(4px)" }}
-          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          viewport={{ once: false, margin: "-60px" }}
+          initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.5, delay: i * 0.06, ease: "easeOut" }}
         >
           {word}
@@ -118,10 +124,15 @@ export function PropertiesContent() {
   const reduceMotion = useReducedMotion();
   const reduced = !!reduceMotion;
   const [activeFilter, setActiveFilter] = useState<PropertyType | "all">("all");
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
   const filtered = activeFilter === "all"
     ? housingUnits
     : housingUnits.filter((u) => u.propertyType === activeFilter);
+
+  const headerAnimate = reduced || !mounted ? {} : { opacity: 1, y: 0 };
+  const headerInitial = reduced || !mounted ? {} : { opacity: 0, y: 12 };
 
   return (
     <>
@@ -149,18 +160,16 @@ export function PropertiesContent() {
           </h1>
           <motion.p
             className="mt-4 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg"
-            initial={reduced ? {} : { opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-60px" }}
+            initial={headerInitial}
+            animate={headerAnimate}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             From the Opal apartment to the Pearl villa. Every type available at one estate.
           </motion.p>
           <motion.p
             className="mt-4 max-w-2xl text-base leading-relaxed text-white/70"
-            initial={reduced ? {} : { opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-60px" }}
+            initial={headerInitial}
+            animate={headerAnimate}
             transition={{ duration: 0.5, delay: 0.45 }}
           >
             Wellsprings sits on a quiet stretch in Jericho. Old Bodija is just minutes away, the Dugbe business district is 10 km, and University College Hospital is 4 km. The estate is tucked off the main road, away from traffic and noise.
@@ -172,9 +181,8 @@ export function PropertiesContent() {
         <div className="container-site">
           <motion.div
             className="mb-10 flex flex-wrap gap-2"
-            initial={reduced ? {} : { opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-40px" }}
+            initial={headerInitial}
+            animate={headerAnimate}
             transition={{ duration: 0.4 }}
           >
             {filters.map((f) => (

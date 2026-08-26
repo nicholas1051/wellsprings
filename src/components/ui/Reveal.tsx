@@ -15,23 +15,27 @@ interface RevealProps {
 export function Reveal({ children, className, delay = 0, y = 24, once = true }: RevealProps) {
   const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
-  const [needsAnimation, setNeedsAnimation] = useState(true);
+  const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-      setNeedsAnimation(false);
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top >= window.innerHeight || rect.bottom <= 0) {
+      setAnimate(true);
     }
   }, []);
 
-  if (reduceMotion || !needsAnimation) {
-    return <div ref={reduceMotion ? undefined : ref} className={className}>{children}</div>;
+  if (reduceMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
+  if (!animate) {
+    return <div ref={ref} className={className}>{children}</div>;
   }
 
   return (
     <motion.div
-      ref={ref}
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
