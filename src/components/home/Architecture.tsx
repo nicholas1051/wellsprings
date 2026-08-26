@@ -75,12 +75,12 @@ export function Architecture() {
         <Reveal delay={0.2}>
           <div className="mt-14">
             <p className="eyebrow mb-6 text-center text-brand-blue-deep">Design Partners</p>
-            <div className="relative overflow-hidden py-2">
+            <div className="relative overflow-clip py-2">
               <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-tint to-transparent z-10" />
               <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-tint to-transparent z-10" />
               <div className="flex w-max">
                 <motion.div
-                  className="flex items-center rounded-xl border border-grey-line bg-white overflow-hidden"
+                  className="flex items-center rounded-xl border border-grey-line bg-white overflow-clip"
                   animate={{ x: ["0%", "-50%"] }}
                   transition={{
                     x: {
@@ -95,7 +95,7 @@ export function Architecture() {
                       key={`${partner.name}-${i}`}
                       className="flex shrink-0 items-center gap-4 border-r border-grey-line px-6 py-4 last:border-r-0"
                     >
-                      <div className="flex h-[7.5rem] w-[7.5rem] shrink-0 items-center justify-center rounded-lg border border-grey-line bg-cream/60 overflow-hidden p-2">
+                      <div className="flex h-[7.5rem] w-[7.5rem] shrink-0 items-center justify-center rounded-lg border border-grey-line bg-cream/60 overflow-clip p-2">
                         <Image
                           src={partner.image}
                           alt={partner.name}
@@ -109,7 +109,7 @@ export function Architecture() {
                   ))}
                 </motion.div>
                 <motion.div
-                  className="flex items-center rounded-xl border border-grey-line bg-white overflow-hidden"
+                  className="flex items-center rounded-xl border border-grey-line bg-white overflow-clip"
                   aria-hidden="true"
                   animate={{ x: ["0%", "-50%"] }}
                   transition={{
@@ -125,7 +125,7 @@ export function Architecture() {
                       key={`dup-${partner.name}-${i}`}
                       className="flex shrink-0 items-center gap-4 border-r border-grey-line px-6 py-4 last:border-r-0"
                     >
-                      <div className="flex h-[7.5rem] w-[7.5rem] shrink-0 items-center justify-center rounded-lg border border-grey-line bg-cream/60 overflow-hidden p-2">
+                      <div className="flex h-[7.5rem] w-[7.5rem] shrink-0 items-center justify-center rounded-lg border border-grey-line bg-cream/60 overflow-clip p-2">
                         <Image
                           src={partner.image}
                           alt={partner.name}
