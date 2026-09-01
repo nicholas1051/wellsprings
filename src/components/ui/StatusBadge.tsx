@@ -7,8 +7,8 @@ const statusStyles: Record<UnitStatus, { classes: string; dot: string }> = {
     dot: "bg-white",
   },
   limited: {
-    classes: "border-terracotta/40 bg-terracotta/10 text-terracotta",
-    dot: "bg-terracotta",
+    classes: "border-brand-blue-deep bg-brand-blue-deep text-white",
+    dot: "bg-white",
   },
   reserved: {
     classes: "border-navy/20 bg-off-white text-text-grey",
