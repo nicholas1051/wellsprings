@@ -201,7 +201,7 @@ export const housingUnits: HousingUnit[] = [
     priceFrom: 75000000,
     status: "available",
     unitsLeft: 0,
-    heroImage: "/images/coral-hero.jpg",
+    heroImage: "/images/coral-hero.png",
     heroImageAlt: "Coral 3-bedroom semi-detached bungalow exterior at Wellsprings Ibadan",
     gallery: [
       { src: "/images/coral-1.jpg", alt: "Coral welcoming living room" },

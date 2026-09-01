@@ -137,8 +137,8 @@ export function EstateStory() {
             >
               <div className="relative aspect-[4/5]">
                 <Image
-                  src="/images/gallery/ext-6.jpg"
-                  alt="Modern luxury house at Wellsprings with stone accents at sunset"
+                  src="/images/coral-hero.png"
+                  alt="Coral 3-bedroom semi-detached bungalow at Wellsprings Ibadan"
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
