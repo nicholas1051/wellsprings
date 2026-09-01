@@ -26,7 +26,7 @@ export function CompanyStory() {
               {` property development company with expertise in design, build and management of various developments including residential and commercial. We conceive projects, explore their feasibility and execute them with excellence.`}
             </p>
 
-            <div className="relative mt-10 border-l-4 border-brand-blue pl-6 sm:pl-8">
+            <div className="relative mt-10 border-l-4 border-brand-blue-deep pl-6 sm:pl-8">
               <p className="eyebrow mb-2 text-brand-blue-deep">Quality Assurance</p>
               <p className="leading-relaxed text-text-grey">
                 {`Our service offering is built on delivering quality services, within an agreed timeframe and at an affordable cost. We aspire to be the leader in the property development space.`}
@@ -45,15 +45,15 @@ export function CompanyStory() {
             >
               <div className="flex items-start gap-4 border-t border-grey-line pt-6">
                 <motion.span
-                  className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand-blue-light text-brand-blue-deep"
+                  className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand-blue-light text-brand-blue-deep transition-colors duration-300 group-hover:bg-brand-blue-deep group-hover:text-white"
                   whileHover={reduceMotion ? undefined : { rotate: 12, scale: 1.08 }}
                   transition={{ type: "spring", stiffness: 300, damping: 15 }}
                 >
                   <Eye className="h-6 w-6" aria-hidden="true" />
                 </motion.span>
                 <div>
-                  <h3 className="text-lg font-bold text-navy">Vision</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-text-grey group-hover:text-navy-soft transition-colors">
+                  <h3 className="text-lg font-bold text-navy transition-colors duration-300 group-hover:text-brand-blue-deep">Vision</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-text-grey transition-colors duration-300 group-hover:text-navy-soft">
                     {`To be the leading Property and Infrastructure Development Company of choice in the provision of desired products and services in Africa.`}
                   </p>
                 </div>
@@ -67,15 +67,15 @@ export function CompanyStory() {
             >
               <div className="flex items-start gap-4 border-t border-grey-line pt-6">
                 <motion.span
-                  className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand-blue-light text-brand-blue-deep"
+                  className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand-blue-light text-brand-blue-deep transition-colors duration-300 group-hover:bg-brand-blue-deep group-hover:text-white"
                   whileHover={reduceMotion ? undefined : { rotate: -12, scale: 1.08 }}
                   transition={{ type: "spring", stiffness: 300, damping: 15 }}
                 >
                   <Sparkles className="h-6 w-6" aria-hidden="true" />
                 </motion.span>
                 <div>
-                  <h3 className="text-lg font-bold text-navy">Core Value</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-text-grey group-hover:text-navy-soft transition-colors">
+                  <h3 className="text-lg font-bold text-navy transition-colors duration-300 group-hover:text-brand-blue-deep">Core Value</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-text-grey transition-colors duration-300 group-hover:text-navy-soft">
                     To consistently deliver world-class architectural solutions.
                   </p>
                 </div>

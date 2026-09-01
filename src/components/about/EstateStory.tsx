@@ -50,12 +50,16 @@ function Stat({ value, label, decimals, prefix, start, reduceMotion }: { value: 
       : display.toLocaleString();
 
   return (
-    <div className="relative px-4 py-6 text-center sm:py-8">
-      <dd className="font-heading text-3xl font-bold text-navy sm:text-4xl">
+    <div className="group relative px-4 py-6 text-center sm:py-8">
+      <motion.span
+        className="absolute left-1/2 top-0 h-0.5 w-0 -translate-x-1/2 bg-brand-blue-deep transition-all duration-300 group-hover:w-2/3"
+        aria-hidden="true"
+      />
+      <dd className="font-heading text-3xl font-bold text-navy transition-colors duration-300 group-hover:text-brand-blue-deep sm:text-4xl">
         {prefix}
         {formatted}
       </dd>
-      <dt className="mt-1 text-xs font-medium uppercase tracking-widest text-text-grey">{label}</dt>
+      <dt className="mt-1 text-xs font-medium uppercase tracking-widest text-text-grey transition-colors duration-300 group-hover:text-brand-blue-deep">{label}</dt>
     </div>
   );
 }
@@ -145,7 +149,7 @@ export function EstateStory() {
                 />
               </div>
               <div
-                className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                className="absolute inset-0 bg-gradient-to-t from-brand-blue-deep/70 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                 aria-hidden="true"
               />
               <figcaption className="absolute bottom-5 left-5 right-5 translate-y-2 text-sm font-medium text-white opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">

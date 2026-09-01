@@ -105,14 +105,14 @@ export function GeneralFeatures() {
                   }`}
                 >
                   <motion.span
-                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-grey-line text-brand-blue-deep transition-colors duration-300 group-hover:border-brand-blue group-hover:bg-brand-blue-light sm:h-12 sm:w-12"
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-grey-line text-brand-blue-deep transition-colors duration-300 group-hover:border-brand-blue-deep group-hover:bg-brand-blue-deep group-hover:text-white sm:h-12 sm:w-12"
                     animate={reduceMotion ? undefined : open ? { scale: 1.08 } : { scale: 1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 15 }}
                   >
                     <f.icon className="h-5 w-5" aria-hidden="true" />
                   </motion.span>
 
-                  <span className="text-xs font-semibold tracking-widest text-brand-blue-deep/50 tabular-nums">
+                  <span className="text-xs font-semibold tracking-widest text-brand-blue-deep/50 transition-colors duration-300 group-hover:text-brand-blue-deep tabular-nums">
                     {String(i + 1).padStart(2, "0")}
                   </span>
 
@@ -145,7 +145,7 @@ export function GeneralFeatures() {
                 </motion.div>
 
                 <motion.div
-                  className="absolute bottom-0 left-0 h-px bg-brand-blue"
+                  className="absolute bottom-0 left-0 h-px bg-brand-blue-deep"
                   initial={false}
                   animate={open ? { width: "100%" } : { width: "0%" }}
                   transition={{ duration: 0.4, ease: "easeOut" }}

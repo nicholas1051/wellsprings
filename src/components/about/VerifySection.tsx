@@ -61,16 +61,20 @@ function VerifyStat({ item, start, reduced }: { item: TrustItem; start: boolean;
   const isNum = /\d/.test(item.value);
 
   return (
-    <div className="relative px-4 py-6 text-center sm:py-8">
+    <div className="group relative px-4 py-6 text-center sm:py-8">
+      <motion.span
+        className="absolute left-1/2 top-0 h-0.5 w-0 -translate-x-1/2 bg-brand-blue-deep transition-all duration-300 group-hover:w-2/3"
+        aria-hidden="true"
+      />
       <motion.dd
-        className={`font-heading font-bold text-navy ${isNum ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl"}`}
+        className={`font-heading font-bold transition-colors duration-300 group-hover:text-brand-blue-deep ${isNum ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl"} text-navy`}
         initial={{ opacity: 0, y: 8 }}
         animate={start ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
         transition={{ duration: 0.4 }}
       >
         {reduced ? item.value : value}
       </motion.dd>
-      <dt className="mt-1 text-xs font-medium uppercase tracking-widest text-text-grey">{item.label}</dt>
+      <dt className="mt-1 text-xs font-medium uppercase tracking-widest text-text-grey transition-colors duration-300 group-hover:text-brand-blue-deep">{item.label}</dt>
     </div>
   );
 }

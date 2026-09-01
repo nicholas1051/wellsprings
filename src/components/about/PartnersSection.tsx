@@ -52,13 +52,17 @@ export function PartnersSection({ partners }: { partners: string[] }) {
           return (
             <motion.div
               key={name}
-              className="group flex items-center justify-between gap-6 border-b border-grey-line py-6"
+              className="group relative flex items-center justify-between gap-6 border-b border-grey-line py-6"
               initial={{ opacity: 0, x: -20 }}
               animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
             >
+              <motion.span
+                className="absolute left-0 top-1/2 h-0 w-px -translate-y-1/2 bg-brand-blue-deep transition-all duration-300 group-hover:h-3/5"
+                aria-hidden="true"
+              />
               <div className="flex items-center gap-5">
-                <span className="text-sm font-semibold tracking-widest text-brand-blue-deep/40 tabular-nums">
+                <span className="text-sm font-semibold tracking-widest text-brand-blue-deep/40 transition-colors duration-300 group-hover:text-brand-blue-deep tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>
