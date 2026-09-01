@@ -23,9 +23,10 @@ export const site = {
   siteUrl: "https://wellsprings.com",
   mapCenter: { lat: 7.3964, lng: 3.9164 },
   social: {
-    facebook: "https://facebook.com/wellspringsng",
-    instagram: "https://instagram.com/wellspringsng",
-    x: "https://x.com/wellspringsng",
+    facebook: "https://www.facebook.com/Wellspringsng/",
+    instagram: "https://www.instagram.com/wellspringsng",
+    youtube: "https://www.youtube.com/@wellspringsibadan6283",
+    x: "https://twitter.com/wellspringsng",
   },
 } as const;
 
