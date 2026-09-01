@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 const Hero = dynamic(() => import("@/components/home/Hero").then((m) => m.Hero), {
   ssr: false,
   loading: () => (
-    <section className="container-site pt-4 sm:pt-6">
+    <section className="pt-4 sm:pt-6">
       <div className="min-h-[625px] rounded-[28px] bg-navy" />
     </section>
   ),
