@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { Marker } from "@/components/ui/Marker";
 import { partners } from "@/data/site";
 
 export function Architecture() {
@@ -22,9 +23,10 @@ export function Architecture() {
       <div className="container-site">
         <Reveal>
           <SectionHeading
+            interactive
             eyebrow="Architecture and Design"
             title="Designed for how people actually live"
-            description={<>Every home is positioned to maximise natural light, cross-ventilation,<br />and access to outdoor space.</>}
+            description={<>Every home is positioned to <Marker>maximise natural light</Marker> and <Marker>cross-ventilation</Marker>,<br />and access to outdoor space.</>}
           />
         </Reveal>
 

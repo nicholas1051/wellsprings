@@ -18,6 +18,8 @@ import {
   Home as HomeIcon,
   Building,
 } from "lucide-react";
+import { InteractiveHeading } from "@/components/ui/InteractiveHeading";
+import { MagneticText } from "@/components/ui/MagneticText";
 import { features } from "@/data/features";
 import { cn } from "@/lib/utils";
 
@@ -99,24 +101,24 @@ export function KeyFeatures() {
           >
             The Wellsprings Experience
           </motion.span>
-          <motion.h2
+          <InteractiveHeading
+            as="h2"
+            text="More Than Just a Place to Live"
+            accentWords={["Live"]}
             className="mt-3 font-heading text-[clamp(38px,5vw,64px)] leading-[1.02] tracking-[-0.055em] text-navy"
-            initial={reduceMotion ? {} : { opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-60px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            More Than Just a Place to <span className="text-brand-blue-dark">Live</span>
-          </motion.h2>
-          <motion.p
-            className="mx-auto mt-3 max-w-[680px] text-center text-[15px] leading-[1.75] text-muted"
+          />
+          <motion.div
+            className="mx-auto mt-3 max-w-[680px] text-center"
             initial={reduceMotion ? {} : { opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-60px" }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            We bring Estate, Home, and Community together to create a complete living experience — thoughtfully designed around the way you live.
-          </motion.p>
+            <MagneticText
+              text="We bring Estate, Home, and Community together to create a complete living experience — thoughtfully designed around the way you live."
+              className="text-[15px] leading-[1.75] text-muted"
+            />
+          </motion.div>
         </div>
 
         {/* Hub — Desktop */}

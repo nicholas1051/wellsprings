@@ -7,6 +7,7 @@ import { MapPin, ArrowRight, Bed, Bath, Maximize } from "lucide-react";
 import { housingUnits } from "@/data/properties";
 import { formatPrice } from "@/data/properties";
 import { EstateImage } from "@/components/ui/EstateImage";
+import { InteractiveHeading } from "@/components/ui/InteractiveHeading";
 import { cn } from "@/lib/utils";
 
 const tagLabels: Record<string, { label: string; color: string }> = {
@@ -35,14 +36,7 @@ export function FeaturedProperties() {
             >
               Explore our selection
             </motion.p>
-            <motion.h2
-              className="font-heading text-[clamp(34px,4.2vw,50px)] leading-[1.04] tracking-[-0.045em] text-navy"
-              initial={{ opacity: 0, y: 16 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              Featured Properties
-            </motion.h2>
+            <InteractiveHeading text="Featured Properties" className="font-heading text-[clamp(34px,4.2vw,50px)] leading-[1.04] tracking-[-0.045em] text-navy" />
           </div>
           <Link
             href="/properties"

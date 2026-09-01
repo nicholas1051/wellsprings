@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView, useReducedMotion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { Marker } from "@/components/ui/Marker";
 import { masterPlanStats } from "@/data/site";
 
 function useCountUp(target: number, duration = 1.6, inView: boolean, reduceMotion: boolean) {
@@ -93,9 +94,11 @@ export function SitePlan() {
         <Reveal>
           <SectionHeading
             align="center"
+            interactive
+            accentWords={["acres"]}
             eyebrow="Master Plan"
             title="25 acres, planned as one community"
-            description="Roads, parks, drainage corridors, and residential zones were all designed together."
+            description={<>Roads, <Marker>parks</Marker>, <Marker>drainage corridors</Marker>, and <Marker>residential zones</Marker> were all designed together.</>}
           />
         </Reveal>
 

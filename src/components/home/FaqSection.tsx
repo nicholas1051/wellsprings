@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useReducedMotion } from "framer-motion";
 import { faqs } from "@/data/faqs";
 
 const CSS = `
@@ -216,6 +217,17 @@ const CSS = `
   .faq-item.is-active .faq-item__icon::after{ transform:rotate(45deg); }
   .faq-item:not(.is-active) .faq-item__icon::after{ transform:rotate(90deg); }
 
+  .faq-item__caret{
+    display:inline-block;
+    width:2px;
+    height:.95em;
+    margin-left:2px;
+    vertical-align:-2px;
+    background:var(--brand);
+    animation:faq-blink .8s steps(2,start) infinite;
+  }
+  @keyframes faq-blink{ to{ visibility:hidden; } }
+
   .faq__count{
     display:flex;
     align-items:center;
@@ -250,6 +262,37 @@ const CSS = `
     .faq-item, .faq-item__a, .call-btn .ring, .faq-item__icon{ transition:opacity .3s linear !important; }
   }
 `;
+
+function TypewriterText({ text, play, speed = 16 }: { text: string; play: boolean; speed?: number }) {
+  const reduced = !!useReducedMotion();
+  const [len, setLen] = useState(reduced ? text.length : play ? 0 : text.length);
+
+  useEffect(() => {
+    if (reduced) {
+      setLen(text.length);
+      return;
+    }
+    if (!play) {
+      setLen(text.length);
+      return;
+    }
+    setLen(0);
+    let count = 0;
+    const id = window.setInterval(() => {
+      count += 2;
+      setLen(count);
+      if (count >= text.length) window.clearInterval(id);
+    }, speed);
+    return () => window.clearInterval(id);
+  }, [play, text, speed, reduced]);
+
+  return (
+    <span>
+      {text.slice(0, len)}
+      {play && len < text.length ? <span className="faq-item__caret" aria-hidden="true" /> : null}
+    </span>
+  );
+}
 
 export function FaqSection() {
   const [activeIndex, setActiveIndex] = useState(faqs.length - 1);
@@ -380,7 +423,7 @@ export function FaqSection() {
                       ref={(el) => { answerRefs.current[index] = el; }}
                       style={{ maxHeight: heights[index] }}
                     >
-                      <p>{faq.answer}</p>
+                      <p><TypewriterText text={faq.answer} play={isActive} /></p>
                     </div>
                   </li>
                 );

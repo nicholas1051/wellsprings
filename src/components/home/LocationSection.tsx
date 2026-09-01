@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Landmark, ShoppingBag, Store } from "lucide-react";
 import { location, categoryColors, categoryLabels, type Landmark as LandmarkType } from "@/data/location";
 import { cn } from "@/lib/utils";
+import { InteractiveHeading } from "@/components/ui/InteractiveHeading";
+import { MagneticText } from "@/components/ui/MagneticText";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   landmark: Landmark,
@@ -72,6 +74,17 @@ export function LocationSection() {
 
   return (
     <section className="py-14 sm:py-20">
+      <style>{`
+        .loc-flow{
+          background-repeat:no-repeat;
+          background-position:0 0;
+          animation:loc-flow-anim 1.4s linear infinite;
+        }
+        @keyframes loc-flow-anim{
+          from{ background-position-x:0px; }
+          to{ background-position-x:14px; }
+        }
+      `}</style>
       <div className="container-site">
         <div className="mb-6 text-center">
           <motion.span
@@ -83,24 +96,21 @@ export function LocationSection() {
           >
             Location Advantage
           </motion.span>
-          <motion.h1
+          <InteractiveHeading
+            as="h1"
+            text="Live Where Everything Is Within Reach"
+            accentWords={["Within", "Reach"]}
             className="mt-3 font-heading text-[clamp(40px,5.2vw,68px)] leading-[1.02] tracking-[-0.06em] text-navy"
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-60px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Live Where Everything Is <span className="text-brand-blue-dark">Within Reach</span>
-          </motion.h1>
-          <motion.p
-            className="mx-auto mt-4 max-w-[670px] text-center text-[15px] leading-[1.75] text-muted"
+          />
+          <motion.div
+            className="mx-auto mt-4 max-w-[670px] text-center"
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, margin: "-60px" }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {location.intro}
-          </motion.p>
+            <MagneticText text={location.intro} className="text-[15px] leading-[1.75] text-muted" />
+          </motion.div>
         </div>
 
         {/* Explorer shell */}
@@ -228,13 +238,13 @@ export function LocationSection() {
                   <div
                     key={lm.id}
                     className={cn(
-                      "absolute left-1/2 top-1/2 h-[1.5px] origin-[0_50%] transition-all duration-700",
+                      "absolute left-1/2 top-1/2 h-[1.5px] origin-[0_50%] transition-all duration-700 loc-flow",
                       isVisible(lm) ? "opacity-55" : "opacity-[0.08]",
                     )}
                     style={{
                       width: lineLengths[lm.id],
                       transform: `rotate(${lineAngles[lm.id]}) scaleX(${ready ? 1 : 0})`,
-                      background: categoryColors[lm.category],
+                      backgroundImage: `repeating-linear-gradient(90deg, ${categoryColors[lm.category]} 0px, ${categoryColors[lm.category]} 8px, transparent 8px, transparent 14px)`,
                     }}
                   />
                 ))}
@@ -247,7 +257,7 @@ export function LocationSection() {
                   alt="Wellsprings"
                   width={80}
                   height={80}
-                  className="object-contain brightness-0 invert drop-shadow-[0_2px_6px_rgba(0,0,0,.18)]"
+                  className="animate-spin object-contain brightness-0 invert drop-shadow-[0_2px_6px_rgba(0,0,0,.18)] [animation-duration:20s]"
                 />
                 {/* Pulse ring */}
                 <span className="pointer-events-none absolute inset-[-12px] rounded-full border border-[rgba(105,157,214,.35)]" style={{ animation: "pulse 3s infinite" }} />
@@ -259,6 +269,7 @@ export function LocationSection() {
                 const isHovered = hoveredId === lm.id;
                 const visible = isVisible(lm);
                 const isTopBottom = lm.id === "train1" || lm.id === "bodija";
+                const isBelow = lm.id === "train1";
                 const isRight = lm.id === "secretariat" || lm.id === "palms" || lm.id === "dugbe-business";
                 const isLeft = lm.id === "airport" || lm.id === "jericho" || lm.id === "dugbe-station";
                 const raw = posClasses[lm.id] || "";
@@ -290,7 +301,7 @@ export function LocationSection() {
                           className={cn(
                             "absolute z-40 w-[255px] rounded-[16px] border border-[#DFE8F0] bg-white/97 p-[15px] shadow-[0_14px_44px_rgba(30,68,102,.14)] backdrop-blur-sm",
                             isTopBottom ? "left-1/2 -translate-x-1/2" : isRight ? "right-full mr-3" : "left-full ml-3",
-                            isTopBottom ? "bottom-full mb-3" : "top-1/2 -translate-y-1/2",
+                            isTopBottom ? (isBelow ? "top-full mt-3" : "bottom-full mb-3") : "top-1/2 -translate-y-1/2",
                           )}
                         >
                           <p className="text-[9px] font-extrabold uppercase tracking-[0.13em] text-brand-blue-dark">
@@ -300,17 +311,17 @@ export function LocationSection() {
                           <div className="mt-1 text-[12px] text-muted">{lm.distanceKm} km from Wellsprings</div>
                           <p className="mt-2 text-[12px] leading-[1.5] text-[#69798A]">{lm.description}</p>
                           <div className="mt-2.5 grid grid-cols-2 gap-1.5">
-                            <div className="rounded-[9px] bg-[#F7FAFD] p-[7px]">
-                              <small className="block text-[8px] text-[#96A3AF]">DISTANCE</small>
-                              <strong className="mt-[2px] block text-[12px]">{lm.distanceKm} km</strong>
+                            <div className="rounded-[9px] bg-brand-blue p-[7px]">
+                              <small className="block text-[8px] text-white/75">DISTANCE</small>
+                              <strong className="mt-[2px] block text-[12px] text-white">{lm.distanceKm} km</strong>
                             </div>
-                            <div className="rounded-[9px] bg-[#F7FAFD] p-[7px]">
-                              <small className="block text-[8px] text-[#96A3AF]">TYPE</small>
-                              <strong className="mt-[2px] block text-[12px]">{categoryLabels[lm.category]}</strong>
+                            <div className="rounded-[9px] bg-brand-blue p-[7px]">
+                              <small className="block text-[8px] text-white/75">TYPE</small>
+                              <strong className="mt-[2px] block text-[12px] text-white">{categoryLabels[lm.category]}</strong>
                             </div>
                           </div>
                           {isTopBottom && (
-                            <div className="absolute left-1/2 top-full -translate-x-1/2 h-0 w-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-t-[7px] border-t-white" />
+                            <div className={cn("absolute left-1/2 -translate-x-1/2 h-0 w-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent", isBelow ? "bottom-full border-b-[7px] border-b-white" : "top-full border-t-[7px] border-t-white")} />
                           )}
                           {isRight && (
                             <div className="absolute right-full top-1/2 -translate-y-1/2 h-0 w-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[7px] border-r-white" />

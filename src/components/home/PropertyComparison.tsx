@@ -42,10 +42,10 @@ export function PropertyComparison({ currentSlug }: PropertyComparisonProps) {
     <section className="bg-warm-white py-20 sm:py-24">
       <div className="container-site">
         <Reveal>
-          <SectionHeading
+<SectionHeading
+            interactive
             eyebrow="Compare"
             title="Compare properties side by side"
-            description="Select up to 3 property types to compare specs."
           />
         </Reveal>
 
