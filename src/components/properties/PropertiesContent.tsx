@@ -83,9 +83,9 @@ function PropertyCard({ unit, index, reduceMotion }: { unit: (typeof housingUnit
               <p className="text-xs text-text-grey uppercase tracking-wide font-medium">From</p>
               <p className="text-xl font-bold text-navy">{formatPrice(unit.priceFrom)}</p>
             </div>
-            <span className="flex items-center gap-1 text-sm font-semibold text-brand-blue-deep opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="flex items-center gap-1 text-sm font-semibold text-brand-blue-deep">
               View Details
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </span>
           </div>
           <div className="mt-3 flex gap-4 text-xs text-text-grey">
