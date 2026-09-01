@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
+import { CountUp } from "@/components/ui/CountUp";
 
 const paragraphs = [
   `The Wellsprings Estate was conceived out of the desire to satisfy the yearning of our customers to experience forward thinking self-sustained community living right in the heart of Ibadan, Oyo State.`,
@@ -19,36 +20,7 @@ const stats = [
   { value: 600, label: "residents", decimals: 0, prefix: "" },
 ];
 
-function Stat({ value, label, decimals, prefix, start, reduceMotion }: { value: number; label: string; decimals: number; prefix: string; start: boolean; reduceMotion: boolean }) {
-  const [display, setDisplay] = useState(reduceMotion ? value : 0);
-
-  useEffect(() => {
-    if (reduceMotion) {
-      setDisplay(value);
-      return;
-    }
-    if (!start) return;
-    setDisplay(0);
-    let current = 0;
-    const startTime = performance.now();
-    const duration = 1600;
-
-    function tick(now: number) {
-      const p = Math.min((now - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      current = Math.round(eased * value);
-      setDisplay(current);
-      if (p < 1) requestAnimationFrame(tick);
-    }
-
-    requestAnimationFrame(tick);
-  }, [start, value, reduceMotion]);
-
-  const formatted =
-    decimals > 0
-      ? (display / 10 ** decimals).toFixed(decimals)
-      : display.toLocaleString();
-
+function Stat({ value, label, decimals, prefix }: { value: number; label: string; decimals: number; prefix: string }) {
   return (
     <div className="group relative px-4 py-6 text-center sm:py-8">
       <motion.span
@@ -56,43 +28,19 @@ function Stat({ value, label, decimals, prefix, start, reduceMotion }: { value: 
         aria-hidden="true"
       />
       <dd className="font-heading text-3xl font-bold text-navy transition-colors duration-300 group-hover:text-brand-blue-deep sm:text-4xl">
-        {prefix}
-        {formatted}
+        <CountUp value={value} decimals={decimals} prefix={prefix} />
       </dd>
       <dt className="mt-1 text-xs font-medium uppercase tracking-widest text-text-grey transition-colors duration-300 group-hover:text-brand-blue-deep">{label}</dt>
     </div>
   );
 }
 
-function StatsBand({ reduceMotion }: { reduceMotion: boolean }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [start, setStart] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const onScroll = () => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 60) {
-        setStart(true);
-        window.removeEventListener("scroll", onScroll);
-        window.removeEventListener("resize", onScroll);
-      }
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
+function StatsBand() {
   return (
-    <div ref={ref} className="mt-14 border-y border-grey-line bg-brand-blue-light/30">
+    <div className="mt-14 border-y border-grey-line bg-brand-blue-light/30">
       <dl className="mx-auto grid max-w-[1152px] grid-cols-2 divide-x divide-grey-line sm:grid-cols-4">
-        {stats.map((s, i) => (
-          <Stat key={s.label} {...s} start={start} reduceMotion={reduceMotion} />
+        {stats.map((s) => (
+          <Stat key={s.label} value={s.value} label={s.label} decimals={s.decimals} prefix={s.prefix} />
         ))}
       </dl>
     </div>
@@ -160,7 +108,7 @@ export function EstateStory() {
         </div>
       </Reveal>
 
-      <StatsBand reduceMotion={!!reduceMotion} />
+      <StatsBand />
     </div>
   );
 }

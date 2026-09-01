@@ -9,22 +9,19 @@ interface TrustItem {
   readonly value: string;
 }
 
-function useCountUp(targetText: string, start: boolean, reduced: boolean) {
+function useCountUp(targetText: string, reduced: boolean) {
+  const ref = useRef<HTMLDivElement>(null);
   const [output, setOutput] = useState(reduced ? targetText : "");
 
   useEffect(() => {
-    if (reduced) {
-      setOutput(targetText);
-      return;
-    }
-    if (!start) {
-      setOutput("");
-      return;
-    }
+    const el = ref.current;
+    if (!el) return;
 
     const nums = targetText.match(/\d+(\.\d+)?/g) ?? [];
     let current: number[] = nums.map(() => 0);
-    const startTime = performance.now();
+    let raf = 0;
+    let running = false;
+    let startTime = 0;
     const dur = 1400;
 
     function tick(now: number) {
@@ -47,17 +44,49 @@ function useCountUp(targetText: string, start: boolean, reduced: boolean) {
       });
 
       setOutput(text);
-      if (!done) requestAnimationFrame(tick);
+      if (!done) raf = requestAnimationFrame(tick);
+      else running = false;
     }
 
-    requestAnimationFrame(tick);
-  }, [start, targetText, reduced]);
+    function run() {
+      if (running || reduced) return;
+      running = true;
+      current = nums.map(() => 0);
+      startTime = performance.now();
+      raf = requestAnimationFrame(tick);
+    }
 
-  return output;
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight - 60 && rect.bottom > 0;
+      if (inView) {
+        if (reduced) {
+          setOutput(targetText);
+        } else {
+          run();
+        }
+      } else {
+        cancelAnimationFrame(raf);
+        running = false;
+        setOutput(reduced ? targetText : "");
+      }
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [targetText, reduced]);
+
+  return { ref, output };
 }
 
-function VerifyStat({ item, start, reduced }: { item: TrustItem; start: boolean; reduced: boolean }) {
-  const value = useCountUp(item.value, start, reduced);
+function VerifyStat({ item, reduced }: { item: TrustItem; reduced: boolean }) {
+  const { ref, output } = useCountUp(item.value, reduced);
   const isNum = /\d/.test(item.value);
 
   return (
@@ -66,14 +95,12 @@ function VerifyStat({ item, start, reduced }: { item: TrustItem; start: boolean;
         className="absolute left-1/2 top-0 h-0.5 w-0 -translate-x-1/2 bg-brand-blue-deep transition-all duration-300 group-hover:w-2/3"
         aria-hidden="true"
       />
-      <motion.dd
+      <dd
+        ref={ref}
         className={`font-heading font-bold transition-colors duration-300 group-hover:text-brand-blue-deep ${isNum ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl"} text-navy`}
-        initial={{ opacity: 0, y: 8 }}
-        animate={start ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-        transition={{ duration: 0.4 }}
       >
-        {reduced ? item.value : value}
-      </motion.dd>
+        {reduced ? item.value : output}
+      </dd>
       <dt className="mt-1 text-xs font-medium uppercase tracking-widest text-text-grey transition-colors duration-300 group-hover:text-brand-blue-deep">{item.label}</dt>
     </div>
   );
@@ -81,28 +108,6 @@ function VerifyStat({ item, start, reduced }: { item: TrustItem; start: boolean;
 
 export function VerifySection({ trustItems }: { trustItems: readonly TrustItem[] }) {
   const reduceMotion = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const [start, setStart] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const onScroll = () => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 60) {
-        setStart(true);
-        window.removeEventListener("scroll", onScroll);
-        window.removeEventListener("resize", onScroll);
-      }
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
 
   return (
     <div>
@@ -120,13 +125,11 @@ export function VerifySection({ trustItems }: { trustItems: readonly TrustItem[]
         </div>
       </Reveal>
 
-      <div ref={ref}>
-        <dl className="mt-12 grid grid-cols-1 divide-y divide-grey-line border-t border-grey-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {trustItems.map((item, i) => (
-            <VerifyStat key={item.label} item={item} start={start} reduced={!!reduceMotion} />
-          ))}
-        </dl>
-      </div>
+      <dl className="mt-12 grid grid-cols-1 divide-y divide-grey-line border-t border-grey-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        {trustItems.map((item) => (
+          <VerifyStat key={item.label} item={item} reduced={!!reduceMotion} />
+        ))}
+      </dl>
     </div>
   );
 }

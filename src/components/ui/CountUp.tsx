@@ -1,59 +1,72 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 
 interface CountUpProps {
-  target: number;
-  duration?: number;
+  value: number;
+  decimals?: number;
   prefix?: string;
-  suffix?: string;
+  duration?: number;
   className?: string;
 }
 
-export function CountUp({ target, duration = 1.6, prefix = "", suffix = "", className }: CountUpProps) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+export function CountUp({ value, decimals = 0, prefix = "", duration = 1600, className }: CountUpProps) {
   const reduceMotion = useReducedMotion();
-  const [value, setValue] = useState(reduceMotion ? target : 0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
-    if (reduceMotion || !isInView) return;
+    const el = ref.current;
+    if (!el) return;
+    const reduced = !!reduceMotion;
 
-    let start = 0;
-    const startTime = performance.now();
-    const durationMs = duration * 1000;
-
-    function tick(now: number) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / durationMs, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = Math.round(eased * target);
-
-      if (current !== start) {
-        start = current;
-        setValue(current);
+    const run = () => {
+      if (reduced) {
+        setDisplay(value);
+        return;
       }
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      const startTime = performance.now();
 
-      if (progress < 1) {
-        requestAnimationFrame(tick);
+      const tick = (now: number) => {
+        const p = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setDisplay(Math.round(eased * value));
+        if (p < 1) rafRef.current = requestAnimationFrame(tick);
+      };
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight - 60 && rect.bottom > 0;
+      if (inView) {
+        run();
+      } else if (!reduced) {
+        if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+        setDisplay(0);
       }
-    }
+    };
 
-    requestAnimationFrame(tick);
-  }, [isInView, target, duration, reduceMotion]);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+    };
+  }, [value, duration, reduceMotion]);
+
+  const formatted = decimals > 0 ? display.toFixed(decimals) : display.toLocaleString();
 
   return (
-    <motion.span
-      ref={ref}
-      className={className}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={isInView || reduceMotion ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-    >
+    <span ref={ref} className={className}>
       {prefix}
-      {value}
-      {suffix}
-    </motion.span>
+      {formatted}
+    </span>
   );
 }
