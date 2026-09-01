@@ -3,6 +3,8 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Eye, Sparkles } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { InteractiveHeading } from "@/components/ui/InteractiveHeading";
+import { PhraseReveal } from "@/components/ui/PhraseReveal";
 
 export function CompanyStory() {
   const reduceMotion = useReducedMotion();
@@ -11,9 +13,11 @@ export function CompanyStory() {
     <div>
       <Reveal>
         <p className="eyebrow mb-3 text-brand-blue-deep">About StellarVera</p>
-        <h2 className="font-heading text-4xl tracking-tight text-navy sm:text-5xl lg:text-6xl">
-          {`StellarVera Development Company Limited ("SDCL")`}
-        </h2>
+        <InteractiveHeading
+          text={`StellarVera Development Company Limited ("SDCL")`}
+          accentWords={["StellarVera", "Development"]}
+          className="font-heading text-4xl tracking-tight text-navy sm:text-5xl lg:text-6xl"
+        />
       </Reveal>
 
       <Reveal delay={0.1}>
@@ -29,10 +33,24 @@ export function CompanyStory() {
             <div className="relative mt-10 border-l-4 border-brand-blue-deep pl-6 sm:pl-8">
               <p className="eyebrow mb-2 text-brand-blue-deep">Quality Assurance</p>
               <p className="leading-relaxed text-text-grey">
-                {`Our service offering is built on delivering quality services, within an agreed timeframe and at an affordable cost. We aspire to be the leader in the property development space.`}
+                <PhraseReveal
+                  text="Our service offering is built on delivering quality services, within an agreed timeframe and at an affordable cost. We aspire to be the leader in the property development space."
+                  phrases={[
+                    { words: "quality services", hint: "Measured against agreed standards at every handover." },
+                    { words: "within an agreed timeframe", hint: "Deadlines are written into the agreement, not soft commitments." },
+                    { words: "at an affordable cost", hint: "Transparent pricing with no hidden charges." },
+                    { words: "the leader in the property development space", hint: "SDCL's stated ambition, built territory by territory across Africa." },
+                  ]}
+                />
               </p>
               <p className="mt-4 leading-relaxed text-text-grey">
-                {`SDCL brings together proven expertise to design and develop world-class homes. Over the years we have built a solid network with leading development and engineering companies as well as other service-providers across the world to ensure that the homes we build are of high standards.`}
+                <PhraseReveal
+                  text="SDCL brings together proven expertise to design and develop world-class homes. Over the years we have built a solid network with leading development and engineering companies as well as other service-providers across the world to ensure that the homes we build are of high standards."
+                  phrases={[
+                    { words: "world-class homes", hint: "Homes benchmarked against global building standards." },
+                    { words: "high standards", hint: "Quality checked at every stage of construction." },
+                  ]}
+                />
               </p>
             </div>
           </div>

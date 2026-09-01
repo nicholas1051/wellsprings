@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/ui/Reveal";
+import { InteractiveHeading } from "@/components/ui/InteractiveHeading";
 
 interface TrustItem {
   readonly label: string;
@@ -115,9 +116,11 @@ export function VerifySection({ trustItems }: { trustItems: readonly TrustItem[]
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow mb-3 text-brand-blue-deep">What You Can Verify</p>
-            <h2 className="font-heading text-4xl tracking-tight text-navy sm:text-5xl lg:text-6xl">
-              Trusted, verifiable facts
-            </h2>
+            <InteractiveHeading
+              text="Trusted, verifiable facts"
+              accentWords={["Trusted", "facts"]}
+              className="font-heading text-4xl tracking-tight text-navy sm:text-5xl lg:text-6xl"
+            />
           </div>
           <p className="max-w-sm text-sm leading-relaxed text-text-grey">
             {`Every figure on this page is documented and available for review before you commit. Hover the stats to re-run them.`}

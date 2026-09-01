@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/ui/Reveal";
+import { InteractiveHeading } from "@/components/ui/InteractiveHeading";
 
 export function PartnersSection({ partners }: { partners: string[] }) {
   const reduceMotion = useReducedMotion();
@@ -33,9 +34,11 @@ export function PartnersSection({ partners }: { partners: string[] }) {
     <div>
       <Reveal>
         <p className="eyebrow mb-3 text-brand-blue-deep">Design & Build Partners</p>
-        <h2 className="font-heading text-4xl tracking-tight text-navy sm:text-5xl lg:text-6xl">
-          People behind the build
-        </h2>
+        <InteractiveHeading
+          text="People behind the build"
+          accentWords={["People", "build"]}
+          className="font-heading text-4xl tracking-tight text-navy sm:text-5xl lg:text-6xl"
+        />
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-grey">
           {`Structure of the project team. Architecture by Studio Stoone Designs. Structural engineering by KOA Consultants. Project management by African United Consultants. Urban planning by Place-Make.`}
         </p>

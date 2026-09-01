@@ -5,6 +5,9 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
+import { InteractiveHeading } from "@/components/ui/InteractiveHeading";
+import { MagneticText } from "@/components/ui/MagneticText";
+import { PhraseReveal } from "@/components/ui/PhraseReveal";
 
 const paragraphs = [
   `The Wellsprings Estate was conceived out of the desire to satisfy the yearning of our customers to experience forward thinking self-sustained community living right in the heart of Ibadan, Oyo State.`,
@@ -57,9 +60,11 @@ export function EstateStory() {
     <div>
       <Reveal>
         <p className="eyebrow mb-3 text-brand-blue-deep">About Wellsprings Estate</p>
-        <h2 className="font-heading text-4xl tracking-tight text-navy sm:text-5xl lg:text-6xl">
-          The Wellsprings Estate
-        </h2>
+        <InteractiveHeading
+          text="The Wellsprings Estate"
+          accentWords={["Wellsprings", "Estate"]}
+          className="font-heading text-4xl tracking-tight text-navy sm:text-5xl lg:text-6xl"
+        />
       </Reveal>
 
       <Reveal delay={0.1}>
@@ -72,12 +77,30 @@ export function EstateStory() {
                 whileHover={reduceMotion ? undefined : { x: i % 2 === 0 ? 3 : -3 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
               >
-                {p}
+                {i === 1 ? (
+                  <PhraseReveal
+                    text={p}
+                    phrases={[
+                      { words: "ultra-modern Jericho", hint: "A nod to Jericho's leafy prestige, scaled for Ibadan's West." },
+                    ]}
+                  />
+                ) : i === 3 ? (
+                  <PhraseReveal
+                    text={p}
+                    phrases={[
+                      { words: "work-life balance", hint: "Every home pairs living space with a built-in office nook." },
+                      { words: "central sewage recycling system", hint: "Treated on-site, so the estate drains sustainably." },
+                    ]}
+                  />
+                ) : (
+                  p
+                )}
               </motion.p>
             ))}
-            <p className="pt-2 font-heading text-2xl font-bold text-navy">
-              This is Wellsprings: work, play, and live.
-            </p>
+            <MagneticText
+              text="This is Wellsprings: work, play, and live."
+              className="pt-2 font-heading text-2xl font-bold text-navy"
+            />
           </div>
 
           <div ref={imgWrapRef} className="relative">

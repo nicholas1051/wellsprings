@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Building2, Users, Church, Trees, Home, Route, ShieldCheck, Plus } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { InteractiveHeading } from "@/components/ui/InteractiveHeading";
 
 const features = [
   {
@@ -75,9 +76,11 @@ export function GeneralFeatures() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow mb-3 text-brand-blue-deep">General Features</p>
-            <h2 className="font-heading text-4xl tracking-tight text-navy sm:text-5xl lg:text-6xl">
-              Built around how the estate lives
-            </h2>
+            <InteractiveHeading
+              text="Built around how the estate lives"
+              accentWords={["estate", "lives"]}
+              className="font-heading text-4xl tracking-tight text-navy sm:text-5xl lg:text-6xl"
+            />
           </div>
           <p className="max-w-sm text-sm leading-relaxed text-text-grey">
             {`Every part of Wellsprings is planned to work together for a balanced, secure, and connected community. Hover or tap a feature to explore.`}
