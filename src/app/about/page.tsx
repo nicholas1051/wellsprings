@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { BadgeCheck, FileCheck2, ShieldCheck } from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { ButtonLink } from "@/components/ui/Button";
 import { BookViewingButton } from "@/components/modals/BookViewingButton";
 import { PageBackground } from "@/components/ui/PageBackground";
+import { CompanyStory } from "@/components/about/CompanyStory";
+import { EstateStory } from "@/components/about/EstateStory";
+import { GeneralFeatures } from "@/components/about/GeneralFeatures";
 import { trustItems } from "@/data/why";
 import { site, partners } from "@/data/site";
 
@@ -39,12 +41,12 @@ export default function AboutPage() {
           />
         </div>
         <div className="relative z-10 container-site py-28 sm:pt-36 sm:pb-12">
-          <p className="eyebrow mb-3 text-brand-blue">About Us</p>
+          <p className="eyebrow mb-3 text-brand-blue">About StellarVera</p>
           <h1 className="font-heading text-3xl tracking-tight text-white sm:text-4xl lg:text-5xl">
             Building in {site.location}
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
-            {site.legalName} (SDCL) builds residential estates focused on quality construction, good planning, and transparent processes.
+            {`${site.legalName} (SDCL) is the development company behind ${site.brandName}, the ultra-modern Jericho estate in the heart of Ibadan.`}
           </p>
         </div>
       </header>
@@ -79,40 +81,20 @@ export default function AboutPage() {
             </div>
           </Reveal>
 
-          <Reveal delay={0.05}>
-            <div className="mt-16 grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-              <div>
-                <h2 className="text-2xl font-bold text-navy">What We Do</h2>
-                <p className="mt-4 text-base leading-relaxed text-text-grey">
-                  StellarVera Development Company Limited builds residential estates in Nigerian cities.
-                  We focus on masterplanning, quality construction, and processes that buyers can verify.
-                </p>
-                <p className="mt-4 text-base leading-relaxed text-text-grey">
-                  Wellsprings Ibadan is our flagship estate: 25 acres of residential living in Jericho.
-                  Underground drainage, borehole water, paved roads, and communal parks form the infrastructure.
-                  Six property types, ranging from apartments to detached villas, sit within the plan.
-                </p>
-              </div>
-              <div className="relative overflow-hidden rounded-2xl border border-grey-line bg-cream p-8">
-                <p className="eyebrow mb-4 text-brand-blue-deep">Design & Build Partners</p>
-                <ul className="space-y-3">
-                  {partners.map((partner) => (
-                    <li key={partner.name} className="flex items-center gap-3 border-b border-grey-line py-3 last:border-b-0">
-                      <span className="h-2 w-2 rounded-full bg-brand-blue" aria-hidden="true" />
-                      <span className="text-base font-semibold text-navy">{partner.name}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-6 text-sm text-text-grey">
-                  Architecture by Studio Stoone Designs. Structural engineering by KOA Consultants.
-                  Project management by African United Consultants. Urban planning by Place-Make.
-                </p>
-              </div>
-            </div>
-          </Reveal>
+          <div className="mt-20">
+            <CompanyStory />
+          </div>
+
+          <div className="mt-20">
+            <EstateStory />
+          </div>
+
+          <div className="mt-20">
+            <GeneralFeatures />
+          </div>
 
           <Reveal delay={0.05}>
-            <div className="mt-16">
+            <div className="mt-20">
               <h2 className="text-2xl font-bold text-navy">What You Can Verify</h2>
               <dl className="mt-8 grid gap-4 sm:grid-cols-3">
                 {trustItems.map((item) => (
@@ -126,7 +108,25 @@ export default function AboutPage() {
           </Reveal>
 
           <Reveal delay={0.05}>
-            <div className="mt-16 flex flex-col items-start gap-4 rounded-2xl bg-navy p-8 text-white sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-20 rounded-2xl border border-grey-line bg-cream p-8">
+              <p className="eyebrow mb-4 text-brand-blue-deep">Design & Build Partners</p>
+              <ul className="space-y-3">
+                {partners.map((partner) => (
+                  <li key={partner.name} className="flex items-center gap-3 border-b border-grey-line py-3 last:border-b-0">
+                    <span className="h-2 w-2 rounded-full bg-brand-blue" aria-hidden="true" />
+                    <span className="text-base font-semibold text-navy">{partner.name}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 text-sm text-text-grey">
+                Architecture by Studio Stoone Designs. Structural engineering by KOA Consultants.
+                Project management by African United Consultants. Urban planning by Place-Make.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.05}>
+            <div className="mt-20 flex flex-col items-start gap-4 rounded-2xl bg-navy p-8 text-white sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h2 className="text-xl font-bold">Visit the estate</h2>
                 <p className="mt-1 text-sm text-white/70">
