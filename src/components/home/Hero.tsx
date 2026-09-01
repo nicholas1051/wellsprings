@@ -129,7 +129,7 @@ export function Hero() {
 
           <motion.p
             {...(reduceMotion ? {} : fadeUp(0.8))}
-            className="mx-auto mt-5 max-w-[520px] text-[17px] leading-[1.7] font-medium text-white"
+            className="mx-auto mt-5 max-w-[520px] text-[17px] leading-[1.5] font-medium text-white"
             style={{ textShadow: "0 2px 16px rgba(0,0,0,.5), 0 1px 4px rgba(0,0,0,.3)" }}
           >
             Thoughtfully designed homes set within a serene and welcoming community.
