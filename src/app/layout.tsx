@@ -58,7 +58,12 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: "/wellsprings-logo.png",
+    icon: [
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-48x48.png", type: "image/png", sizes: "48x48" },
+      { url: "/favicon.png", type: "image/png", sizes: "64x64" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
 };
 
