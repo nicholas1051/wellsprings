@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { BadgeCheck, FileCheck2, ShieldCheck } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { ButtonLink } from "@/components/ui/Button";
 import { BookViewingButton } from "@/components/modals/BookViewingButton";
@@ -8,6 +7,8 @@ import { PageBackground } from "@/components/ui/PageBackground";
 import { CompanyStory } from "@/components/about/CompanyStory";
 import { EstateStory } from "@/components/about/EstateStory";
 import { GeneralFeatures } from "@/components/about/GeneralFeatures";
+import { VerifySection } from "@/components/about/VerifySection";
+import { PartnersSection } from "@/components/about/PartnersSection";
 import { trustItems } from "@/data/why";
 import { site, partners } from "@/data/site";
 
@@ -53,80 +54,26 @@ export default function AboutPage() {
 
       <section className="bg-warm-white py-16 sm:py-20">
         <div className="container-site">
-          <Reveal>
-            <div className="grid gap-6 sm:grid-cols-3">
-              {[
-                {
-                  icon: FileCheck2,
-                  title: "Registered Company",
-                  text: `Registered with CAC as ${site.legalName}. Verifiable corporate entity.`,
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "Documented Land Title",
-                  text: `${site.landTitleStatus}. Full title documentation provided at purchase.`,
-                },
-                {
-                  icon: BadgeCheck,
-                  title: "Clear Pricing",
-                  text: "Published prices, documented terms, written agreements. No undocumented payments.",
-                },
-              ].map((item) => (
-                <div key={item.title} className="rounded-2xl border border-grey-line bg-white p-6">
-                  <item.icon className="h-6 w-6 text-brand-blue-deep" aria-hidden="true" />
-                  <h2 className="mt-4 text-lg font-bold text-navy">{item.title}</h2>
-                  <p className="mt-2 text-sm text-text-grey">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
+          <CompanyStory />
 
-          <div className="mt-20">
-            <CompanyStory />
-          </div>
-
-          <div className="mt-20">
+          <div className="mt-24">
             <EstateStory />
           </div>
 
-          <div className="mt-20">
+          <div className="mt-24">
             <GeneralFeatures />
           </div>
 
-          <Reveal delay={0.05}>
-            <div className="mt-20">
-              <h2 className="text-2xl font-bold text-navy">What You Can Verify</h2>
-              <dl className="mt-8 grid gap-4 sm:grid-cols-3">
-                {trustItems.map((item) => (
-                  <div key={item.label} className="rounded-xl border border-grey-line bg-white p-6">
-                    <dt className="text-sm font-medium text-text-grey">{item.label}</dt>
-                    <dd className="mt-1 text-lg font-bold text-navy">{item.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </Reveal>
+          <div className="mt-24">
+            <VerifySection trustItems={trustItems} />
+          </div>
+
+          <div className="mt-24">
+            <PartnersSection partners={partners.map((p) => p.name)} />
+          </div>
 
           <Reveal delay={0.05}>
-            <div className="mt-20 rounded-2xl border border-grey-line bg-cream p-8">
-              <p className="eyebrow mb-4 text-brand-blue-deep">Design & Build Partners</p>
-              <ul className="space-y-3">
-                {partners.map((partner) => (
-                  <li key={partner.name} className="flex items-center gap-3 border-b border-grey-line py-3 last:border-b-0">
-                    <span className="h-2 w-2 rounded-full bg-brand-blue" aria-hidden="true" />
-                    <span className="text-base font-semibold text-navy">{partner.name}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-6 text-sm text-text-grey">
-                Architecture by Studio Stoone Designs. Structural engineering by KOA Consultants.
-                Project management by African United Consultants. Urban planning by Place-Make.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.05}>
-            <div className="mt-20 flex flex-col items-start gap-4 rounded-2xl bg-navy p-8 text-white sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-24 flex flex-col items-start gap-4 rounded-2xl bg-navy p-8 text-white sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h2 className="text-xl font-bold">Visit the estate</h2>
                 <p className="mt-1 text-sm text-white/70">
