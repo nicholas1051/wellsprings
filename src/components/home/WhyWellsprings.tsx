@@ -124,7 +124,7 @@ const CSS = `
     pointer-events:none;
   }
 
-  .whyw__inner{ position:relative; max-width:1180px; margin:0 auto; }
+  .whyw__inner{ position:relative; max-width:1152px; margin:0 auto; }
 
   .whyw__head{
     max-width:520px;

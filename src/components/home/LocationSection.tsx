@@ -104,7 +104,7 @@ export function LocationSection() {
         </div>
 
         {/* Explorer shell */}
-        <div className="relative mx-auto mt-14 w-full max-w-[1160px] overflow-visible">
+        <div className="relative mx-auto mt-14 w-full max-w-[1152px] overflow-visible">
           {/* ── Mobile: card list layout ── */}
           <div className="block lg:hidden">
             {/* Mobile topbar */}
@@ -378,7 +378,7 @@ export function LocationSection() {
         </div>
 
         {/* Insights strip */}
-        <div className="mx-auto mt-[18px] grid max-w-[1160px] grid-cols-2 gap-2.5 sm:grid-cols-4">
+        <div className="mx-auto mt-[18px] grid max-w-[1152px] grid-cols-2 gap-2.5 sm:grid-cols-4">
           {location.insights.map((ins) => (
             <div key={ins.label} className="rounded-[14px] border border-[#DFE8F0] bg-white p-3.5">
               <small className="block text-[12px] uppercase tracking-[0.1em] text-[#9AA7B4]">{ins.label}</small>

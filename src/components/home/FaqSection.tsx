@@ -44,7 +44,7 @@ const CSS = `
 
   .faq__inner{
     position:relative;
-    max-width:1180px;
+    max-width:1152px;
     margin:0 auto;
     display:grid;
     grid-template-columns:340px 1fr;
