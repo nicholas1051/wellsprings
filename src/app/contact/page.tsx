@@ -39,12 +39,12 @@ export default function ContactPage() {
             }}
           />
         </div>
-        <div className="relative z-10 container-site py-28 sm:pt-36 sm:pb-12">
+        <div className="relative z-10 container-site py-28 text-center sm:pt-36 sm:pb-12">
           <p className="eyebrow mb-3 text-brand-blue">Contact</p>
           <h1 className="font-heading text-3xl tracking-tight text-white sm:text-4xl lg:text-5xl">
             Talk to us about a home
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
             Call, WhatsApp, or send a message. We respond within one business day.
           </p>
         </div>

@@ -70,20 +70,20 @@ export default async function PropertyDetailPage({ params }: Props) {
           className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/20" />
-        <div className="container-site relative z-10 pb-12 pt-40 sm:pt-48">
+        <div className="container-site relative z-10 pb-12 pt-40 text-center sm:pt-48">
           <Reveal>
             <nav className="mb-4 text-sm text-white/60">
               <Link href="/properties" className="hover:text-white transition-colors">Properties</Link>
               <span className="mx-2">/</span>
               <span className="text-white">{unit.name}</span>
             </nav>
-            <div className="flex items-center gap-3 mb-4">
+            <div className="mb-4 flex items-center justify-center gap-3">
               <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
                 {propertyTypeLabels[unit.propertyType]}
               </span>
             </div>
             <h1 className="font-heading text-4xl text-white sm:text-5xl lg:text-6xl">{unit.name}</h1>
-            <p className="mt-3 max-w-xl text-lg text-white/80">{unit.fullName}</p>
+            <p className="mx-auto mt-3 max-w-xl text-lg text-white/80">{unit.fullName}</p>
           </Reveal>
         </div>
       </header>

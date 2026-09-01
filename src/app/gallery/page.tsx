@@ -36,12 +36,12 @@ export default function GalleryPage() {
             }}
           />
         </div>
-        <div className="relative z-10 container-site py-28 sm:pt-36 sm:pb-12">
+        <div className="relative z-10 container-site py-28 text-center sm:pt-36 sm:pb-12">
           <p className="eyebrow mb-3 text-brand-blue">Gallery</p>
           <h1 className="font-heading text-3xl tracking-tight text-white sm:text-4xl lg:text-5xl">
             See the estate
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
             Photos of the estate, homes, and construction progress. Tap any image to view it larger. Images marked &ldquo;Artistic Impression&rdquo; are illustrative renders.
           </p>
         </div>
