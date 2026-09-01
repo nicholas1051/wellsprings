@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { Eye, Sparkles } from "lucide-react";
+import { Eye, DraftingCompass } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { InteractiveHeading } from "@/components/ui/InteractiveHeading";
 import { PhraseReveal } from "@/components/ui/PhraseReveal";
@@ -89,7 +89,7 @@ export function CompanyStory() {
                   whileHover={reduceMotion ? undefined : { rotate: -12, scale: 1.08 }}
                   transition={{ type: "spring", stiffness: 300, damping: 15 }}
                 >
-                  <Sparkles className="h-6 w-6" aria-hidden="true" />
+                  <DraftingCompass className="h-6 w-6" aria-hidden="true" />
                 </motion.span>
                 <div>
                   <h3 className="text-lg font-bold text-navy transition-colors duration-300 group-hover:text-brand-blue-deep">Core Value</h3>
