@@ -124,7 +124,15 @@ const CSS = `
     pointer-events:none;
   }
 
-  .whyw__inner{ position:relative; max-width:1152px; margin:0 auto; }
+  .whyw__inner{ position:relative; width:100%; max-width:1152px; margin:0 auto; padding-inline:1rem; }
+
+  @media (min-width:640px){
+    .whyw__inner{ padding-inline:1.5rem; }
+  }
+
+  @media (min-width:1024px){
+    .whyw__inner{ padding-inline:2.5rem; }
+  }
 
   .whyw__head{
     max-width:520px;

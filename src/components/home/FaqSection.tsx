@@ -44,8 +44,10 @@ const CSS = `
 
   .faq__inner{
     position:relative;
+    width:100%;
     max-width:1152px;
     margin:0 auto;
+    padding-inline:1rem;
     display:grid;
     grid-template-columns:340px 1fr;
     gap:80px;
@@ -236,6 +238,14 @@ const CSS = `
     font-size:12px;
     color:var(--ink-dim);
     letter-spacing:.04em;
+  }
+
+  @media (min-width:640px){
+    .faq__inner{ padding-inline:1.5rem; }
+  }
+
+  @media (min-width:1024px){
+    .faq__inner{ padding-inline:2.5rem; }
   }
 
   @media (max-width:900px){
