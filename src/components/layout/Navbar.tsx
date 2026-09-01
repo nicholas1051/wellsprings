@@ -62,7 +62,9 @@ export function Navbar() {
               href={link.href}
               className={cn(
                 "rounded-full px-3.5 py-2 text-sm font-semibold transition-colors",
-                menuOpen ? "text-white hover:bg-white/10" : solid ? "text-navy hover:bg-brand-blue-deep hover:text-white" : "text-white hover:bg-white/10",
+                menuOpen
+                  ? "text-white hover:bg-white/10"
+                  : `${solid ? "text-navy" : "text-white"} hover:bg-brand-blue-deep hover:text-white`,
               )}
             >
               {link.label}
