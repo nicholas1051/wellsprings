@@ -105,10 +105,10 @@ export function Hero() {
     <section ref={ref} className="pt-4 sm:pt-6">
       <div className="relative min-h-[625px] overflow-hidden rounded-[28px] bg-cover bg-center shadow-2xl sm:min-h-[680px]"
         style={{
-          backgroundImage: `linear-gradient(90deg, rgba(23,38,58,.55) 0%, rgba(23,38,58,.3) 50%, rgba(23,38,58,.08) 100%), url(https://i.postimg.cc/vmsQhcmQ/Wellsprings-gate-house-8K.png)`,
+          backgroundImage: `radial-gradient(ellipse 80% 75% at 50% 42%, rgba(23,38,58,.62) 0%, rgba(23,38,58,.35) 55%, rgba(23,38,58,.12) 100%), url(https://i.postimg.cc/vmsQhcmQ/Wellsprings-gate-house-8K.png)`,
         }}
       >
-        <div className="relative z-10 w-full px-6 pt-20 sm:w-[min(610px,100%)] sm:px-[68px] sm:pt-24">
+        <div className="relative z-10 mx-auto w-full max-w-[1040px] px-6 pt-20 text-center sm:px-8 sm:pt-24">
           <h1 className="font-heading text-[clamp(42px,5.5vw,78px)] leading-[0.99] tracking-[-0.045em] text-white font-extrabold" style={{ textShadow: "0 3px 18px rgba(0,0,0,.45), 0 1px 4px rgba(0,0,0,.3)" }}>
             {reduceMotion ? (
               tagline.split("").map((char, i) => {
@@ -129,7 +129,7 @@ export function Hero() {
 
           <motion.p
             {...(reduceMotion ? {} : fadeUp(0.8))}
-            className="mt-5 max-w-[520px] text-[17px] leading-[1.7] font-medium text-white"
+            className="mx-auto mt-5 max-w-[520px] text-[17px] leading-[1.7] font-medium text-white"
             style={{ textShadow: "0 2px 16px rgba(0,0,0,.5), 0 1px 4px rgba(0,0,0,.3)" }}
           >
             Thoughtfully designed homes set within a serene and welcoming community.
@@ -139,7 +139,7 @@ export function Hero() {
 
           <motion.div
             {...(reduceMotion ? {} : fadeUp(1.4))}
-            className="mt-8 flex flex-col gap-3 sm:flex-row"
+            className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"
           >
             <Link
               href="/properties"
