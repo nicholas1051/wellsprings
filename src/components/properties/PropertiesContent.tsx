@@ -64,7 +64,7 @@ function PropertyCard({ unit, index, reduceMotion }: { unit: (typeof housingUnit
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute top-3 left-3">
+          <div className="absolute top-3 right-3">
             <StatusBadge status={unit.status} unitsLeft={unit.unitsLeft} />
           </div>
           <div className="absolute bottom-3 right-3">
@@ -83,7 +83,7 @@ function PropertyCard({ unit, index, reduceMotion }: { unit: (typeof housingUnit
               <p className="text-xs text-text-grey uppercase tracking-wide font-medium">From</p>
               <p className="text-xl font-bold text-navy">{formatPrice(unit.priceFrom)}</p>
             </div>
-            <span className="flex items-center gap-1 text-sm font-semibold text-brand-blue-deep">
+            <span className="flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-semibold text-brand-blue-deep transition-colors duration-300 hover:bg-brand-blue-deep hover:text-white">
               View Details
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </span>

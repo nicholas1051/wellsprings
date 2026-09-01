@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 
 const statusStyles: Record<UnitStatus, { classes: string; dot: string }> = {
   available: {
-    classes: "border-sage/40 bg-sage/10 text-sage-dark",
-    dot: "bg-sage",
+    classes: "border-brand-blue bg-brand-blue text-white",
+    dot: "bg-white",
   },
   limited: {
     classes: "border-terracotta/40 bg-terracotta/10 text-terracotta",
