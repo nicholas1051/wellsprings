@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useReducedMotion, AnimatePresence } from "framer-motion";
-import { MapPin, Home, Wallet, Search, ArrowRight, Star, ShieldCheck, Headphones, Sparkles, BadgeCheck, Phone } from "lucide-react";
+import { MapPin, Home, Wallet, Search, Compass, Star, ShieldCheck, Headphones, Sparkles, BadgeCheck, Phone } from "lucide-react";
 import { useState, useCallback } from "react";
 import { site } from "@/data/site";
 import { cn } from "@/lib/utils";
@@ -105,11 +105,11 @@ export function Hero() {
     <section ref={ref} className="pt-4 sm:pt-6">
       <div className="relative min-h-[625px] overflow-hidden rounded-[28px] bg-cover bg-center shadow-2xl sm:min-h-[680px]"
         style={{
-          backgroundImage: `radial-gradient(ellipse 80% 75% at 50% 42%, rgba(23,38,58,.62) 0%, rgba(23,38,58,.35) 55%, rgba(23,38,58,.12) 100%), url(https://i.postimg.cc/vmsQhcmQ/Wellsprings-gate-house-8K.png)`,
+          backgroundImage: `radial-gradient(ellipse 80% 75% at 50% 42%, rgba(23,38,58,.74) 0%, rgba(23,38,58,.5) 55%, rgba(23,38,58,.18) 100%), url(https://i.postimg.cc/vmsQhcmQ/Wellsprings-gate-house-8K.png)`,
         }}
       >
         <div className="relative z-10 mx-auto flex min-h-[625px] w-full max-w-[1040px] flex-col items-center justify-center px-6 text-center sm:min-h-[680px] sm:px-8">
-          <h1 className="font-heading text-[clamp(42px,5.5vw,78px)] leading-[0.99] tracking-[-0.045em] text-white font-extrabold" style={{ textShadow: "0 3px 18px rgba(0,0,0,.45), 0 1px 4px rgba(0,0,0,.3)" }}>
+          <h1 className="font-heading text-[clamp(42px,5.5vw,78px)] leading-[0.99] tracking-[-0.045em] text-white font-extrabold" style={{ textShadow: "0 4px 22px rgba(0,0,0,.55), 0 1px 4px rgba(0,0,0,.4)" }}>
             {reduceMotion ? (
               tagline.split("").map((char, i) => {
                 const isLive = i >= 7 && i <= 11;
@@ -130,7 +130,7 @@ export function Hero() {
           <motion.p
             {...(reduceMotion ? {} : fadeUp(0.8))}
             className="mx-auto mt-5 max-w-[520px] text-[17px] leading-[1.5] font-medium text-white"
-            style={{ textShadow: "0 2px 16px rgba(0,0,0,.5), 0 1px 4px rgba(0,0,0,.3)" }}
+            style={{ textShadow: "0 3px 18px rgba(0,0,0,.6), 0 1px 4px rgba(0,0,0,.4)" }}
           >
             Thoughtfully designed homes set within a serene and welcoming community.
             Wellsprings gives you the comfort and space to live well, work productively,
@@ -143,17 +143,17 @@ export function Hero() {
           >
             <Link
               href="/properties"
-              className="inline-flex items-center justify-center gap-2 rounded-[11px] bg-brand-blue px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-brand-blue/27 transition-all hover:-translate-y-0.5 hover:bg-brand-blue-dark hover:shadow-xl"
+              className="group inline-flex items-center justify-center gap-2 rounded-[11px] bg-brand-blue px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-brand-blue/27 transition-all hover:-translate-y-0.5 hover:bg-brand-blue-dark hover:shadow-xl"
             >
               Explore Properties
-              <ArrowRight className="h-4 w-4" />
+              <Compass className="h-4 w-4 transition-transform duration-300 group-hover:animate-bounce" />
             </Link>
             <button
               type="button"
               onClick={() => openCallback("hero-cta")}
-              className="inline-flex items-center justify-center gap-2 rounded-[11px] border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/20"
+              className="group inline-flex items-center justify-center gap-2 rounded-[11px] border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-brand-blue hover:bg-brand-blue/90 hover:text-white hover:shadow-lg hover:shadow-brand-blue/30"
             >
-              <Phone className="h-4 w-4" />
+              <Phone className="h-4 w-4 group-hover:animate-bounce" />
               Get a call from us
             </button>
           </motion.div>
